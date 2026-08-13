@@ -47,10 +47,12 @@
   .main{margin-left:255px;flex:1;padding:26px 34px}
   .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}.topbar h2{font-size:22px;font-weight:700}.topbar p{color:var(--muted);font-size:13px;margin-top:3px}
   .module-badge{font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px}.module-badge.hse{background:#fdeeed;color:var(--red)}.module-badge.quality{background:#e9f1fb;color:var(--blue)}
+  .view-banner{display:none;background:#fff4e0;border:1px solid #f0d79a;color:#8a6400;padding:10px 16px;border-radius:10px;font-size:13px;margin-bottom:16px;align-items:center;justify-content:space-between;gap:12px}
+  .view-banner.show{display:flex}
   .page{display:none}.page.active{display:block;animation:fade .25s}@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:22px}
   .kpi{background:var(--card);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow);border-left:4px solid var(--teal)}
-  .kpi.amber{border-color:var(--amber)}.kpi.red{border-color:var(--red)}.kpi.green{border-color:var(--green)}.kpi.orange{border-color:var(--orange)}
+  .kpi.amber{border-color:var(--amber)}.kpi.red{border-color:var(--red)}.kpi.green{border-color:var(--green)}.kpi.orange{border-color:var(--orange)}.kpi.purple{border-color:var(--purple)}
   .kpi .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;font-weight:600}.kpi .value{font-size:32px;font-weight:800;margin-top:6px}.kpi .sub{font-size:12px;color:var(--muted);margin-top:2px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
   .card{background:var(--card);border-radius:12px;padding:20px;box-shadow:var(--shadow)}.card h3{font-size:14px;font-weight:700;margin-bottom:16px}.chart-wrap{position:relative;height:240px}
@@ -108,6 +110,7 @@
   .b-nearmiss{background:#fff5e0;color:#b57d00}.b-accidente{background:#fdeeed;color:var(--red)}
   .b-abierta{background:#e9f1fb;color:var(--blue)}.b-completada{background:#e6f6ec;color:var(--green)}.b-overdue{background:#fdeeed;color:var(--red)}
   .b-efectiva{background:#e6f6ec;color:var(--green)}.b-noefectiva{background:#fdeeed;color:var(--red)}.b-pendiente{background:#eef1f1;color:var(--muted)}
+  .b-yes{background:#e6f6ec;color:var(--green)}.b-no{background:#fff5e0;color:#b57d00}
   .c-correctiva{background:#fdeeed;color:var(--red)}.c-preventiva{background:#e9f1fb;color:var(--blue)}.c-mejora{background:#e6f6ec;color:var(--green)}
   .cat-injury{background:#fdeeed;color:var(--red)}.cat-env{background:#e6f6ec;color:var(--green)}.cat-asset{background:#e9f1fb;color:var(--blue)}.cat-legal{background:#f0ecfa;color:var(--purple)}
   .pill{padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700}.tag{padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;background:#eef3f3;color:var(--teal-dark)}
@@ -116,7 +119,7 @@
   .empty{text-align:center;padding:50px;color:var(--muted)}
   .toast{position:fixed;bottom:26px;right:26px;background:var(--ink);color:#fff;padding:14px 22px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.2);font-size:14px;opacity:0;transform:translateY(20px);transition:.3s;z-index:2000;max-width:360px}.toast.show{opacity:1;transform:none}
   .note{background:#eaf6f5;border:1px solid #bfe4e2;color:var(--teal-darker);padding:12px 16px;border-radius:10px;font-size:13px;margin-bottom:18px}.note.warn{background:#fff6e6;border-color:#f0d79a;color:#8a6400}
-  .settings-card{max-width:760px}.settings-card .row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);gap:16px}.settings-card .row:last-child{border:none}
+  .settings-card{max-width:820px}.settings-card .row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);gap:16px}.settings-card .row:last-child{border:none}
   .settings-card .row .t{font-size:13.5px;font-weight:600}.settings-card .row .d{font-size:12px;color:var(--muted);margin-top:2px}
   .users-list .u,.sede-list .u{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--border);font-size:13px}.users-list .u:last-child,.sede-list .u:last-child{border:none}
   .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1500;display:none;align-items:center;justify-content:center;padding:20px}.modal-bg.show{display:flex}
@@ -131,6 +134,7 @@
   .kv td:first-child{width:150px;color:var(--muted);font-weight:600}
   .logo-preview{width:60px;height:60px;border-radius:10px;border:1px solid var(--border);background:#fbfcfc;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:11px;color:var(--muted)}
   .logo-preview img{width:100%;height:100%;object-fit:contain}
+  .folder-id{font-family:monospace;font-size:11px;background:#eef3f3;padding:2px 6px;border-radius:5px;word-break:break-all}
 </style>
 </head>
 <body>
@@ -163,7 +167,10 @@
       <button data-page="q-register" data-perm="edit"><span class="ico">➕</span> Registrar evento</button>
       <button data-page="q-list"><span class="ico">📋</span> Eventos</button>
     </div>
-    <div style="border-top:1px solid rgba(255,255,255,.12);margin-top:8px;padding-top:8px"><button data-page="settings" data-perm="master"><span class="ico">⚙️</span> Configuración</button></div>
+    <div style="border-top:1px solid rgba(255,255,255,.12);margin-top:8px;padding-top:8px">
+      <button data-page="settings" data-perm="master"><span class="ico">⚙️</span> Configuración</button>
+      <button data-page="platform" data-plat="1" hidden><span class="ico">🌐</span> Plataforma (superadmin)</button>
+    </div>
   </nav>
   <div class="side-account">
     <div class="storage-pill local" id="storagePill"><span class="dot"></span><span id="storageLabel">Modo local</span></div>
@@ -172,6 +179,7 @@
   </div>
 </aside>
 <main class="main">
+  <div class="view-banner" id="viewBanner"><span id="viewBannerText"></span><button class="btn ghost sm" onclick="exitCompanyView()">Salir de la vista</button></div>
   <div class="topbar"><div><h2 id="pageTitle">Dashboard HSE</h2><p id="pageSub">Resumen de eventos HSE</p></div><div class="module-badge hse" id="moduleBadge">🦺 Módulo HSE</div></div>
   <section id="hse-dashboard" class="page active" data-module="hse">
     <div class="kpis">
@@ -389,6 +397,11 @@
       <button class="btn ghost sm" onclick="addSede()">➕ Agregar sede</button>
     </div>
     <div class="card settings-card" style="margin-top:16px">
+      <h3>🔗 Compartir con soporte (backups)</h3>
+      <p class="d" style="font-size:12px;color:var(--muted);margin-bottom:8px">Si deseas que el equipo de soporte pueda hacerte copias de seguridad, comparte tu carpeta <strong>HSEQHub</strong> (permiso Editor) con el correo de soporte. Tus datos siguen siendo tuyos; sin este permiso, soporte NO puede ver tu información.</p>
+      <div class="row"><div><div class="t">ID de tu carpeta de datos</div><div class="d"><span class="folder-id" id="myFolderId">—</span></div></div><button class="btn ghost sm" onclick="copyMyFolderId()">Copiar ID</button></div>
+    </div>
+    <div class="card settings-card" style="margin-top:16px">
       <div class="row"><div><div class="t">Almacenamiento actual</div><div class="d" id="setStorageDesc">Modo local</div></div><div id="setStorageBadge"></div></div>
       <div class="row"><div><div class="t">📥 Backup completo (JSON)</div><div class="d">Incluye HSE + Calidad + sedes + marca.</div></div><button class="btn ghost" onclick="exportJSON()">Descargar JSON</button></div>
       <div class="row"><div><div class="t">📤 Restaurar desde copia (JSON)</div><div class="d">Reemplaza todos los datos.</div></div><label class="btn ghost" style="cursor:pointer">Subir JSON<input type="file" accept=".json" style="display:none" onchange="importJSON(event)"></label></div>
@@ -398,6 +411,28 @@
       <h3>👥 Usuarios autorizados (definidos en el código)</h3>
       <p class="d" style="font-size:12px;color:var(--muted);margin-bottom:6px">Edita <code>ACCESS_CONTROL</code> en el código.</p>
       <div class="users-list" id="usersList"></div>
+    </div>
+  </section>
+  <section id="platform" class="page">
+    <div class="note warn">🌐 <strong>Panel de plataforma (superadmin).</strong> Registro de empresas, demos y backups. Solo puedes descargar datos de las empresas que te hayan <strong>compartido su carpeta</strong>.</div>
+    <div class="kpis">
+      <div class="kpi purple"><div class="label">Empresas registradas</div><div class="value" id="pTotal">0</div><div class="sub">en la plataforma</div></div>
+      <div class="kpi green"><div class="label">Con acceso (backup)</div><div class="value" id="pAccess">0</div><div class="sub">te compartieron la carpeta</div></div>
+      <div class="kpi amber"><div class="label">Sin acceso</div><div class="value" id="pNoAccess">0</div><div class="sub">solo ver que existen</div></div>
+      <div class="kpi"><div class="label">Estado</div><div class="value" style="font-size:18px" id="pState">—</div><div class="sub">registro en tu Drive</div></div>
+    </div>
+    <div class="card settings-card" style="max-width:100%">
+      <h3>➕ Registrar empresa</h3>
+      <div class="form-row">
+        <div class="form-group"><label>Nombre de la empresa</label><input type="text" id="pNewName" placeholder="Ej: Constructora XYZ S.A.S."></div>
+        <div class="form-group"><label>ID de carpeta HSEQHub (que te comparta la empresa)</label><input type="text" id="pNewFolder" placeholder="Ej: 1AbC…xyz (opcional si aún no te comparten)"></div>
+      </div>
+      <button class="btn sm" onclick="platformAddCompany()">➕ Agregar al registro</button>
+      <button class="btn ghost sm" onclick="platformRefresh()">🔄 Verificar accesos</button>
+    </div>
+    <div style="margin-top:16px">
+      <table><thead><tr><th>Empresa</th><th>ID de carpeta</th><th>Acceso</th><th>Acciones</th></tr></thead><tbody id="pBody"></tbody></table>
+      <div id="pEmpty" class="empty" style="display:none">Aún no has registrado empresas. Agrega la primera arriba.</div>
     </div>
   </section>
 </main>
@@ -444,17 +479,16 @@ const APP_CONFIG = {
   }
 };
 /* === CONTROL DE ACCESO ===  Tu correo = master (usuario MAIN). */
-const ACCESS_CONTROL = { "danizabas@gmail.com":"master" };
+const ACCESS_CONTROL = { "danizabas@gmail.com":"master", "danielzabalasolano@gmail.com":"master" };
+/* === SUPERADMIN de la plataforma (ve todas las empresas registradas) === */
+const PLATFORM_ADMINS = ["danielzabalasolano@gmail.com"];
+function isPlatformAdmin(){ return PLATFORM_ADMINS.indexOf((session.email||"").toLowerCase())>=0; }
 /* 🧪 EXPERIMENTO: cualquier cuenta autenticada que no esté en la lista entra como DEFAULT_ROLE. */
 const ALLOW_ANY_AUTHENTICATED = true;
 const DEFAULT_ROLE = "editor";
 function resolveRole(email){ return ACCESS_CONTROL[email] || (ALLOW_ANY_AUTHENTICATED ? DEFAULT_ROLE : null); }
 const GOOGLE_SCOPES = "https://www.googleapis.com/auth/drive openid email profile";
 const MS_SCOPES = ["Files.ReadWrite.All","Sites.ReadWrite.All","User.Read"];
-/* Permisos por rol:
-   master → todo (crear, editar, borrar eventos/investigaciones, config)
-   editor → crear/editar eventos, gestionar investigaciones y acciones (borrar acciones), NO borrar eventos
-   viewer → solo lectura */
 const PERMS = {
   master:{edit:true, master:true,  delEvent:true},
   editor:{edit:true, master:false, delEvent:false},
@@ -483,7 +517,7 @@ const BODY_PARTS = ["(1) Cabeza","(1.12) Ojo","(2) Cuello","(3) Tronco (incluye 
 const AGENTS = ["(1) Máquinas y/o equipos","(2) Medios de transporte","(3) Aparatos","(3.36) Herramientas, implementos o utensilios","(4) Materiales o sustancias","(4.4) Radiaciones","(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)","(6) Otros agentes no clasificados","(6.61) Animales (vivos o productos animales)","(7) Agentes no clasificados por falta de datos"];
 const MECHANISMS = ["(1) Caída de personas","(2) Caída de objetos","(3) Pisadas, choques o golpes","(4) Atrapamientos","(5) Sobreesfuerzo, esfuerzo excesivo o falso movimiento","(6) Exposición o contacto con temperatura extrema","(7) Exposición o contacto con la electricidad","(8) Exposición o contacto con sustancias nocivas, radiaciones o salpicaduras","(9) Otro"];
 /* ====== ESTADO ====== */
-let provider=null, accessToken=null;
+let provider=null, accessToken=null, tokenExpiry=0;
 let tokenClient=null, googleReady=false, gFolderId=null, gFileId=null;
 let msalInstance=null, msAccount=null, spDriveId=null;
 let session={ email:null, role:null, name:null, method:null };
@@ -491,7 +525,8 @@ let currentModule="hse";
 let pendingFiles=[];
 let accCurrentId=null, modalActions=[], modalFurat=null;
 let actionEdit={ accId:null, actId:null };
-let pendingCompanyLogo; // undefined = sin cambio; "" = quitar; string = nuevo
+let pendingCompanyLogo;
+let platformCompanies=[], platformFileId=null, viewingCompany=null;
 const Store={ mode:"local", data:{ accidents:[], quality:[], sedes:[], company:{name:"",logo:""} } };
 /* ====== FECHAS ====== */
 function todayStr(){ return new Date().toISOString().slice(0,10); }
@@ -520,7 +555,7 @@ async function afterLogin(email, name, method){
   session={ email, role, name:name||email, method };
   if(method==="google"){ Store.mode="gdrive"; Store.data=normalizeData(await driveRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await driveWrite(Store.data); } }
   else if(method==="microsoft"){ Store.mode="sharepoint"; await resolveSharePointDrive(); Store.data=normalizeData(await spRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await spWrite(Store.data); } }
-  enterApp();
+  enterApp(); saveSession();
   toast("✅ Bienvenido, "+session.name+" ("+role+")");
   return true;
 }
@@ -532,7 +567,7 @@ function initGoogle(){
     client_id: APP_CONFIG.google.clientId, scope: GOOGLE_SCOPES,
     callback: async (resp)=>{
       if(resp.error){ showLoginErr("No se pudo iniciar sesión con Google."); return; }
-      provider="google"; accessToken=resp.access_token;
+      provider="google"; accessToken=resp.access_token; tokenExpiry=Date.now()+((resp.expires_in||3600)*1000)-60000;
       try{
         const info=await fetch("https://www.googleapis.com/oauth2/v3/userinfo",{ headers:{ Authorization:`Bearer ${accessToken}` }}).then(r=>r.json());
         await afterLogin(info.email, info.name, "google");
@@ -568,9 +603,32 @@ async function loginMicrosoft(){
 async function logout(){
   if(session.method==="google" && accessToken && typeof google!=="undefined" && google.accounts){ try{ google.accounts.oauth2.revoke(accessToken,()=>{}); }catch(e){} }
   if(session.method==="microsoft" && msalInstance && msAccount){ try{ await msalInstance.logoutPopup({ account:msAccount }); }catch(e){} }
-  provider=null; accessToken=null; gFolderId=null; gFileId=null; spDriveId=null; msAccount=null;
+  clearSession();
+  provider=null; accessToken=null; gFolderId=null; gFileId=null; spDriveId=null; msAccount=null; viewingCompany=null;
   session={ email:null, role:null, name:null, method:null };
   document.getElementById("app").classList.remove("visible"); document.getElementById("loginScreen").style.display="flex";
+}
+/* ====== SESIÓN PERSISTENTE ====== */
+function saveSession(){ try{ localStorage.setItem("hseq_session", JSON.stringify({ email:session.email, name:session.name, method:session.method, token:accessToken, exp:tokenExpiry||(Date.now()+3300000) })); }catch(e){} }
+function clearSession(){ try{ localStorage.removeItem("hseq_session"); }catch(e){} }
+async function tryRestore(){
+  let s=null; try{ s=JSON.parse(localStorage.getItem("hseq_session")||"null"); }catch(e){}
+  if(!s||!s.method) return false;
+  if(s.method==="google"){
+    if(s.token && Date.now()<(s.exp||0)){
+      provider="google"; accessToken=s.token; tokenExpiry=s.exp;
+      try{ if(await afterLogin(s.email,s.name,"google")){ saveSession(); return true; } }catch(e){ console.warn("restore",e); }
+    }
+    if(APP_CONFIG.google.clientId && (googleReady||initGoogle())){ try{ tokenClient.requestAccessToken({prompt:""}); return true; }catch(e){} }
+  } else if(s.method==="microsoft"){
+    if(APP_CONFIG.microsoft.clientId && initMsal()){
+      const accts=msalInstance.getAllAccounts();
+      if(accts.length){ msAccount=accts[0];
+        try{ const t=await msalInstance.acquireTokenSilent({account:msAccount,scopes:MS_SCOPES}); accessToken=t.accessToken; provider="microsoft"; if(await afterLogin(msAccount.username,msAccount.name,"microsoft")){ saveSession(); return true; } }catch(e){}
+      }
+    }
+  }
+  return false;
 }
 /* ====== ENTRAR ====== */
 function enterApp(){
@@ -581,6 +639,7 @@ function enterApp(){
   const rt=document.getElementById("acctRole"); rt.textContent=session.role; rt.className="role-tag role-"+session.role;
   const p=PERMS[session.role];
   document.querySelectorAll(".nav button[data-perm]").forEach(btn=>{ const need=btn.dataset.perm; btn.hidden=(need==="master"&&!p.master)||(need==="edit"&&!p.edit); });
+  const platBtn=document.querySelector('.nav button[data-plat]'); if(platBtn) platBtn.hidden=!isPlatformAdmin();
   document.getElementById("aEmployeeType").innerHTML='<option value="">Seleccionar…</option>'+EMPLOYEE_TYPES.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
   document.getElementById("aCategory").innerHTML='<option value="">Seleccionar…</option>'+EVENT_CATEGORIES.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
   document.getElementById("aJobExpUnit").innerHTML='<option value="">Unidad…</option>'+EXP_UNITS.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
@@ -600,8 +659,10 @@ function enterApp(){
   document.getElementById("grpAgent").onchange=()=>updateAccCount("grpAgent","cntAgent");
   document.getElementById("grpMechanism").onchange=()=>updateAccCount("grpMechanism","cntMechanism");
   populateSedeSelects();
-  applyBranding(); renderCompanySettings();
+  applyBranding(); renderCompanySettings(); updateMyFolderId();
   refreshStorageUI(); renderUsersList(); renderSedeList();
+  updateViewBanner();
+  if(isPlatformAdmin()){ platformLoad().then(()=>renderPlatform()).catch(e=>console.warn("platform",e)); }
   switchModule("hse");
 }
 /* ====== DATA HELPERS ====== */
@@ -679,35 +740,122 @@ async function resolveSharePointDrive(){
 function spEndpoint(){ return `https://graph.microsoft.com/v1.0/drives/${spDriveId}/root:/HSEQHub/${APP_CONFIG.fileName}`; }
 async function spRead(){ const r=await fetch(spEndpoint()+":/content",{ headers:{ Authorization:`Bearer ${accessToken}` }}); if(r.status===404)return null; if(!r.ok)throw new Error("Lectura Graph "+r.status); return await r.json(); }
 async function spWrite(data){ const r=await fetch(spEndpoint()+":/content",{ method:"PUT", headers:{ Authorization:`Bearer ${accessToken}`,"Content-Type":"application/json" }, body:JSON.stringify(data,null,2) }); if(!r.ok)throw new Error("Escritura Graph "+r.status); }
-/* ====== SEED ====== */
-function blankEnv(){ return { substance:"",cas:"",qtyNum:"",qtyUnit:"",media:"",cost:"" }; }
-function blankAsset(){ return { name:"",damage:"",cost:"",stoppage:"",stoppageDur:"" }; }
-function blankLegal(){ return { requirement:"",entity:"",description:"",penalty:"" }; }
-function blankNm(){ return { severity:"",activity:"",potential:"",immediate:"",suggestion:"" }; }
-function seedData(){
-  return {
-    company:{name:"",logo:""},
-    sedes: DEFAULT_SEDES.slice(),
-    accidents:[
-      Object.assign({id:"ACC-2000",classification:"Accidente",category:CAT_INJURY,reporter:"Pedro Nel",employeeType:"Contratista",date:"2026-07-10",time:"08:20",title:"Torcedura de tobillo al bajar de plataforma",desc:"Pisó mal al descender de una plataforma sin cinta antideslizante.",sede:"Planta Funza",type:"Tratamiento médico",jobTitle:"Ayudante de obra",jobExpNum:"1",jobExpUnit:"Años",jobExp:"1 Años",timeWorkingNum:"2",timeWorkingUnit:"Horas",timeWorking:"2 Horas",activity:"Descenso de plataforma",shift:"Normal",sitio:"(5) Escaleras",sitioOtro:"",injuryTypes:["(25) Torcedura, esguince, desgarro muscular, hernia o laceración de músculo o tendón sin herida"],injuryOtro:"",bodyParts:["(5) Miembros inferiores","(5.56) Pies"],bodyDetail:"Tobillo derecho",agents:["(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)"],mechanisms:["(1) Caída de personas"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-07-25",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2000-A1",desc:"Instalar cinta antideslizante",owner:"Mantenimiento",due:"2026-07-20",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"pedro@empresa.com"}),
-      Object.assign({id:"ACC-2001",classification:"Accidente",category:CAT_INJURY,reporter:"Carlos Ruiz",employeeType:"Directo / Planta",date:"2026-07-30",time:"09:15",title:"Corte en mano con herramienta",desc:"Corte al manipular cúter sin guante anticorte.",sede:"Sede Principal",type:"Primeros auxilios",jobTitle:"Operario de montaje",jobExpNum:"3",jobExpUnit:"Años",jobExp:"3 Años",timeWorkingNum:"4",timeWorkingUnit:"Horas",timeWorking:"4 Horas",activity:"Corte de material con cúter",shift:"Normal",sitio:"(2) Áreas de producción",sitioOtro:"",injuryTypes:["(41) Herida"],injuryOtro:"",bodyParts:["(4) Miembros superiores","(4.46) Manos"],bodyDetail:"Dedo índice mano derecha",agents:["(3.36) Herramientas, implementos o utensilios"],mechanisms:["(3) Pisadas, choques o golpes"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-08-14",invCompletedDate:"2026-08-05",invRootCause:"Falta de EPP (guantes anticorte).",invActions:[{id:"ACC-2001-A1",desc:"Dotar guantes anticorte",owner:"HSE",due:"2026-08-10",status:"Cerrada",cls:"Preventiva",effDate:"2026-10-10",effResult:"Efectiva",effComments:"No se presentaron cortes en 2 meses."}],createdBy:"carlos@empresa.com"}),
-      Object.assign({id:"ACC-2002",classification:"Near miss",category:CAT_INJURY,reporter:"Ana Gómez",employeeType:"",date:"2026-08-04",time:"14:40",title:"Casi caída por piso mojado",desc:"Casi resbala en zona sin señalización.",sede:"Sede Norte",type:"",jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(), nm:{severity:"Medio",activity:"Tránsito por pasillo",potential:"Un trabajador pudo resbalar y fracturarse.",immediate:"Se secó el piso y se señalizó.",suggestion:"Instalar tapetes antideslizantes."}, files:[],invDueDate:"2026-08-19",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"ana@empresa.com"}),
-      Object.assign({id:"ACC-2003",classification:"Accidente",category:CAT_ENV,reporter:"Luis Peña",employeeType:"",date:"2026-08-06",time:"11:05",title:"Derrame de aceite hidráulico",desc:"Fuga en manguera de montacargas sobre piso de bodega.",sede:"Planta Funza",type:"", env:{substance:"Aceite hidráulico",cas:"64742-52-5",qtyNum:"20",qtyUnit:"Litros",media:"Suelo",cost:"800000"}, asset:blankAsset(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-21",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2003-A1",desc:"Cambiar manguera y programar mantenimiento",owner:"Mantenimiento",due:"2026-07-01",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"luis@empresa.com"}),
-      Object.assign({id:"ACC-2004",classification:"Accidente",category:CAT_ASSET,reporter:"Marta Ríos",employeeType:"",date:"2026-08-08",time:"10:00",title:"Montacargas impacta estantería",desc:"El montacargas golpeó una estantería en maniobra.",sede:"Sede Principal",type:"", asset:{name:"Estantería zona A",damage:"Deformación estructural",cost:"3000000",stoppage:"Sí",stoppageDur:"4 horas"}, env:blankEnv(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-23",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"marta@empresa.com"})
-    ],
-    quality:[
-      {id:"EVT-1001",title:"No conformidad en control documental",type:"No conformidad",cls:"Corrección",status:"Cerrado",area:"Calidad",owner:"Analista",date:"2026-08-01",desc:"Registro sin firma.",createdBy:"seed@empresa.com"},
-      {id:"EVT-1002",title:"Hallazgo en auditoría ISO 9001",type:"Auditoría",cls:"Preventiva",status:"En progreso",area:"Procesos",owner:"Líder SIG",date:"2026-08-05",desc:"Trazabilidad incompleta.",createdBy:"seed@empresa.com"},
-      {id:"EVT-1003",title:"Queja por retraso en entrega",type:"Queja de cliente",cls:"Correctiva",status:"Abierto",area:"Logística",owner:"Coord. logística",date:"2026-08-07",desc:"Demora en despacho.",createdBy:"seed@empresa.com"}
-    ]
-  };
+/* ====== PANEL DE PLATAFORMA (superadmin) ====== */
+async function driveReadFolder(folderId){
+  // Devuelve {fileId, data} de la carpeta indicada, o null si no hay acceso/datos.
+  try{
+    const q=encodeURIComponent(`'${folderId}' in parents and name='${APP_CONFIG.fileName}' and trashed=false`);
+    const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,{ headers:gHead() });
+    if(!r.ok) return null;
+    const d=await r.json();
+    if(!d.files||!d.files[0]) return null;
+    const fr=await fetch(`https://www.googleapis.com/drive/v3/files/${d.files[0].id}?alt=media`,{ headers:gHead() });
+    if(!fr.ok) return null;
+    return { fileId:d.files[0].id, data:await fr.json() };
+  }catch(e){ return null; }
 }
-function nextAccId(){ let m=2000; Store.data.accidents.forEach(a=>{const n=parseInt((a.id||"").replace("ACC-",""))||0;if(n>m)m=n;}); return "ACC-"+(m+1); }
-function nextEvtId(){ let m=1000; Store.data.quality.forEach(e=>{const n=parseInt((e.id||"").replace("EVT-",""))||0;if(n>m)m=n;}); return "EVT-"+(m+1); }
-function nextActionNum(arr){ let max=0; arr.forEach(a=>{const mm=(a.id||"").match(/-A(\d+)$/);if(mm){const n=parseInt(mm[1]);if(n>max)max=n;}}); return max+1; }
-/* ====== PERMISOS ====== */
-function can(perm){ return PERMS[session.role]&&PERMS[session.role][perm]; }
-function requireEdit(){ if(!can("edit")){ toast("🔒 Tu rol ("+session.role+") no puede modificar datos."); return false; } return true; }
+async function platformFindFile(){
+  const q=encodeURIComponent("name='hseqhub-platform.json' and trashed=false");
+  const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,{ headers:gHead() });
+  if(!r.ok) return null;
+  const d=await r.json();
+  return (d.files&&d.files[0])?d.files[0].id:null;
+}
+async function platformLoad(){
+  platformFileId=await platformFindFile();
+  if(!platformFileId){ platformCompanies=[]; return; }
+  const r=await fetch(`https://www.googleapis.com/drive/v3/files/${platformFileId}?alt=media`,{ headers:gHead() });
+  if(!r.ok){ platformCompanies=[]; return; }
+  const d=await r.json();
+  platformCompanies=(d&&d.companies)||[];
+}
+async function platformSave(){
+  const body=JSON.stringify({ companies:platformCompanies },null,2);
+  if(platformFileId){
+    const r=await fetch(`https://www.googleapis.com/upload/drive/v3/files/${platformFileId}?uploadType=media`,{ method:"PATCH", headers:{ ...gHead(),"Content-Type":"application/json" }, body });
+    if(!r.ok) throw new Error("Plataforma escritura "+r.status);
+  } else {
+    const metadata={ name:"hseqhub-platform.json" };
+    const boundary="platboundary"+Date.now();
+    const multipart=`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${boundary}--`;
+    const r=await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{ method:"POST", headers:{ ...gHead(),"Content-Type":`multipart/related; boundary=${boundary}` }, body:multipart });
+    if(!r.ok) throw new Error("Plataforma creación "+r.status);
+    platformFileId=(await r.json()).id;
+  }
+}
+function renderPlatform(){
+  const list=platformCompanies;
+  const withAccess=list.filter(c=>c.access===true).length;
+  const noAccess=list.filter(c=>c.access===false).length;
+  document.getElementById("pTotal").textContent=list.length;
+  document.getElementById("pAccess").textContent=withAccess;
+  document.getElementById("pNoAccess").textContent=list.length-withAccess; // desconocido cuenta como "sin acceso confirmado"
+  document.getElementById("pState").textContent=platformFileId?"Guardado":"Nuevo";
+  document.getElementById("pBody").innerHTML=list.map((c,i)=>{
+    const acc=c.access===true?'<span class="badge b-yes">Con acceso</span>':(c.access===false?'<span class="badge b-no">Sin acceso</span>':'<span class="badge b-pendiente">Sin verificar</span>');
+    const fid=c.folderId?`<span class="folder-id">${escapeHtml(c.folderId)}</span>`:'<span style="color:var(--muted)">— (sin ID aún)</span>';
+    const backup=c.folderId?`<button class="link-btn" onclick="platformBackup(${i})">📥 Backup</button>`:"";
+    const open=c.folderId?` · <button class="link-btn" onclick="platformOpen(${i})">👁 Abrir (demo)</button>`:"";
+    return `<tr><td><strong>${escapeHtml(c.name||"—")}</strong></td><td>${fid}</td><td>${acc}</td><td>${backup}${open} · <button class="del" onclick="platformRemove(${i})">Eliminar</button></td></tr>`;
+  }).join("");
+  document.getElementById("pEmpty").style.display=list.length?"none":"block";
+}
+async function platformAddCompany(){
+  if(!isPlatformAdmin()){ toast("🔒 Solo el superadmin."); return; }
+  const name=(document.getElementById("pNewName").value||"").trim();
+  const folderId=(document.getElementById("pNewFolder").value||"").trim();
+  if(!name){ toast("⚠ Escribe el nombre de la empresa"); return; }
+  platformCompanies.push({ name, folderId, access:null });
+  await platformSave();
+  document.getElementById("pNewName").value=""; document.getElementById("pNewFolder").value="";
+  if(folderId){ const res=await driveReadFolder(folderId); platformCompanies[platformCompanies.length-1].access=!!res; await platformSave(); }
+  renderPlatform(); toast("🏢 Empresa registrada");
+}
+async function platformRemove(i){
+  if(!isPlatformAdmin())return;
+  const c=platformCompanies[i]; if(!c)return;
+  if(!confirm("¿Quitar '"+c.name+"' del registro de plataforma? (No borra los datos de la empresa)")) return;
+  platformCompanies.splice(i,1); await platformSave(); renderPlatform(); toast("🗑 Empresa quitada del registro");
+}
+async function platformRefresh(){
+  if(!isPlatformAdmin())return;
+  toast("🔄 Verificando accesos…");
+  for(const c of platformCompanies){ if(c.folderId){ const res=await driveReadFolder(c.folderId); c.access=!!res; } else { c.access=null; } }
+  await platformSave(); renderPlatform(); toast("✅ Accesos verificados");
+}
+async function platformBackup(i){
+  const c=platformCompanies[i]; if(!c||!c.folderId)return;
+  const res=await driveReadFolder(c.folderId);
+  if(!res){ c.access=false; await platformSave(); renderPlatform(); toast("🔒 No tienes acceso a la carpeta de '"+c.name+"'. Pídeles que te la compartan (Editor)."); return; }
+  c.access=true; await platformSave(); renderPlatform();
+  downloadBlob(new Blob([JSON.stringify(res.data,null,2)],{type:"application/json"}),"backup-"+(c.name||"empresa").replace(/[^a-z0-9]+/gi,"_")+".json");
+  toast("📥 Backup de '"+c.name+"' descargado");
+}
+async function platformOpen(i){
+  const c=platformCompanies[i]; if(!c||!c.folderId)return;
+  const res=await driveReadFolder(c.folderId);
+  if(!res){ c.access=false; await platformSave(); renderPlatform(); toast("🔒 No tienes acceso a la carpeta de '"+c.name+"'."); return; }
+  c.access=true; await platformSave();
+  Store.data=normalizeData(res.data); gFolderId=c.folderId; gFileId=res.fileId; viewingCompany=c.name; Store.mode="gdrive";
+  populateSedeSelects(); applyBranding(); renderCompanySettings(); refreshStorageUI(); updateViewBanner();
+  switchModule("hse");
+  toast("👁 Viendo empresa: "+c.name);
+}
+async function exitCompanyView(){
+  if(!viewingCompany)return;
+  viewingCompany=null; gFolderId=null; gFileId=null;
+  try{ Store.data=normalizeData(await driveRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await driveWrite(Store.data); } }catch(e){ console.error(e); }
+  populateSedeSelects(); applyBranding(); renderCompanySettings(); refreshStorageUI(); updateViewBanner();
+  switchModule("hse");
+  toast("↩ Volviste a tu cuenta");
+}
+function updateViewBanner(){
+  const b=document.getElementById("viewBanner"), t=document.getElementById("viewBannerText");
+  if(viewingCompany){ t.innerHTML="👁 <strong>Vista de plataforma:</strong> estás viendo los datos de <strong>"+escapeHtml(viewingCompany)+"</strong>. Los cambios que guardes afectan a esa empresa."; b.classList.add("show"); }
+  else b.classList.remove("show");
+}
+function updateMyFolderId(){ const el=document.getElementById("myFolderId"); if(el) el.textContent=(gFolderId||APP_CONFIG.google.sharedFolderId||"— (se crea al guardar el primer dato)"); }
+function copyMyFolderId(){ const id=gFolderId||APP_CONFIG.google.sharedFolderId||""; if(!id){ toast("Aún no hay ID (crea un primer dato)"); return; } if(navigator.clipboard){ navigator.clipboard.writeText(id).then(()=>toast("📋 ID copiado")); } else { toast(id); } }
 /* ====== MARCA / BRANDING ====== */
 function applyBranding(){
   const c=(Store.data&&Store.data.company)||{name:"",logo:""};
@@ -717,7 +865,7 @@ function applyBranding(){
   else { bl.textContent="HSEQ"; ll.textContent="HSEQ"; }
   if(c.name){ bt.textContent=c.name; bs.textContent="HSEQ Hub"; lt.textContent=c.name; lp.textContent="HSEQ Hub"; }
   else { bt.textContent="HSEQ Hub"; bs.textContent="Health · Safety · Env · Quality"; lt.textContent="HSEQ Hub"; lp.textContent="Health · Safety · Environment · Quality"; }
-  try{ localStorage.setItem("hseq_brand", JSON.stringify(c)); }catch(e){}
+  try{ if(!viewingCompany) localStorage.setItem("hseq_brand", JSON.stringify(c)); }catch(e){}
 }
 function applyLoginBrandingFromCache(){
   try{ const c=JSON.parse(localStorage.getItem("hseq_brand")||"null"); if(!c)return;
@@ -785,7 +933,7 @@ function switchModule(mod){
   if(mod==="hse"){ badge.className="module-badge hse"; badge.textContent="🦺 Módulo HSE"; goToPage("hse-dashboard"); }
   else { badge.className="module-badge quality"; badge.textContent="✅ Módulo Calidad"; goToPage("q-dashboard"); }
 }
-const titles={"hse-dashboard":["Dashboard HSE","Resumen de eventos HSE"],"hse-report":["Reportar evento","Registro de evento HSE"],"hse-list":["Eventos HSE","Listado de eventos HSE"],"hse-investigations":["Investigaciones","Seguimiento de investigaciones y overdue"],"hse-actions":["Acciones","Seguimiento de acciones correctivas"],"q-dashboard":["Dashboard Calidad","Resumen de eventos de calidad"],"q-register":["Registrar evento","Alta de evento de calidad"],"q-list":["Eventos","Listado de eventos de calidad"],"settings":["Configuración","Marca, sedes, copias de seguridad y usuarios"]};
+const titles={"hse-dashboard":["Dashboard HSE","Resumen de eventos HSE"],"hse-report":["Reportar evento","Registro de evento HSE"],"hse-list":["Eventos HSE","Listado de eventos HSE"],"hse-investigations":["Investigaciones","Seguimiento de investigaciones y overdue"],"hse-actions":["Acciones","Seguimiento de acciones correctivas"],"q-dashboard":["Dashboard Calidad","Resumen de eventos de calidad"],"q-register":["Registrar evento","Alta de evento de calidad"],"q-list":["Eventos","Listado de eventos de calidad"],"settings":["Configuración","Marca, sedes, copias de seguridad y usuarios"],"platform":["Plataforma","Registro de empresas, demos y backups (superadmin)"]};
 function goToPage(p){
   document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===p));
   document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===p));
@@ -796,7 +944,8 @@ function goToPage(p){
   if(p==="hse-actions")renderActions();
   if(p==="q-dashboard")renderQualityCharts();
   if(p==="q-list")renderQuality();
-  if(p==="settings")renderCompanySettings();
+  if(p==="settings"){ renderCompanySettings(); updateMyFolderId(); }
+  if(p==="platform")renderPlatform();
 }
 document.querySelectorAll(".nav button[data-page]").forEach(b=>b.onclick=()=>goToPage(b.dataset.page));
 function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3000)}
@@ -909,6 +1058,34 @@ document.getElementById("accidentForm").onsubmit=async e=>{
   toast("✅ Reporte "+acc.id+" guardado. Investigación due: "+fmtDate(acc.invDueDate));
   goToPage("hse-list"); updateOverdueBadge(); updateActionsBadge();
 };
+function blankEnv(){ return { substance:"",cas:"",qtyNum:"",qtyUnit:"",media:"",cost:"" }; }
+function blankAsset(){ return { name:"",damage:"",cost:"",stoppage:"",stoppageDur:"" }; }
+function blankLegal(){ return { requirement:"",entity:"",description:"",penalty:"" }; }
+function blankNm(){ return { severity:"",activity:"",potential:"",immediate:"",suggestion:"" }; }
+function seedData(){
+  return {
+    company:{name:"",logo:""},
+    sedes: DEFAULT_SEDES.slice(),
+    accidents:[
+      Object.assign({id:"ACC-2000",classification:"Accidente",category:CAT_INJURY,reporter:"Pedro Nel",employeeType:"Contratista",date:"2026-07-10",time:"08:20",title:"Torcedura de tobillo al bajar de plataforma",desc:"Pisó mal al descender de una plataforma sin cinta antideslizante.",sede:"Planta Funza",type:"Tratamiento médico",jobTitle:"Ayudante de obra",jobExpNum:"1",jobExpUnit:"Años",jobExp:"1 Años",timeWorkingNum:"2",timeWorkingUnit:"Horas",timeWorking:"2 Horas",activity:"Descenso de plataforma",shift:"Normal",sitio:"(5) Escaleras",sitioOtro:"",injuryTypes:["(25) Torcedura, esguince, desgarro muscular, hernia o laceración de músculo o tendón sin herida"],injuryOtro:"",bodyParts:["(5) Miembros inferiores","(5.56) Pies"],bodyDetail:"Tobillo derecho",agents:["(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)"],mechanisms:["(1) Caída de personas"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-07-25",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2000-A1",desc:"Instalar cinta antideslizante",owner:"Mantenimiento",due:"2026-07-20",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"pedro@empresa.com"}),
+      Object.assign({id:"ACC-2001",classification:"Accidente",category:CAT_INJURY,reporter:"Carlos Ruiz",employeeType:"Directo / Planta",date:"2026-07-30",time:"09:15",title:"Corte en mano con herramienta",desc:"Corte al manipular cúter sin guante anticorte.",sede:"Sede Principal",type:"Primeros auxilios",jobTitle:"Operario de montaje",jobExpNum:"3",jobExpUnit:"Años",jobExp:"3 Años",timeWorkingNum:"4",timeWorkingUnit:"Horas",timeWorking:"4 Horas",activity:"Corte de material con cúter",shift:"Normal",sitio:"(2) Áreas de producción",sitioOtro:"",injuryTypes:["(41) Herida"],injuryOtro:"",bodyParts:["(4) Miembros superiores","(4.46) Manos"],bodyDetail:"Dedo índice mano derecha",agents:["(3.36) Herramientas, implementos o utensilios"],mechanisms:["(3) Pisadas, choques o golpes"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-08-14",invCompletedDate:"2026-08-05",invRootCause:"Falta de EPP (guantes anticorte).",invActions:[{id:"ACC-2001-A1",desc:"Dotar guantes anticorte",owner:"HSE",due:"2026-08-10",status:"Cerrada",cls:"Preventiva",effDate:"2026-10-10",effResult:"Efectiva",effComments:"No se presentaron cortes en 2 meses."}],createdBy:"carlos@empresa.com"}),
+      Object.assign({id:"ACC-2002",classification:"Near miss",category:CAT_INJURY,reporter:"Ana Gómez",employeeType:"",date:"2026-08-04",time:"14:40",title:"Casi caída por piso mojado",desc:"Casi resbala en zona sin señalización.",sede:"Sede Norte",type:"",jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(), nm:{severity:"Medio",activity:"Tránsito por pasillo",potential:"Un trabajador pudo resbalar y fracturarse.",immediate:"Se secó el piso y se señalizó.",suggestion:"Instalar tapetes antideslizantes."}, files:[],invDueDate:"2026-08-19",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"ana@empresa.com"}),
+      Object.assign({id:"ACC-2003",classification:"Accidente",category:CAT_ENV,reporter:"Luis Peña",employeeType:"",date:"2026-08-06",time:"11:05",title:"Derrame de aceite hidráulico",desc:"Fuga en manguera de montacargas sobre piso de bodega.",sede:"Planta Funza",type:"", env:{substance:"Aceite hidráulico",cas:"64742-52-5",qtyNum:"20",qtyUnit:"Litros",media:"Suelo",cost:"800000"}, asset:blankAsset(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-21",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2003-A1",desc:"Cambiar manguera y programar mantenimiento",owner:"Mantenimiento",due:"2026-07-01",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"luis@empresa.com"}),
+      Object.assign({id:"ACC-2004",classification:"Accidente",category:CAT_ASSET,reporter:"Marta Ríos",employeeType:"",date:"2026-08-08",time:"10:00",title:"Montacargas impacta estantería",desc:"El montacargas golpeó una estantería en maniobra.",sede:"Sede Principal",type:"", asset:{name:"Estantería zona A",damage:"Deformación estructural",cost:"3000000",stoppage:"Sí",stoppageDur:"4 horas"}, env:blankEnv(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-23",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"marta@empresa.com"})
+    ],
+    quality:[
+      {id:"EVT-1001",title:"No conformidad en control documental",type:"No conformidad",cls:"Corrección",status:"Cerrado",area:"Calidad",owner:"Analista",date:"2026-08-01",desc:"Registro sin firma.",createdBy:"seed@empresa.com"},
+      {id:"EVT-1002",title:"Hallazgo en auditoría ISO 9001",type:"Auditoría",cls:"Preventiva",status:"En progreso",area:"Procesos",owner:"Líder SIG",date:"2026-08-05",desc:"Trazabilidad incompleta.",createdBy:"seed@empresa.com"},
+      {id:"EVT-1003",title:"Queja por retraso en entrega",type:"Queja de cliente",cls:"Correctiva",status:"Abierto",area:"Logística",owner:"Coord. logística",date:"2026-08-07",desc:"Demora en despacho.",createdBy:"seed@empresa.com"}
+    ]
+  };
+}
+function nextAccId(){ let m=2000; Store.data.accidents.forEach(a=>{const n=parseInt((a.id||"").replace("ACC-",""))||0;if(n>m)m=n;}); return "ACC-"+(m+1); }
+function nextEvtId(){ let m=1000; Store.data.quality.forEach(e=>{const n=parseInt((e.id||"").replace("EVT-",""))||0;if(n>m)m=n;}); return "EVT-"+(m+1); }
+function nextActionNum(arr){ let max=0; arr.forEach(a=>{const mm=(a.id||"").match(/-A(\d+)$/);if(mm){const n=parseInt(mm[1]);if(n>max)max=n;}}); return max+1; }
+/* ====== PERMISOS ====== */
+function can(perm){ return PERMS[session.role]&&PERMS[session.role][perm]; }
+function requireEdit(){ if(!can("edit")){ toast("🔒 Tu rol ("+session.role+") no puede modificar datos."); return false; } return true; }
 /* ====== HSE DASHBOARD ====== */
 let hCharts={};
 function countByAcc(field){const m={};Store.data.accidents.forEach(a=>{const k=a[field]||"—";m[k]=(m[k]||0)+1});return m}
@@ -960,10 +1137,19 @@ function renderActions(){
   const q=val("actSearch").toLowerCase(), fs=val("actFilterStatus"), fcl=val("actFilterCls");
   const list=allActions().filter(a=>{ const st=actionStatus(a); const match=((a.desc||"")+(a.owner||"")+(a.accId||"")).toLowerCase().includes(q); return match&&(!fs||st===fs)&&(!fcl||a.cls===fcl); });
   const showEdit=can("edit");
-  document.getElementById("actBody").innerHTML=list.map(a=>{ const st=actionStatus(a); const sb=st==="Cerrada"?"b-completada":st==="Overdue"?"b-overdue":"b-abierta"; const eff=a.effResult||"Pendiente"; const effHtml=`<span class="badge ${effBadgeClass(eff)}">${eff}</span>${a.effDate?`<br><small style="color:var(--muted)">rev: ${fmtDate(a.effDate)}</small>`:""}`; const edit=showEdit?`<button class="link-btn" onclick="openActionModal('${a.accId}','${a.id}')">Editar</button>`:`<button class="link-btn" onclick="openAccidentModal('${a.accId}')">Ver</button>`; return `<tr><td><strong>${a.id}</strong></td><td><button class="link-btn" onclick="openAccidentModal('${a.accId}')">${a.accId}</button></td><td>${escapeHtml(a.desc)}</td><td><span class="pill ${clsBadgeClass(a.cls)}">${a.cls||"—"}</span></td><td>${escapeHtml(a.owner||"—")}</td><td>${fmtDate(a.due)}</td><td><span class="badge ${sb}">${st}</span></td><td>${effHtml}</td><td>${edit}</td></tr>`; }).join("");
+  document.getElementById("actBody").innerHTML=list.map(a=>{ const st=actionStatus(a); const sb=st==="Cerrada"?"b-completada":st==="Overdue"?"b-overdue":"b-abierta"; const eff=a.effResult||"Pendiente"; const effHtml=`<span class="badge ${effBadgeClass(eff)}">${eff}</span>${a.effDate?`<br><small style="color:var(--muted)">rev: ${fmtDate(a.effDate)}</small>`:""}`; const edit=showEdit?`<button class="link-btn" onclick="openActionModal('${a.accId}','${a.id}')">Editar</button> · <button class="del" onclick="delAction('${a.accId}','${a.id}')">Eliminar</button>`:`<button class="link-btn" onclick="openAccidentModal('${a.accId}')">Ver</button>`; return `<tr><td><strong>${a.id}</strong></td><td><button class="link-btn" onclick="openAccidentModal('${a.accId}')">${a.accId}</button></td><td>${escapeHtml(a.desc)}</td><td><span class="pill ${clsBadgeClass(a.cls)}">${a.cls||"—"}</span></td><td>${escapeHtml(a.owner||"—")}</td><td>${fmtDate(a.due)}</td><td><span class="badge ${sb}">${st}</span></td><td>${effHtml}</td><td>${edit}</td></tr>`; }).join("");
   document.getElementById("actEmpty").style.display=list.length?"none":"block"; updateActionsBadge();
 }
 function updateActionsBadge(){ const open=allActions().filter(a=>actionStatus(a)!=="Cerrada").length; const b=document.getElementById("openActionsCount"); if(open>0){b.textContent=open;b.style.display="inline-block";}else b.style.display="none"; }
+async function delAction(accId,actId){
+  if(!requireEdit())return;
+  if(!confirm("¿Eliminar esta acción?"))return;
+  const acc=Store.data.accidents.find(a=>a.id===accId); if(!acc)return;
+  acc.invActions=(acc.invActions||[]).filter(x=>x.id!==actId);
+  await persist(); renderActions(); renderHseCharts(); updateActionsBadge();
+  if(accCurrentId===acc.id){ modalActions=JSON.parse(JSON.stringify(acc.invActions||[])); renderAccModalBody(acc); }
+  toast("🗑 Acción eliminada");
+}
 ["actSearch","actFilterStatus","actFilterCls"].forEach(id=>document.getElementById(id).addEventListener("input",renderActions));
 /* ====== MODAL EDITAR ACCIÓN ====== */
 function openActionModal(accId,actId){
@@ -1248,9 +1434,10 @@ function downloadBlob(blob,name){const a=document.createElement("a");a.href=URL.
 /* ====== UI ====== */
 function refreshStorageUI(){
   const pill=document.getElementById("storagePill"), label=document.getElementById("storageLabel"), setDesc=document.getElementById("setStorageDesc"), setBadge=document.getElementById("setStorageBadge");
-  if(Store.mode==="gdrive"){ pill.className="storage-pill cloud"; label.textContent="Google Drive"; const loc=APP_CONFIG.google.sharedFolderId?("carpeta compartida "+APP_CONFIG.google.sharedFolderId):("carpeta HSEQHub"+(gFolderId?(" — ID: "+gFolderId):"")+(session.role==="master"?" (compártela con tu equipo y pega el ID en el código)":"")); setDesc.textContent="Google Drive del MAIN · "+loc; setBadge.innerHTML='<span class="pill" style="background:#e6f6ec;color:var(--green)">☁ Google Drive</span>'; }
+  if(Store.mode==="gdrive"){ pill.className="storage-pill cloud"; label.textContent="Google Drive"; const loc=viewingCompany?("empresa: "+viewingCompany):(APP_CONFIG.google.sharedFolderId?("carpeta compartida "+APP_CONFIG.google.sharedFolderId):("carpeta HSEQHub"+(gFolderId?(" — ID: "+gFolderId):""))); setDesc.textContent="Google Drive · "+loc; setBadge.innerHTML='<span class="pill" style="background:#e6f6ec;color:var(--green)">☁ Google Drive</span>'; }
   else if(Store.mode==="sharepoint"){ pill.className="storage-pill cloud"; label.textContent="SharePoint"; setDesc.textContent="SharePoint compartido · "+APP_CONFIG.microsoft.sharePointHost+APP_CONFIG.microsoft.sharePointSite; setBadge.innerHTML='<span class="pill" style="background:#e6f6ec;color:var(--green)">☁ SharePoint</span>'; }
   else { pill.className="storage-pill local"; label.textContent="Modo local"; setDesc.textContent="Modo local — solo este navegador"; setBadge.innerHTML='<span class="pill" style="background:#fff5e0;color:#b57d00">💾 Local</span>'; }
+  updateMyFolderId();
 }
 function renderUsersList(){
   let html=Object.entries(ACCESS_CONTROL).map(([email,role])=>`<div class="u"><span>${email}</span><span class="role-tag role-${role}">${role}</span></div>`).join("");
@@ -1260,15 +1447,19 @@ function renderUsersList(){
 /* ====== BOOT ====== */
 applyLoginBrandingFromCache();
 (function boot(){
-  let tries=0;
-  const t=setInterval(()=>{
+  let tries=0, restored=false;
+  const t=setInterval(async ()=>{
     tries++;
     if(typeof google!=="undefined" && google.accounts && google.accounts.oauth2 && !googleReady) initGoogle();
     if(typeof msal!=="undefined" && !msalInstance) initMsal();
-    if((googleReady || !APP_CONFIG.google.clientId) && (msalInstance || !APP_CONFIG.microsoft.clientId)) clearInterval(t);
+    const googleOk = googleReady || !APP_CONFIG.google.clientId;
+    const msOk = msalInstance || !APP_CONFIG.microsoft.clientId;
+    if(!restored && (googleOk || msOk)){ restored=true; try{ await tryRestore(); }catch(e){} }
+    if(googleOk && msOk) clearInterval(t);
     if(tries>40) clearInterval(t);
   },250);
 })();
+
 </script>
 </body>
 </html>
