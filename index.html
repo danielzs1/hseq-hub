@@ -14,24 +14,19 @@
   #loginScreen{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,var(--teal-dark),var(--teal-darker));display:flex;align-items:center;justify-content:center;padding:20px}
   .login-card{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.3);width:100%;max-width:420px;overflow:hidden}
   .login-head{background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff;padding:34px 34px 28px;text-align:center}
-  .login-head .logo{width:60px;height:60px;background:#fff;border-radius:15px;display:flex;align-items:center;justify-content:center;color:var(--teal-dark);font-weight:800;font-size:20px;margin:0 auto 14px}
+  .login-head .logo{width:60px;height:60px;background:#fff;border-radius:15px;display:flex;align-items:center;justify-content:center;color:var(--teal-dark);font-weight:800;font-size:20px;margin:0 auto 14px;overflow:hidden}
+  .login-head .logo img{width:100%;height:100%;object-fit:contain}
   .login-head h1{font-size:22px;font-weight:800}.login-head p{opacity:.85;font-size:13px;margin-top:5px}
   .login-body{padding:30px 34px 34px}.login-body h2{font-size:16px;margin-bottom:6px}.login-body .sub{color:var(--muted);font-size:13px;margin-bottom:22px}
   .ms-login-btn{width:100%;background:#2f2f2f;color:#fff;border:none;padding:13px;border-radius:9px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;font-family:inherit;transition:.15s}
   .ms-login-btn:hover{background:#000}.ms-login-btn img{width:18px;height:18px;background:#fff;padding:1px;border-radius:2px}
-  .divider{display:flex;align-items:center;gap:12px;margin:22px 0;color:var(--muted);font-size:12px}.divider::before,.divider::after{content:"";flex:1;height:1px;background:var(--border)}
-  .demo-toggle{background:none;border:none;color:var(--teal-dark);font-size:12.5px;cursor:pointer;text-decoration:underline;font-family:inherit;display:block;margin:0 auto}
-  #demoForm{display:none;margin-top:18px}#demoForm.show{display:block;animation:fade .2s}
-  #demoForm label{font-size:12.5px;font-weight:600;display:block;margin-bottom:5px}
-  #demoForm input{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;margin-bottom:12px}
-  #demoForm input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(0,161,156,.12)}
-  .demo-warn{background:#fff6e6;border:1px solid #f0d79a;color:#8a6400;padding:9px 12px;border-radius:8px;font-size:11.5px;margin-bottom:14px;line-height:1.4}
   .login-err{background:#fdeeed;color:var(--red);padding:9px 12px;border-radius:8px;font-size:12.5px;margin-bottom:12px;display:none}
   .login-foot{text-align:center;font-size:11px;color:var(--muted);margin-top:20px}
   #app{display:none;min-height:100vh}#app.visible{display:flex}
   .sidebar{width:255px;background:linear-gradient(180deg,var(--teal-dark),var(--teal-darker));color:#fff;display:flex;flex-direction:column;position:fixed;height:100vh;top:0;left:0}
   .brand{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:10px}
-  .brand .logo{width:36px;height:36px;background:#fff;border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--teal-dark);font-weight:800;font-size:14px}
+  .brand .logo{width:36px;height:36px;background:#fff;border-radius:9px;display:flex;align-items:center;justify-content:center;color:var(--teal-dark);font-weight:800;font-size:14px;overflow:hidden;flex-shrink:0}
+  .brand .logo img{width:100%;height:100%;object-fit:contain}
   .brand h1{font-size:15px;font-weight:700;line-height:1.2}.brand span{font-size:11px;opacity:.75}
   .module-switch{display:flex;gap:6px;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.12)}
   .module-switch button{flex:1;background:rgba(255,255,255,.08);border:none;color:#dbeceb;padding:9px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:.15s;display:flex;align-items:center;justify-content:center;gap:5px}
@@ -134,34 +129,26 @@
   .modal-body label{display:block;margin-bottom:5px}.modal-body input,.modal-body select,.modal-body textarea{width:100%;margin-bottom:14px}
   .modal-foot{padding:14px 24px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end}
   .kv td:first-child{width:150px;color:var(--muted);font-weight:600}
+  .logo-preview{width:60px;height:60px;border-radius:10px;border:1px solid var(--border);background:#fbfcfc;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:11px;color:var(--muted)}
+  .logo-preview img{width:100%;height:100%;object-fit:contain}
 </style>
 </head>
 <body>
-
 <div id="loginScreen">
   <div class="login-card">
-    <div class="login-head"><div class="logo">HSEQ</div><h1>HSEQ Hub</h1><p>Health · Safety · Environment · Quality</p></div>
+    <div class="login-head"><div class="logo" id="loginLogo">HSEQ</div><h1 id="loginTitle">HSEQ Hub</h1><p id="loginSubtitle">Health · Safety · Environment · Quality</p></div>
     <div class="login-body">
       <h2>Bienvenido</h2><p class="sub">Inicia sesión para acceder a los módulos de tu empresa.</p>
       <div class="login-err" id="loginErr"></div>
       <button class="ms-login-btn" style="background:#fff;color:#3c4043;border:1px solid #dadce0;margin-bottom:10px" onclick="loginGoogle()"><img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" alt="G"> Iniciar sesión con Google</button>
       <button class="ms-login-btn" onclick="loginMicrosoft()"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="MS"> Iniciar sesión con Microsoft</button>
-      <div class="divider">o</div>
-      <button class="demo-toggle" onclick="document.getElementById('demoForm').classList.toggle('show')">Usar acceso demo (solo pruebas)</button>
-      <div id="demoForm">
-        <div class="demo-warn">⚠️ <strong>Solo para pruebas.</strong> Usa contraseña en el código y guarda datos solo en este navegador.</div>
-        <label>Correo</label><input type="email" id="demoEmail" placeholder="danizabas@gmail.com">
-        <label>Contraseña</label><input type="password" id="demoPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginDemo()">
-        <button class="btn" style="width:100%" onclick="loginDemo()">Entrar (demo)</button>
-      </div>
-      <div class="login-foot">Micro-SaaS HSEQ · Los datos viven en el Microsoft 365 de tu empresa</div>
+      <div class="login-foot">Micro-SaaS HSEQ · Tus datos viven en el Drive / Microsoft 365 de tu empresa</div>
     </div>
   </div>
 </div>
-
 <div id="app">
 <aside class="sidebar">
-  <div class="brand"><div class="logo">HSEQ</div><div><h1>HSEQ Hub</h1><span>Health · Safety · Env · Quality</span></div></div>
+  <div class="brand"><div class="logo" id="brandLogo">HSEQ</div><div><h1 id="brandTitle">HSEQ Hub</h1><span id="brandSubtitle">Health · Safety · Env · Quality</span></div></div>
   <div class="module-switch"><button id="modHseBtn" class="active" onclick="switchModule('hse')">🦺 HSE</button><button id="modQBtn" onclick="switchModule('quality')">✅ Calidad</button></div>
   <nav class="nav">
     <div class="nav-group active" data-module="hse">
@@ -184,10 +171,8 @@
     <button class="signout" onclick="logout()">Cerrar sesión</button>
   </div>
 </aside>
-
 <main class="main">
   <div class="topbar"><div><h2 id="pageTitle">Dashboard HSE</h2><p id="pageSub">Resumen de eventos HSE</p></div><div class="module-badge hse" id="moduleBadge">🦺 Módulo HSE</div></div>
-
   <section id="hse-dashboard" class="page active" data-module="hse">
     <div class="kpis">
       <div class="kpi red"><div class="label">Total eventos</div><div class="value" id="hTotal">0</div><div class="sub">accidentes + near miss</div></div>
@@ -198,7 +183,6 @@
     <div class="grid2"><div class="card"><h3>Por categoría</h3><div class="chart-wrap"><canvas id="hChartCat"></canvas></div></div><div class="card"><h3>Por sede</h3><div class="chart-wrap"><canvas id="hChartSede"></canvas></div></div></div>
     <div class="grid2"><div class="card"><h3>Por clasificación</h3><div class="chart-wrap"><canvas id="hChartClass"></canvas></div></div><div class="card"><h3>Estado de investigaciones</h3><div class="chart-wrap"><canvas id="hChartInv"></canvas></div></div></div>
   </section>
-
   <section id="hse-report" class="page" data-module="hse">
     <div class="stepper">
       <div class="step active" id="stepTab1"><div class="num">1</div><div><div class="st">Datos del evento</div><div class="sd">Qué, cuándo y dónde</div></div></div>
@@ -230,19 +214,14 @@
         </div></div>
         <div class="form-actions"><span></span><button type="button" class="btn" onclick="goStep2()">Continuar a detalles →</button></div>
       </div>
-
       <div class="form-step" id="accStep2">
         <div class="note warn">🔎 Elige la <strong>categoría</strong> del evento. Según la categoría se piden datos específicos. La fecha de investigación (15 días) se calcula automáticamente.</div>
         <div class="form-row"><div class="form-group full"><label>Categoría del evento <span class="req">*</span></label>
           <select id="aCategory" required onchange="updateStep2Visibility()"><option value="">Seleccionar…</option></select>
         </div></div>
-
-        <!-- INJURY: tipo de accidente -->
         <div class="form-row" id="typeWrap" style="display:none"><div class="form-group full"><label>Tipo de accidente <span class="req">*</span></label>
           <select id="aType"><option value="">Seleccionar…</option><option>Sin tratamiento requerido</option><option>Primeros auxilios</option><option>Tratamiento médico</option><option>Trabajo restringido</option><option>Lesión con tiempo perdido</option><option>Fatalidad</option></select>
         </div></div>
-
-        <!-- NEAR MISS -->
         <div class="section-block nm" id="nearMissFields" style="display:none">
           <div class="sh">⚠️ Datos del casi accidente (near miss)</div>
           <div class="note" style="background:#fff;border-color:#e3e9e9;color:var(--muted);font-size:12px">💡 No hubo consecuencia real. Enfócate en el <strong>potencial</strong>: qué pudo pasar y cómo evitar que se repita. Igual se investiga en 15 días (Res. 1401 de 2007).</div>
@@ -254,8 +233,6 @@
           <div class="form-row"><div class="form-group full"><label>Acción inmediata tomada <span class="req">*</span></label><textarea id="nmImmediate" placeholder="Ej: Se señalizó la zona y se secó el piso."></textarea></div></div>
           <div class="form-row"><div class="form-group full"><label>Acción / sugerencia para evitar que se repita <span class="req">*</span></label><textarea id="nmSuggestion" placeholder="Ej: Instalar tapetes antideslizantes."></textarea></div></div>
         </div>
-
-        <!-- INJURY: FURAT -->
         <div class="section-block" id="accidentOnlyFields" style="display:none">
           <div class="sh">🧑‍🏭 Datos del accidentado y clasificación FURAT</div>
           <div class="form-row">
@@ -282,8 +259,6 @@
           <details class="acc"><summary>Mecanismo o forma <span class="cnt zero" id="cntMechanism">0</span></summary><div class="chk-group" id="grpMechanism"></div></details>
           <div class="form-row"><div class="form-group full"><label>Mecanismo — especifique (otro)</label><input type="text" id="aMechOtro" placeholder="Si marcó 'Otro'"></div></div>
         </div>
-
-        <!-- ENVIRONMENT -->
         <div class="section-block env" id="envFields" style="display:none">
           <div class="sh">🌱 Datos del evento ambiental</div>
           <div class="form-row">
@@ -296,8 +271,6 @@
           </div>
           <div class="form-row"><div class="form-group full"><label>Costo estimado de remediación (COP)</label><input type="number" id="envCost" min="0" step="any" placeholder="Ej: 500000"></div></div>
         </div>
-
-        <!-- ASSET -->
         <div class="section-block asset" id="assetFields" style="display:none">
           <div class="sh">🏗️ Daño a activos / financiero</div>
           <div class="form-row">
@@ -310,8 +283,6 @@
           </div>
           <div class="form-row"><div class="form-group full"><label>Duración del paro (si aplica)</label><input type="text" id="assetStoppageDur" placeholder="Ej: 4 horas"></div></div>
         </div>
-
-        <!-- LEGAL -->
         <div class="section-block legal" id="legalFields" style="display:none">
           <div class="sh">⚖️ Incumplimiento legal / regulatorio</div>
           <div class="form-row">
@@ -321,7 +292,6 @@
           <div class="form-row"><div class="form-group full"><label>Descripción del incumplimiento <span class="req">*</span></label><textarea id="legalDescription" placeholder="Ej: Se superaron las 2 horas extra diarias permitidas."></textarea></div></div>
           <div class="form-row"><div class="form-group full"><label>Sanción / multa potencial estimada</label><input type="text" id="legalPenalty" placeholder="Ej: Hasta 500 SMMLV"></div></div>
         </div>
-
         <div class="inv-panel">
           <h4>🔍 Investigación del evento</h4>
           <p style="font-size:13px;color:#8a5a3a">La investigación se carga a partir del <strong>día siguiente</strong> y debe completarse dentro de los <strong>15 días</strong> (Resolución 1401 de 2007).</p>
@@ -337,7 +307,6 @@
       </div>
     </form>
   </section>
-
   <section id="hse-list" class="page" data-module="hse">
     <div class="note">🔗 Haz clic en el <strong>ID</strong> de un evento para abrirlo y ver el detalle, investigación y acciones.</div>
     <div class="toolbar">
@@ -351,14 +320,12 @@
     <table><thead><tr><th>ID</th><th>Clasificación</th><th>Categoría</th><th>Título</th><th>Sede</th><th>Fecha</th><th></th></tr></thead><tbody id="hBody"></tbody></table>
     <div id="hEmpty" class="empty" style="display:none">No hay eventos. Crea uno en "Reportar evento".</div>
   </section>
-
   <section id="hse-investigations" class="page" data-module="hse">
     <div class="note">🔍 Seguimiento de investigaciones. <strong>Overdue</strong> = pasó la fecha límite (15 días) sin completarse.</div>
     <div class="toolbar"><input type="text" class="search" id="iSearch" placeholder="🔍 Buscar…"><select id="iFilterStatus"><option value="">Todos los estados</option><option>Abierta</option><option>Completada</option><option>Overdue</option></select></div>
     <table><thead><tr><th>ID</th><th>Título</th><th>Evento</th><th>Due date</th><th>Completado</th><th>Estado</th><th></th></tr></thead><tbody id="iBody"></tbody></table>
     <div id="iEmpty" class="empty" style="display:none">No hay investigaciones registradas.</div>
   </section>
-
   <section id="hse-actions" class="page" data-module="hse">
     <div class="note">✅ Acciones correctivas. Haz clic en <strong>Editar</strong> para gestionar clasificación, cierre y revisión de efectividad.</div>
     <div class="toolbar">
@@ -369,7 +336,6 @@
     <table><thead><tr><th>Acción</th><th>Evento</th><th>Descripción</th><th>Clasif.</th><th>Responsable</th><th>Due</th><th>Estado</th><th>Efectividad</th><th></th></tr></thead><tbody id="actBody"></tbody></table>
     <div id="actEmpty" class="empty" style="display:none">Aún no hay acciones. Créalas dentro de una investigación.</div>
   </section>
-
   <section id="q-dashboard" class="page" data-module="quality">
     <div class="kpis">
       <div class="kpi"><div class="label">Total eventos</div><div class="value" id="qTotal">0</div><div class="sub">de calidad</div></div>
@@ -380,7 +346,6 @@
     <div class="grid2"><div class="card"><h3>Eventos por tipo</h3><div class="chart-wrap"><canvas id="qChartType"></canvas></div></div><div class="card"><h3>Eventos por estado</h3><div class="chart-wrap"><canvas id="qChartStatus"></canvas></div></div></div>
     <div class="card"><h3>Clasificación de acciones</h3><div class="chart-wrap"><canvas id="qChartClass"></canvas></div></div>
   </section>
-
   <section id="q-register" class="page" data-module="quality">
     <div class="note">💡 Registra un evento de calidad (no conformidad, auditoría, queja, mejora, etc.).</div>
     <form id="qualityForm">
@@ -392,16 +357,31 @@
       <div class="form-actions"><span></span><button type="submit" class="btn">Guardar evento</button></div>
     </form>
   </section>
-
   <section id="q-list" class="page" data-module="quality">
     <div class="toolbar"><input type="text" class="search" id="qSearch" placeholder="🔍 Buscar…"><select id="qFilterType"><option value="">Todos los tipos</option><option>No conformidad</option><option>Observación</option><option>Oportunidad de mejora</option><option>Auditoría</option><option>Queja de cliente</option></select><select id="qFilterStatus"><option value="">Todos los estados</option><option>Abierto</option><option>En progreso</option><option>Cerrado</option></select><button class="btn ghost" onclick="exportQualityCSV()">⬇ CSV</button></div>
     <table><thead><tr><th>ID</th><th>Título</th><th>Tipo</th><th>Acción</th><th>Fecha</th><th>Estado</th><th></th></tr></thead><tbody id="qBody"></tbody></table>
     <div id="qEmpty" class="empty" style="display:none">No hay eventos de calidad registrados.</div>
   </section>
-
   <section id="settings" class="page">
-    <div class="note warn">🔐 <strong>Panel del administrador (master).</strong> Sedes, copias de seguridad, almacenamiento y usuarios.</div>
+    <div class="note warn">🔐 <strong>Panel del administrador (master).</strong> Marca, sedes, copias de seguridad y usuarios.</div>
     <div class="card settings-card">
+      <h3>🎨 Identidad de la empresa</h3>
+      <p class="d" style="font-size:12px;color:var(--muted);margin-bottom:12px">Personaliza el nombre y el logo. Se mostrará a todos los usuarios de tu empresa (sigue apareciendo "HSEQ Hub" como sello).</p>
+      <div class="form-row">
+        <div class="form-group"><label>Nombre de la empresa</label><input type="text" id="companyName" placeholder="Ej: Constructora XYZ S.A.S."></div>
+        <div class="form-group"><label>Logo (PNG/JPG, pequeño)</label>
+          <div style="display:flex;gap:12px;align-items:center">
+            <div class="logo-preview" id="companyLogoPreview">Sin logo</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <label class="btn ghost sm" style="cursor:pointer;margin:0">Subir logo<input type="file" accept="image/*" style="display:none" onchange="onCompanyLogo(event)"></label>
+              <button class="btn ghost sm" onclick="removeCompanyLogo()">Quitar logo</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn sm" onclick="saveCompany()">💾 Guardar marca</button>
+    </div>
+    <div class="card settings-card" style="margin-top:16px">
       <h3>🏢 Sedes de la empresa</h3>
       <p class="d" style="font-size:12px;color:var(--muted);margin-bottom:10px">Cada evento se carga a una sede.</p>
       <div class="sede-list" id="sedeList"></div>
@@ -410,7 +390,7 @@
     </div>
     <div class="card settings-card" style="margin-top:16px">
       <div class="row"><div><div class="t">Almacenamiento actual</div><div class="d" id="setStorageDesc">Modo local</div></div><div id="setStorageBadge"></div></div>
-      <div class="row"><div><div class="t">📥 Backup completo (JSON)</div><div class="d">Incluye HSE + Calidad + sedes.</div></div><button class="btn ghost" onclick="exportJSON()">Descargar JSON</button></div>
+      <div class="row"><div><div class="t">📥 Backup completo (JSON)</div><div class="d">Incluye HSE + Calidad + sedes + marca.</div></div><button class="btn ghost" onclick="exportJSON()">Descargar JSON</button></div>
       <div class="row"><div><div class="t">📤 Restaurar desde copia (JSON)</div><div class="d">Reemplaza todos los datos.</div></div><label class="btn ghost" style="cursor:pointer">Subir JSON<input type="file" accept=".json" style="display:none" onchange="importJSON(event)"></label></div>
       <div class="row"><div><div class="t">🗑 Borrar todos los datos</div><div class="d">Acción irreversible.</div></div><button class="btn ghost" style="color:var(--red);border-color:#f3c3bf" onclick="wipeAll()">Borrar todo</button></div>
     </div>
@@ -422,7 +402,6 @@
   </section>
 </main>
 </div>
-
 <div class="modal-bg" id="accModal">
   <div class="modal" style="max-width:700px">
     <div class="modal-head"><h3 id="accModalTitle">Detalle del reporte</h3><button class="x" onclick="closeAccModal()">✕</button></div>
@@ -430,7 +409,6 @@
     <div class="modal-foot"><button class="btn ghost" onclick="closeAccModal()">Cerrar</button><button class="btn" id="accSaveBtn" onclick="saveAccModal()">Guardar cambios</button></div>
   </div>
 </div>
-
 <div class="modal-bg" id="actionModal">
   <div class="modal">
     <div class="modal-head"><h3 id="actionModalTitle">Editar acción</h3><button class="x" onclick="closeActionModal()">✕</button></div>
@@ -450,63 +428,42 @@
     <div class="modal-foot"><button class="btn ghost" onclick="closeActionModal()">Cancelar</button><button class="btn" onclick="saveActionModal()">Guardar acción</button></div>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
-/* ====== CONFIG ====== */
-/* =====================================================================
-   CONFIGURACIÓN DE LA EMPRESA
-   ---------------------------------------------------------------------
-   La app soporta DOS proveedores. Cada empresa usa el suyo:
-     · Empresa con Gmail/Workspace   → "google"
-     · Empresa con Outlook/Microsoft → "microsoft"
-
-   ALMACENAMIENTO CENTRALIZADO (modelo "usuario MAIN"):
-   Todos los datos de la empresa se guardan en UNA sola carpeta, la del
-   usuario MAIN. Los editores leen/escriben en ESA carpeta (no en la suya).
-   Para lograrlo, el MAIN debe COMPARTIR su carpeta con el equipo (edición).
-   (Ver LEEME — es un paso único de configuración.)
-   ===================================================================== */
+/* ====== CONFIGURACIÓN DE LA EMPRESA ====== */
 const APP_CONFIG = {
   fileName: "hseqhub-data.json",
-
   google: {
-    clientId: "915763445718-al4meu0pdbogourgff4pq4v9pjd2cq2d.apps.googleusercontent.com",          // Client ID de Google (…apps.googleusercontent.com)
-    // ID de la carpeta del MAIN compartida con el equipo. Si se deja vacío,
-    // al entrar el MAIN se crea/usa una carpeta "HSEQHub" en su Drive y su ID
-    // se muestra en Configuración para que lo compartas y lo pegues aquí.
+    clientId: "915763445718-al4meu0pdbogourgff4pq4v9pjd2cq2d.apps.googleusercontent.com",
     sharedFolderId: ""
   },
   microsoft: {
-    clientId: "",          // Client ID de Azure (App registration)
-    // Ubicación compartida de la empresa. Opción recomendada: un sitio de
-    // SharePoint del equipo (lo comparte toda la empresa por su tenant).
+    clientId: "",
     sharePointHost: "tuempresa.sharepoint.com",
     sharePointSite: "/sites/HSEQ"
   }
 };
-
 /* === CONTROL DE ACCESO ===  Tu correo = master (usuario MAIN). */
 const ACCESS_CONTROL = { "danizabas@gmail.com":"master" };
-/* 🧪 MODO EXPERIMENTO: si es true, CUALQUIER cuenta autenticada (Google o
-   Microsoft) que no esté en la lista entra como DEFAULT_ROLE. Para probar. */
+/* 🧪 EXPERIMENTO: cualquier cuenta autenticada que no esté en la lista entra como DEFAULT_ROLE. */
 const ALLOW_ANY_AUTHENTICATED = true;
 const DEFAULT_ROLE = "editor";
 function resolveRole(email){ return ACCESS_CONTROL[email] || (ALLOW_ANY_AUTHENTICATED ? DEFAULT_ROLE : null); }
-
-/* Compatibilidad interna */
 const GOOGLE_SCOPES = "https://www.googleapis.com/auth/drive openid email profile";
 const MS_SCOPES = ["Files.ReadWrite.All","Sites.ReadWrite.All","User.Read"];
-const DEMO_PASSWORD = "hseq2026";
-const PERMS = { master:{edit:true,master:true}, editor:{edit:true,master:false}, viewer:{edit:false,master:false} };
-
-/* Categorías del evento (consecuencia) */
+/* Permisos por rol:
+   master → todo (crear, editar, borrar eventos/investigaciones, config)
+   editor → crear/editar eventos, gestionar investigaciones y acciones (borrar acciones), NO borrar eventos
+   viewer → solo lectura */
+const PERMS = {
+  master:{edit:true, master:true,  delEvent:true},
+  editor:{edit:true, master:false, delEvent:false},
+  viewer:{edit:false,master:false, delEvent:false}
+};
 const CAT_INJURY="Lesión o enfermedad", CAT_ENV="Ambiental", CAT_ASSET="Activos o financiero", CAT_LEGAL="Legal y regulatorio";
 const EVENT_CATEGORIES = [CAT_INJURY, CAT_ENV, CAT_ASSET, CAT_LEGAL];
 const ENV_UNITS = ["Litros","Galones","Kg","Toneladas","m³"];
 const ENV_MEDIA = ["Suelo","Agua","Aire","Varios"];
-
 const ACC_TYPES = ["Sin tratamiento requerido","Primeros auxilios","Tratamiento médico","Trabajo restringido","Lesión con tiempo perdido","Fatalidad"];
 const SHIFTS = ["Normal","Extra"];
 const EMPLOYEE_TYPES = ["Directo / Planta","Contratista","Temporal (EST)","Cooperado (CTA)","Aprendiz / Estudiante SENA","Independiente / Prestación de servicios","Otro"];
@@ -525,9 +482,8 @@ const INJURY_TYPES = ["(10) Fractura","(20) Luxación","(25) Torcedura, esguince
 const BODY_PARTS = ["(1) Cabeza","(1.12) Ojo","(2) Cuello","(3) Tronco (incluye espalda, columna vertebral, médula espinal, pélvis)","(3.32) Tórax","(3.33) Abdomen","(4) Miembros superiores","(4.46) Manos","(5) Miembros inferiores","(5.56) Pies","(6) Ubicaciones múltiples","(7) Lesiones generales u otras"];
 const AGENTS = ["(1) Máquinas y/o equipos","(2) Medios de transporte","(3) Aparatos","(3.36) Herramientas, implementos o utensilios","(4) Materiales o sustancias","(4.4) Radiaciones","(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)","(6) Otros agentes no clasificados","(6.61) Animales (vivos o productos animales)","(7) Agentes no clasificados por falta de datos"];
 const MECHANISMS = ["(1) Caída de personas","(2) Caída de objetos","(3) Pisadas, choques o golpes","(4) Atrapamientos","(5) Sobreesfuerzo, esfuerzo excesivo o falso movimiento","(6) Exposición o contacto con temperatura extrema","(7) Exposición o contacto con la electricidad","(8) Exposición o contacto con sustancias nocivas, radiaciones o salpicaduras","(9) Otro"];
-
 /* ====== ESTADO ====== */
-let provider=null, accessToken=null; // provider: "google" | "microsoft"
+let provider=null, accessToken=null;
 let tokenClient=null, googleReady=false, gFolderId=null, gFileId=null;
 let msalInstance=null, msAccount=null, spDriveId=null;
 let session={ email:null, role:null, name:null, method:null };
@@ -535,8 +491,8 @@ let currentModule="hse";
 let pendingFiles=[];
 let accCurrentId=null, modalActions=[], modalFurat=null;
 let actionEdit={ accId:null, actId:null };
-const Store={ mode:"local", data:{ accidents:[], quality:[], sedes:[] } };
-
+let pendingCompanyLogo; // undefined = sin cambio; "" = quitar; string = nuevo
+const Store={ mode:"local", data:{ accidents:[], quality:[], sedes:[], company:{name:"",logo:""} } };
 /* ====== FECHAS ====== */
 function todayStr(){ return new Date().toISOString().slice(0,10); }
 function addDays(dateStr,n){ if(!dateStr)return""; const d=new Date(dateStr+"T00:00:00"); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
@@ -552,12 +508,10 @@ function clsBadgeClass(c){ return c==="Correctiva"?"c-correctiva":c==="Preventiv
 function effBadgeClass(r){ return r==="Efectiva"?"b-efectiva":r==="No efectiva"?"b-noefectiva":"b-pendiente"; }
 function catBadgeClass(c){ return c===CAT_INJURY?"cat-injury":c===CAT_ENV?"cat-env":c===CAT_ASSET?"cat-asset":c===CAT_LEGAL?"cat-legal":"tag"; }
 function catShort(c){ return c===CAT_INJURY?"Lesión":c===CAT_ENV?"Ambiental":c===CAT_ASSET?"Activos":c===CAT_LEGAL?"Legal":(c||"—"); }
-
 /* ====== CHECKBOX HELPERS ====== */
 function checkboxGroupHTML(items, selected){ const sel=selected||[]; return items.map(it=>`<label><input type="checkbox" value="${escapeHtml(it)}" ${sel.indexOf(it)>=0?"checked":""}>${escapeHtml(it)}</label>`).join(""); }
 function getChecked(containerId){ return Array.from(document.querySelectorAll("#"+containerId+" input[type=checkbox]:checked")).map(c=>c.value); }
 function updateAccCount(groupId,countId){ const n=getChecked(groupId).length; const el=document.getElementById(countId); if(el){ el.textContent=n; el.className="cnt"+(n===0?" zero":""); } }
-
 /* ====== FLUJO COMÚN TRAS AUTENTICARSE ====== */
 async function afterLogin(email, name, method){
   email=(email||"").toLowerCase();
@@ -570,7 +524,6 @@ async function afterLogin(email, name, method){
   toast("✅ Bienvenido, "+session.name+" ("+role+")");
   return true;
 }
-
 /* ====== GOOGLE ====== */
 function initGoogle(){
   if(!APP_CONFIG.google.clientId) return false;
@@ -590,11 +543,10 @@ function initGoogle(){
 }
 function loginGoogle(){
   hideLoginErr();
-  if(!APP_CONFIG.google.clientId){ showLoginErr("Aún no configuras el Client ID de Google. Usa el acceso demo o revisa el LEEME."); return; }
+  if(!APP_CONFIG.google.clientId){ showLoginErr("Aún no configuras el Client ID de Google. Revisa el LEEME."); return; }
   if(!googleReady && !initGoogle()){ showLoginErr("La librería de Google aún no cargó. Espera un segundo y reintenta."); return; }
   tokenClient.requestAccessToken({ prompt:"" });
 }
-
 /* ====== MICROSOFT ====== */
 function initMsal(){
   if(!APP_CONFIG.microsoft.clientId) return false;
@@ -604,7 +556,7 @@ function initMsal(){
 }
 async function loginMicrosoft(){
   hideLoginErr();
-  if(!APP_CONFIG.microsoft.clientId){ showLoginErr("Aún no configuras el Client ID de Microsoft. Usa el acceso demo o revisa el LEEME."); return; }
+  if(!APP_CONFIG.microsoft.clientId){ showLoginErr("Aún no configuras el Client ID de Microsoft. Revisa el LEEME."); return; }
   if(!initMsal()){ showLoginErr("La librería de Microsoft aún no cargó. Espera un segundo y reintenta."); return; }
   try{
     const res=await msalInstance.loginPopup({ scopes:MS_SCOPES }); msAccount=res.account; provider="microsoft";
@@ -613,26 +565,13 @@ async function loginMicrosoft(){
     await afterLogin(msAccount.username, msAccount.name, "microsoft");
   }catch(e){ console.error(e); showLoginErr("No se pudo iniciar sesión con Microsoft."); }
 }
-
-/* ====== DEMO ====== */
-function loginDemo(){
-  hideLoginErr();
-  const email=(document.getElementById("demoEmail").value||"").trim().toLowerCase(); const pass=document.getElementById("demoPass").value; const role=resolveRole(email);
-  if(!role){ showLoginErr("Ese correo no está autorizado."); return; }
-  if(pass!==DEMO_PASSWORD){ showLoginErr("Contraseña incorrecta."); return; }
-  session={ email, role, name:email.split("@")[0], method:"demo" };
-  Store.mode="local"; Store.data=normalizeData(JSON.parse(localStorage.getItem("hseq_data")||"null"));
-  if(isEmptyData(Store.data)){ Store.data=seedData(); localStorage.setItem("hseq_data",JSON.stringify(Store.data)); }
-  enterApp(); toast("✅ Acceso demo: "+session.email+" ("+role+")");
-}
 async function logout(){
   if(session.method==="google" && accessToken && typeof google!=="undefined" && google.accounts){ try{ google.accounts.oauth2.revoke(accessToken,()=>{}); }catch(e){} }
   if(session.method==="microsoft" && msalInstance && msAccount){ try{ await msalInstance.logoutPopup({ account:msAccount }); }catch(e){} }
   provider=null; accessToken=null; gFolderId=null; gFileId=null; spDriveId=null; msAccount=null;
   session={ email:null, role:null, name:null, method:null };
-  document.getElementById("app").classList.remove("visible"); document.getElementById("loginScreen").style.display="flex"; document.getElementById("demoPass").value="";
+  document.getElementById("app").classList.remove("visible"); document.getElementById("loginScreen").style.display="flex";
 }
-
 /* ====== ENTRAR ====== */
 function enterApp(){
   document.getElementById("loginScreen").style.display="none";
@@ -661,18 +600,18 @@ function enterApp(){
   document.getElementById("grpAgent").onchange=()=>updateAccCount("grpAgent","cntAgent");
   document.getElementById("grpMechanism").onchange=()=>updateAccCount("grpMechanism","cntMechanism");
   populateSedeSelects();
+  applyBranding(); renderCompanySettings();
   refreshStorageUI(); renderUsersList(); renderSedeList();
   switchModule("hse");
 }
-
 /* ====== DATA HELPERS ====== */
 function normalizeAction(a){ return { id:a.id, desc:a.desc||"", owner:a.owner||"", due:a.due||"", status:a.status||"Abierta", cls:a.cls||"Correctiva", effDate:a.effDate||"", effResult:a.effResult||"Pendiente", effComments:a.effComments||"" }; }
 function normalizeData(d){
   let data;
-  if(!d) data={ accidents:[], quality:[], sedes:DEFAULT_SEDES.slice() };
-  else if(Array.isArray(d)) data={ accidents:[], quality:d, sedes:DEFAULT_SEDES.slice() };
-  else data={ accidents:d.accidents||[], quality:d.quality||[], sedes:(d.sedes&&d.sedes.length)?d.sedes:DEFAULT_SEDES.slice() };
-  data.accidents.forEach(a=>{ a.invActions=(a.invActions||[]).map(normalizeAction); if(!a.category) a.category=(a.classification==="Accidente"?CAT_INJURY:CAT_INJURY); });
+  if(!d) data={ accidents:[], quality:[], sedes:DEFAULT_SEDES.slice(), company:{name:"",logo:""} };
+  else if(Array.isArray(d)) data={ accidents:[], quality:d, sedes:DEFAULT_SEDES.slice(), company:{name:"",logo:""} };
+  else data={ accidents:d.accidents||[], quality:d.quality||[], sedes:(d.sedes&&d.sedes.length)?d.sedes:DEFAULT_SEDES.slice(), company:d.company||{name:"",logo:""} };
+  data.accidents.forEach(a=>{ a.invActions=(a.invActions||[]).map(normalizeAction); if(!a.category) a.category=CAT_INJURY; });
   return data;
 }
 function isEmptyData(d){ return (!d.accidents||d.accidents.length===0)&&(!d.quality||d.quality.length===0); }
@@ -681,12 +620,7 @@ async function persist(){
   try{ if(Store.mode==="gdrive") await driveWrite(Store.data); else if(Store.mode==="sharepoint") await spWrite(Store.data); }
   catch(e){ console.error(e); toast("⚠ No se pudo guardar en la nube"); }
 }
-
-/* ====== GOOGLE DRIVE — carpeta compartida del usuario MAIN ======
-   Todos los datos de la empresa viven en UNA carpeta (la del MAIN).
-   Si APP_CONFIG.google.sharedFolderId está vacío, se usa/crea "HSEQHub"
-   en el Drive del usuario actual (útil para el MAIN la primera vez).
-   El MAIN debe compartir esa carpeta con el equipo (permiso de edición). */
+/* ====== GOOGLE DRIVE — carpeta compartida del usuario MAIN ====== */
 const gHead=()=>({ Authorization:`Bearer ${accessToken}` });
 async function driveGetFolderId(){
   if(APP_CONFIG.google.sharedFolderId) return APP_CONFIG.google.sharedFolderId;
@@ -732,8 +666,7 @@ async function driveWrite(data){
     gFileId=(await r.json()).id;
   }
 }
-
-/* ====== MICROSOFT SHAREPOINT — sitio compartido de la empresa ====== */
+/* ====== MICROSOFT SHAREPOINT ====== */
 async function resolveSharePointDrive(){
   const host=APP_CONFIG.microsoft.sharePointHost, site=APP_CONFIG.microsoft.sharePointSite;
   const sr=await fetch(`https://graph.microsoft.com/v1.0/sites/${host}:${site}`,{ headers:{ Authorization:`Bearer ${accessToken}` }});
@@ -746,18 +679,21 @@ async function resolveSharePointDrive(){
 function spEndpoint(){ return `https://graph.microsoft.com/v1.0/drives/${spDriveId}/root:/HSEQHub/${APP_CONFIG.fileName}`; }
 async function spRead(){ const r=await fetch(spEndpoint()+":/content",{ headers:{ Authorization:`Bearer ${accessToken}` }}); if(r.status===404)return null; if(!r.ok)throw new Error("Lectura Graph "+r.status); return await r.json(); }
 async function spWrite(data){ const r=await fetch(spEndpoint()+":/content",{ method:"PUT", headers:{ Authorization:`Bearer ${accessToken}`,"Content-Type":"application/json" }, body:JSON.stringify(data,null,2) }); if(!r.ok)throw new Error("Escritura Graph "+r.status); }
-
 /* ====== SEED ====== */
-function blankFurat(){ return { jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"" }; }
+function blankEnv(){ return { substance:"",cas:"",qtyNum:"",qtyUnit:"",media:"",cost:"" }; }
+function blankAsset(){ return { name:"",damage:"",cost:"",stoppage:"",stoppageDur:"" }; }
+function blankLegal(){ return { requirement:"",entity:"",description:"",penalty:"" }; }
+function blankNm(){ return { severity:"",activity:"",potential:"",immediate:"",suggestion:"" }; }
 function seedData(){
   return {
+    company:{name:"",logo:""},
     sedes: DEFAULT_SEDES.slice(),
     accidents:[
       Object.assign({id:"ACC-2000",classification:"Accidente",category:CAT_INJURY,reporter:"Pedro Nel",employeeType:"Contratista",date:"2026-07-10",time:"08:20",title:"Torcedura de tobillo al bajar de plataforma",desc:"Pisó mal al descender de una plataforma sin cinta antideslizante.",sede:"Planta Funza",type:"Tratamiento médico",jobTitle:"Ayudante de obra",jobExpNum:"1",jobExpUnit:"Años",jobExp:"1 Años",timeWorkingNum:"2",timeWorkingUnit:"Horas",timeWorking:"2 Horas",activity:"Descenso de plataforma",shift:"Normal",sitio:"(5) Escaleras",sitioOtro:"",injuryTypes:["(25) Torcedura, esguince, desgarro muscular, hernia o laceración de músculo o tendón sin herida"],injuryOtro:"",bodyParts:["(5) Miembros inferiores","(5.56) Pies"],bodyDetail:"Tobillo derecho",agents:["(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)"],mechanisms:["(1) Caída de personas"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-07-25",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2000-A1",desc:"Instalar cinta antideslizante",owner:"Mantenimiento",due:"2026-07-20",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"pedro@empresa.com"}),
       Object.assign({id:"ACC-2001",classification:"Accidente",category:CAT_INJURY,reporter:"Carlos Ruiz",employeeType:"Directo / Planta",date:"2026-07-30",time:"09:15",title:"Corte en mano con herramienta",desc:"Corte al manipular cúter sin guante anticorte.",sede:"Sede Principal",type:"Primeros auxilios",jobTitle:"Operario de montaje",jobExpNum:"3",jobExpUnit:"Años",jobExp:"3 Años",timeWorkingNum:"4",timeWorkingUnit:"Horas",timeWorking:"4 Horas",activity:"Corte de material con cúter",shift:"Normal",sitio:"(2) Áreas de producción",sitioOtro:"",injuryTypes:["(41) Herida"],injuryOtro:"",bodyParts:["(4) Miembros superiores","(4.46) Manos"],bodyDetail:"Dedo índice mano derecha",agents:["(3.36) Herramientas, implementos o utensilios"],mechanisms:["(3) Pisadas, choques o golpes"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-08-14",invCompletedDate:"2026-08-05",invRootCause:"Falta de EPP (guantes anticorte).",invActions:[{id:"ACC-2001-A1",desc:"Dotar guantes anticorte",owner:"HSE",due:"2026-08-10",status:"Cerrada",cls:"Preventiva",effDate:"2026-10-10",effResult:"Efectiva",effComments:"No se presentaron cortes en 2 meses."}],createdBy:"carlos@empresa.com"}),
-      Object.assign({id:"ACC-2002",classification:"Near miss",category:CAT_INJURY,reporter:"Ana Gómez",employeeType:"Directo / Planta",date:"2026-08-04",time:"14:40",title:"Casi caída por piso mojado",desc:"Casi resbala en zona sin señalización.",sede:"Sede Norte",type:"",jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(), nm:{severity:"Medio",activity:"Tránsito por pasillo",potential:"Un trabajador pudo resbalar y fracturarse.",immediate:"Se secó el piso y se señalizó.",suggestion:"Instalar tapetes antideslizantes."}, files:[],invDueDate:"2026-08-19",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"ana@empresa.com"}),
-      Object.assign({id:"ACC-2003",classification:"Accidente",category:CAT_ENV,reporter:"Luis Peña",employeeType:"Temporal (EST)",date:"2026-08-06",time:"11:05",title:"Derrame de aceite hidráulico",desc:"Fuga en manguera de montacargas sobre piso de bodega.",sede:"Planta Funza",type:"", env:{substance:"Aceite hidráulico",cas:"64742-52-5",qtyNum:"20",qtyUnit:"Litros",media:"Suelo",cost:"800000"}, asset:blankAsset(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-21",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2003-A1",desc:"Cambiar manguera y programar mantenimiento",owner:"Mantenimiento",due:"2026-07-01",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"luis@empresa.com"}),
-      Object.assign({id:"ACC-2004",classification:"Accidente",category:CAT_ASSET,reporter:"Marta Ríos",employeeType:"Directo / Planta",date:"2026-08-08",time:"10:00",title:"Montacargas impacta estantería",desc:"El montacargas golpeó una estantería en maniobra.",sede:"Sede Principal",type:"", asset:{name:"Estantería zona A",damage:"Deformación estructural",cost:"3000000",stoppage:"Sí",stoppageDur:"4 horas"}, env:blankEnv(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-23",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"marta@empresa.com"})
+      Object.assign({id:"ACC-2002",classification:"Near miss",category:CAT_INJURY,reporter:"Ana Gómez",employeeType:"",date:"2026-08-04",time:"14:40",title:"Casi caída por piso mojado",desc:"Casi resbala en zona sin señalización.",sede:"Sede Norte",type:"",jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(), nm:{severity:"Medio",activity:"Tránsito por pasillo",potential:"Un trabajador pudo resbalar y fracturarse.",immediate:"Se secó el piso y se señalizó.",suggestion:"Instalar tapetes antideslizantes."}, files:[],invDueDate:"2026-08-19",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"ana@empresa.com"}),
+      Object.assign({id:"ACC-2003",classification:"Accidente",category:CAT_ENV,reporter:"Luis Peña",employeeType:"",date:"2026-08-06",time:"11:05",title:"Derrame de aceite hidráulico",desc:"Fuga en manguera de montacargas sobre piso de bodega.",sede:"Planta Funza",type:"", env:{substance:"Aceite hidráulico",cas:"64742-52-5",qtyNum:"20",qtyUnit:"Litros",media:"Suelo",cost:"800000"}, asset:blankAsset(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-21",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2003-A1",desc:"Cambiar manguera y programar mantenimiento",owner:"Mantenimiento",due:"2026-07-01",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"luis@empresa.com"}),
+      Object.assign({id:"ACC-2004",classification:"Accidente",category:CAT_ASSET,reporter:"Marta Ríos",employeeType:"",date:"2026-08-08",time:"10:00",title:"Montacargas impacta estantería",desc:"El montacargas golpeó una estantería en maniobra.",sede:"Sede Principal",type:"", asset:{name:"Estantería zona A",damage:"Deformación estructural",cost:"3000000",stoppage:"Sí",stoppageDur:"4 horas"}, env:blankEnv(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-23",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"marta@empresa.com"})
     ],
     quality:[
       {id:"EVT-1001",title:"No conformidad en control documental",type:"No conformidad",cls:"Corrección",status:"Cerrado",area:"Calidad",owner:"Analista",date:"2026-08-01",desc:"Registro sin firma.",createdBy:"seed@empresa.com"},
@@ -766,18 +702,55 @@ function seedData(){
     ]
   };
 }
-function blankEnv(){ return { substance:"",cas:"",qtyNum:"",qtyUnit:"",media:"",cost:"" }; }
-function blankAsset(){ return { name:"",damage:"",cost:"",stoppage:"",stoppageDur:"" }; }
-function blankLegal(){ return { requirement:"",entity:"",description:"",penalty:"" }; }
-function blankNm(){ return { severity:"",activity:"",potential:"",immediate:"",suggestion:"" }; }
 function nextAccId(){ let m=2000; Store.data.accidents.forEach(a=>{const n=parseInt((a.id||"").replace("ACC-",""))||0;if(n>m)m=n;}); return "ACC-"+(m+1); }
 function nextEvtId(){ let m=1000; Store.data.quality.forEach(e=>{const n=parseInt((e.id||"").replace("EVT-",""))||0;if(n>m)m=n;}); return "EVT-"+(m+1); }
 function nextActionNum(arr){ let max=0; arr.forEach(a=>{const mm=(a.id||"").match(/-A(\d+)$/);if(mm){const n=parseInt(mm[1]);if(n>max)max=n;}}); return max+1; }
-
 /* ====== PERMISOS ====== */
 function can(perm){ return PERMS[session.role]&&PERMS[session.role][perm]; }
 function requireEdit(){ if(!can("edit")){ toast("🔒 Tu rol ("+session.role+") no puede modificar datos."); return false; } return true; }
-
+/* ====== MARCA / BRANDING ====== */
+function applyBranding(){
+  const c=(Store.data&&Store.data.company)||{name:"",logo:""};
+  const bl=document.getElementById("brandLogo"), bt=document.getElementById("brandTitle"), bs=document.getElementById("brandSubtitle");
+  const ll=document.getElementById("loginLogo"), lt=document.getElementById("loginTitle"), lp=document.getElementById("loginSubtitle");
+  if(c.logo){ bl.innerHTML=`<img src="${c.logo}" alt="logo">`; ll.innerHTML=`<img src="${c.logo}" alt="logo">`; }
+  else { bl.textContent="HSEQ"; ll.textContent="HSEQ"; }
+  if(c.name){ bt.textContent=c.name; bs.textContent="HSEQ Hub"; lt.textContent=c.name; lp.textContent="HSEQ Hub"; }
+  else { bt.textContent="HSEQ Hub"; bs.textContent="Health · Safety · Env · Quality"; lt.textContent="HSEQ Hub"; lp.textContent="Health · Safety · Environment · Quality"; }
+  try{ localStorage.setItem("hseq_brand", JSON.stringify(c)); }catch(e){}
+}
+function applyLoginBrandingFromCache(){
+  try{ const c=JSON.parse(localStorage.getItem("hseq_brand")||"null"); if(!c)return;
+    const ll=document.getElementById("loginLogo"), lt=document.getElementById("loginTitle"), lp=document.getElementById("loginSubtitle");
+    if(c.logo){ ll.innerHTML=`<img src="${c.logo}" alt="logo">`; }
+    if(c.name){ lt.textContent=c.name; lp.textContent="HSEQ Hub"; }
+  }catch(e){}
+}
+function renderCompanySettings(){
+  const c=(Store.data&&Store.data.company)||{name:"",logo:""};
+  const nameEl=document.getElementById("companyName"); if(nameEl) nameEl.value=c.name||"";
+  const prev=document.getElementById("companyLogoPreview");
+  if(prev){ if(c.logo){ prev.innerHTML=`<img src="${c.logo}" alt="logo">`; } else { prev.textContent="Sin logo"; } }
+  pendingCompanyLogo=undefined;
+}
+function onCompanyLogo(ev){
+  const f=ev.target.files[0]; if(!f)return;
+  if(f.size>400000){ toast("⚠ El logo es muy grande (máx ~400 KB). Usa una imagen pequeña."); ev.target.value=""; return; }
+  const rd=new FileReader();
+  rd.onload=()=>{ pendingCompanyLogo=rd.result; const prev=document.getElementById("companyLogoPreview"); prev.innerHTML=`<img src="${pendingCompanyLogo}" alt="logo">`; };
+  rd.readAsDataURL(f); ev.target.value="";
+}
+function removeCompanyLogo(){ pendingCompanyLogo=""; const prev=document.getElementById("companyLogoPreview"); prev.textContent="Sin logo"; }
+async function saveCompany(){
+  if(!can("master")){ toast("🔒 Solo el administrador puede cambiar la marca."); return; }
+  Store.data.company=Store.data.company||{name:"",logo:""};
+  Store.data.company.name=(document.getElementById("companyName").value||"").trim();
+  if(pendingCompanyLogo!==undefined){ Store.data.company.logo=pendingCompanyLogo; }
+  await persist();
+  pendingCompanyLogo=undefined;
+  applyBranding(); renderCompanySettings();
+  toast("🎨 Marca de la empresa actualizada");
+}
 /* ====== SEDES ====== */
 function populateSedeSelects(){
   const sedes=Store.data.sedes||[];
@@ -802,7 +775,6 @@ async function removeSede(i){
   if(!confirm("¿Eliminar la sede \""+s.name+"\"?")) return;
   Store.data.sedes.splice(i,1); await persist(); populateSedeSelects(); renderSedeList(); toast("🗑 Sede eliminada");
 }
-
 /* ====== NAV ====== */
 function switchModule(mod){
   currentModule=mod;
@@ -813,7 +785,7 @@ function switchModule(mod){
   if(mod==="hse"){ badge.className="module-badge hse"; badge.textContent="🦺 Módulo HSE"; goToPage("hse-dashboard"); }
   else { badge.className="module-badge quality"; badge.textContent="✅ Módulo Calidad"; goToPage("q-dashboard"); }
 }
-const titles={"hse-dashboard":["Dashboard HSE","Resumen de eventos HSE"],"hse-report":["Reportar evento","Registro de evento HSE"],"hse-list":["Eventos HSE","Listado de eventos HSE"],"hse-investigations":["Investigaciones","Seguimiento de investigaciones y overdue"],"hse-actions":["Acciones","Seguimiento de acciones correctivas"],"q-dashboard":["Dashboard Calidad","Resumen de eventos de calidad"],"q-register":["Registrar evento","Alta de evento de calidad"],"q-list":["Eventos","Listado de eventos de calidad"],"settings":["Configuración","Sedes, copias de seguridad, almacenamiento y usuarios"]};
+const titles={"hse-dashboard":["Dashboard HSE","Resumen de eventos HSE"],"hse-report":["Reportar evento","Registro de evento HSE"],"hse-list":["Eventos HSE","Listado de eventos HSE"],"hse-investigations":["Investigaciones","Seguimiento de investigaciones y overdue"],"hse-actions":["Acciones","Seguimiento de acciones correctivas"],"q-dashboard":["Dashboard Calidad","Resumen de eventos de calidad"],"q-register":["Registrar evento","Alta de evento de calidad"],"q-list":["Eventos","Listado de eventos de calidad"],"settings":["Configuración","Marca, sedes, copias de seguridad y usuarios"]};
 function goToPage(p){
   document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===p));
   document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===p));
@@ -824,13 +796,13 @@ function goToPage(p){
   if(p==="hse-actions")renderActions();
   if(p==="q-dashboard")renderQualityCharts();
   if(p==="q-list")renderQuality();
+  if(p==="settings")renderCompanySettings();
 }
 document.querySelectorAll(".nav button[data-page]").forEach(b=>b.onclick=()=>goToPage(b.dataset.page));
 function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3000)}
 function val(id){return document.getElementById(id).value}
 function showLoginErr(m){const e=document.getElementById("loginErr");e.textContent=m;e.style.display="block"}
 function hideLoginErr(){document.getElementById("loginErr").style.display="none"}
-
 /* ====== FORM ====== */
 function handleFiles(ev){
   const files=Array.from(ev.target.files||[]);
@@ -845,7 +817,6 @@ function validateStep1(){
   for(const [id,label] of req){ if(!val(id).trim()){ toast("⚠ Falta: "+label); document.getElementById(id).focus(); return false; } }
   return true;
 }
-/* Controla qué se muestra en el paso 2 según clasificación + categoría */
 function updateStep2Visibility(){
   const isAcc=isAccidente(); const cat=val("aCategory");
   const injury = isAcc && cat===CAT_INJURY;
@@ -900,7 +871,6 @@ function validateInjury(){
 function validateEnv(){ return reqFields([["envSubstance","Sustancia o material"],["envQtyNum","Cantidad"],["envQtyUnit","Unidad de cantidad"],["envMedia","Medio afectado"]]); }
 function validateAsset(){ return reqFields([["assetName","Activo afectado"],["assetDamage","Tipo de daño"],["assetCost","Costo estimado"],["assetStoppage","¿Paro operacional?"]]); }
 function validateLegal(){ return reqFields([["legalRequirement","Requisito/norma incumplida"],["legalDescription","Descripción del incumplimiento"]]); }
-
 document.getElementById("accidentForm").onsubmit=async e=>{
   e.preventDefault();
   if(!requireEdit())return;
@@ -921,18 +891,15 @@ document.getElementById("accidentForm").onsubmit=async e=>{
     id:nextAccId(), classification:val("aClass"), category:cat, reporter:val("aReporter"), employeeType:isInjury?val("aEmployeeType"):"",
     date:eventDate, time:val("aTime"), title:val("aTitle"), desc:val("aDesc"), sede:val("aSede"),
     type:isInjury?val("aType"):"",
-    // FURAT
     jobTitle:isInjury?val("aJobTitle"):"", jobExpNum:isInjury?val("aJobExpNum"):"", jobExpUnit:isInjury?val("aJobExpUnit"):"", jobExp:isInjury?joinNumUnit(val("aJobExpNum"),val("aJobExpUnit")):"",
     timeWorkingNum:isInjury?val("aTimeWorkingNum"):"", timeWorkingUnit:isInjury?val("aTimeWorkingUnit"):"", timeWorking:isInjury?joinNumUnit(val("aTimeWorkingNum"),val("aTimeWorkingUnit")):"",
     activity:isInjury?val("aActivity"):"", shift:isInjury?val("aShift"):"", sitio:isInjury?val("aSitio"):"", sitioOtro:isInjury?val("aSitioOtro"):"",
     injuryTypes:isInjury?getChecked("grpInjury"):[], injuryOtro:isInjury?val("aInjuryOtro"):"",
     bodyParts:isInjury?getChecked("grpBody"):[], bodyDetail:isInjury?val("aBodyDetail"):"",
     agents:isInjury?getChecked("grpAgent"):[], mechanisms:isInjury?getChecked("grpMechanism"):[], mechanismOtro:isInjury?val("aMechOtro"):"",
-    // ENV / ASSET / LEGAL
     env: isEnv?{substance:val("envSubstance"),cas:val("envCas"),qtyNum:val("envQtyNum"),qtyUnit:val("envQtyUnit"),media:val("envMedia"),cost:val("envCost")}:blankEnv(),
     asset: isAsset?{name:val("assetName"),damage:val("assetDamage"),cost:val("assetCost"),stoppage:val("assetStoppage"),stoppageDur:val("assetStoppageDur")}:blankAsset(),
     legal: isLegal?{requirement:val("legalRequirement"),entity:val("legalEntity"),description:val("legalDescription"),penalty:val("legalPenalty")}:blankLegal(),
-    // NEAR MISS
     nm: (!isAcc)?{severity:val("nmSeverity"),activity:val("nmActivity"),potential:val("nmPotential"),immediate:val("nmImmediate"),suggestion:val("nmSuggestion")}:blankNm(),
     files:pendingFiles.slice(),
     invDueDate:addDays(eventDate,15), invCompletedDate:"", invRootCause:"", invActions:[], createdBy:session.email
@@ -942,7 +909,6 @@ document.getElementById("accidentForm").onsubmit=async e=>{
   toast("✅ Reporte "+acc.id+" guardado. Investigación due: "+fmtDate(acc.invDueDate));
   goToPage("hse-list"); updateOverdueBadge(); updateActionsBadge();
 };
-
 /* ====== HSE DASHBOARD ====== */
 let hCharts={};
 function countByAcc(field){const m={};Store.data.accidents.forEach(a=>{const k=a[field]||"—";m[k]=(m[k]||0)+1});return m}
@@ -961,26 +927,33 @@ function renderHseCharts(){
   hCharts.inv=mk("hChartInv","doughnut",{Abierta:invOpen,Completada:inv.filter(s=>s==="Completada").length,Overdue:invOverdue},["#3a7bd5","#2e9e5b","#e2483d"]);
   updateOverdueBadge(); updateActionsBadge();
 }
-
 /* ====== HSE LISTA ====== */
 function renderAccidents(){
   const q=val("hSearch").toLowerCase(), fc=val("hFilterClass"), fcat=val("hFilterCat"), fse=val("hFilterSede"), femp=val("hFilterEmp");
   const list=Store.data.accidents.filter(a=>{ const match=((a.title||"")+(a.reporter||"")+(a.desc||"")+(a.sede||"")+(a.employeeType||"")+(a.category||"")).toLowerCase().includes(q); return match&&(!fc||a.classification===fc)&&(!fcat||a.category===fcat)&&(!fse||a.sede===fse)&&(!femp||a.employeeType===femp); });
-  document.getElementById("hBody").innerHTML=list.map(a=>{ const cb=a.classification==="Near miss"?"b-nearmiss":"b-accidente"; const filesTag=a.files&&a.files.length?` 📎${a.files.length}`:""; return `<tr><td><button class="link-btn" onclick="openAccidentModal('${a.id}')">${a.id}</button>${filesTag}</td><td><span class="badge ${cb}">${a.classification}</span></td><td><span class="pill ${catBadgeClass(a.category)}">${catShort(a.category)}</span></td><td>${escapeHtml(a.title)}</td><td><span class="tag">${escapeHtml(a.sede||"—")}</span></td><td>${fmtDate(a.date)} ${a.time||""}</td><td><button class="link-btn" onclick="openAccidentModal('${a.id}')">Abrir</button></td></tr>`; }).join("");
+  const showDel=can("delEvent");
+  document.getElementById("hBody").innerHTML=list.map(a=>{ const cb=a.classification==="Near miss"?"b-nearmiss":"b-accidente"; const filesTag=a.files&&a.files.length?` 📎${a.files.length}`:""; const del=showDel?` · <button class="del" onclick="delAccident('${a.id}')">Eliminar</button>`:""; return `<tr><td><button class="link-btn" onclick="openAccidentModal('${a.id}')">${a.id}</button>${filesTag}</td><td><span class="badge ${cb}">${a.classification}</span></td><td><span class="pill ${catBadgeClass(a.category)}">${catShort(a.category)}</span></td><td>${escapeHtml(a.title)}</td><td><span class="tag">${escapeHtml(a.sede||"—")}</span></td><td>${fmtDate(a.date)} ${a.time||""}</td><td><button class="link-btn" onclick="openAccidentModal('${a.id}')">Abrir</button>${del}</td></tr>`; }).join("");
   document.getElementById("hEmpty").style.display=list.length?"none":"block";
 }
 ["hSearch","hFilterClass","hFilterCat","hFilterSede","hFilterEmp"].forEach(id=>document.getElementById(id).addEventListener("input",renderAccidents));
-
+async function delAccident(id){
+  if(!can("delEvent")){ toast("🔒 Solo el administrador puede eliminar eventos."); return; }
+  if(!confirm("¿Eliminar el evento "+id+" y su investigación? Esta acción no se puede deshacer.")) return;
+  Store.data.accidents=Store.data.accidents.filter(a=>a.id!==id);
+  await persist();
+  renderAccidents(); renderInvestigations(); renderActions(); renderHseCharts(); updateOverdueBadge(); updateActionsBadge();
+  toast("🗑 Evento "+id+" eliminado");
+}
 /* ====== INVESTIGACIONES ====== */
 function renderInvestigations(){
   const q=val("iSearch").toLowerCase(), fs=val("iFilterStatus");
   const list=Store.data.accidents.filter(a=>{ const st=investigationStatus(a); const match=((a.title||"")+(a.id||"")).toLowerCase().includes(q); return match&&(!fs||st===fs); });
-  document.getElementById("iBody").innerHTML=list.map(a=>{ const st=investigationStatus(a); const sb=st==="Completada"?"b-completada":st==="Overdue"?"b-overdue":"b-abierta"; return `<tr><td><button class="link-btn" onclick="openAccidentModal('${a.id}')">${a.id}</button></td><td>${escapeHtml(a.title)}</td><td>${fmtDate(a.date)}</td><td>${fmtDate(a.invDueDate)}</td><td>${a.invCompletedDate?fmtDate(a.invCompletedDate):"—"}</td><td><span class="badge ${sb}">${st}</span></td><td><button class="link-btn" onclick="openAccidentModal('${a.id}')">${can("edit")?"Gestionar":"Ver"}</button></td></tr>`; }).join("");
+  const showDel=can("delEvent");
+  document.getElementById("iBody").innerHTML=list.map(a=>{ const st=investigationStatus(a); const sb=st==="Completada"?"b-completada":st==="Overdue"?"b-overdue":"b-abierta"; const del=showDel?` · <button class="del" onclick="delAccident('${a.id}')">Eliminar</button>`:""; return `<tr><td><button class="link-btn" onclick="openAccidentModal('${a.id}')">${a.id}</button></td><td>${escapeHtml(a.title)}</td><td>${fmtDate(a.date)}</td><td>${fmtDate(a.invDueDate)}</td><td>${a.invCompletedDate?fmtDate(a.invCompletedDate):"—"}</td><td><span class="badge ${sb}">${st}</span></td><td><button class="link-btn" onclick="openAccidentModal('${a.id}')">${can("edit")?"Gestionar":"Ver"}</button>${del}</td></tr>`; }).join("");
   document.getElementById("iEmpty").style.display=list.length?"none":"block";
 }
 ["iSearch","iFilterStatus"].forEach(id=>document.getElementById(id).addEventListener("input",renderInvestigations));
 function updateOverdueBadge(){ const o=Store.data.accidents.filter(a=>investigationStatus(a)==="Overdue").length; const b=document.getElementById("overdueCount"); if(o>0){b.textContent=o;b.style.display="inline-block";}else b.style.display="none"; }
-
 /* ====== ACCIONES ====== */
 function allActions(){ const out=[]; Store.data.accidents.forEach(acc=>{(acc.invActions||[]).forEach(a=>out.push(Object.assign({},a,{accId:acc.id,accTitle:acc.title})));}); return out; }
 function renderActions(){
@@ -992,7 +965,6 @@ function renderActions(){
 }
 function updateActionsBadge(){ const open=allActions().filter(a=>actionStatus(a)!=="Cerrada").length; const b=document.getElementById("openActionsCount"); if(open>0){b.textContent=open;b.style.display="inline-block";}else b.style.display="none"; }
 ["actSearch","actFilterStatus","actFilterCls"].forEach(id=>document.getElementById(id).addEventListener("input",renderActions));
-
 /* ====== MODAL EDITAR ACCIÓN ====== */
 function openActionModal(accId,actId){
   if(!requireEdit())return;
@@ -1023,7 +995,6 @@ async function saveActionModal(){
   if(accCurrentId===acc.id){ modalActions=JSON.parse(JSON.stringify(acc.invActions||[])); renderAccModalBody(acc); }
   toast("💾 Acción actualizada ("+act.effResult+")");
 }
-
 /* ====== MODAL DETALLE ====== */
 function openAccidentModal(id){
   const acc=Store.data.accidents.find(a=>a.id===id); if(!acc)return;
@@ -1111,8 +1082,6 @@ function renderAccModalBody(acc){
         <tr><td>Descripción</td><td>${escapeHtml(acc.desc)}</td></tr><tr><td>Sede</td><td>${escapeHtml(acc.sede||"—")}<br><small style="color:var(--muted)">${escapeHtml(sedeAddress(acc.sede))}</small></td></tr>
       </tbody></table><p style="font-size:11px;color:var(--muted);margin-top:6px">🔒 Solo el administrador puede editar los datos.</p>`;
   }
-
-  // Bloque de detalle: FURAT editable (master+injury) o vista de la categoría
   let detailBlock;
   if(isMaster && isAcc && acc.category===CAT_INJURY){
     detailBlock=`
@@ -1150,13 +1119,10 @@ function renderAccModalBody(acc){
       <div class="form-row"><div class="form-group full"><label>Acción inmediata</label><textarea id="accm_nmImmediate">${escapeHtml(n.immediate||"")}</textarea></div></div>
       <div class="form-row"><div class="form-group full"><label>Sugerencia para evitar que se repita</label><textarea id="accm_nmSuggestion">${escapeHtml(n.suggestion||"")}</textarea></div></div></div>`;
   } else {
-    // viewer / editor no-master → vista lectura según tipo
     detailBlock = isAcc ? catBlockView(acc) : nmBlockView(acc);
   }
-
   const files=(acc.files||[]);
   const filesHtml=files.length?`<div class="file-list">${files.map(f=>{const t=f.preview?`<img src="${f.preview}">`:`<div class="fico">${(f.type||"").startsWith("video")?"🎬":"📄"}</div>`;return `<div class="file-chip">${t}<span>${escapeHtml(f.name)}</span></div>`;}).join("")}</div>`:'<p style="font-size:12px;color:var(--muted)">Sin soportes cargados.</p>';
-
   let inv;
   if(isEditor){
     inv=`<div class="form-row"><div class="form-group"><label>Fecha límite (15 días)</label><input type="date" value="${acc.invDueDate||""}" disabled></div><div class="form-group"><label>Fecha de completado</label><input type="date" id="accm_completed" value="${acc.invCompletedDate||""}"></div></div>
@@ -1165,13 +1131,11 @@ function renderAccModalBody(acc){
   } else {
     inv=`<table class="kv"><tbody><tr><td>Fecha límite</td><td>${fmtDate(acc.invDueDate)}</td></tr><tr><td>Completado</td><td>${acc.invCompletedDate?fmtDate(acc.invCompletedDate):"—"}</td></tr><tr><td>Causa raíz</td><td>${escapeHtml(acc.invRootCause)||"—"}</td></tr></tbody></table>`;
   }
-
   const actRows=modalActions.map((a,i)=>{ const asx=actionStatus(a); const ab=asx==="Cerrada"?"b-completada":asx==="Overdue"?"b-overdue":"b-abierta"; const eff=a.effResult||"Pendiente"; const ctrls=isEditor?`<button class="link-btn" onclick="editModalAction('${a.id}')">Editar</button> <button class="del" onclick="removeModalAction(${i})">✕</button>`:""; return `<tr><td>${escapeHtml(a.desc)}<br><small style="color:var(--muted)">${escapeHtml(a.owner||"")}${a.due?" · due "+fmtDate(a.due):""}</small></td><td><span class="pill ${clsBadgeClass(a.cls)}">${a.cls||"—"}</span></td><td><span class="badge ${ab}">${asx}</span></td><td><span class="badge ${effBadgeClass(eff)}">${eff}</span></td><td>${ctrls}</td></tr>`; }).join("");
   const addForm=isEditor?`
     <div class="form-row" style="margin-top:12px"><div class="form-group"><label>Nueva acción</label><input id="accm_actDesc" placeholder="Descripción"></div><div class="form-group"><label>Clasificación</label><select id="accm_actCls">${optionsHtml(ACTION_CLASSES,"Correctiva")}</select></div></div>
     <div class="form-row"><div class="form-group"><label>Responsable</label><input id="accm_actOwner" placeholder="Responsable"></div><div class="form-group"><label>Fecha límite</label><input type="date" id="accm_actDue"></div></div>
     <div style="text-align:right"><button type="button" class="btn ghost sm" onclick="addModalAction()">➕ Agregar acción</button></div>`:"";
-
   document.getElementById("accModalBody").innerHTML=`
     <div style="text-align:right;margin-bottom:8px"><span class="badge ${catBadgeClass(acc.category)}">${escapeHtml(acc.category)}</span> <span class="badge ${sb}">Investigación: ${st}</span></div>
     <h4>📄 Detalle del evento</h4><div style="margin:12px 0 4px">${core}</div>
@@ -1203,7 +1167,6 @@ function stashModalEdits(){
     if(g("accm_title")) acc.title=g("accm_title").value;
     if(g("accm_desc")) acc.desc=g("accm_desc").value;
     if(g("accm_sede")) acc.sede=g("accm_sede").value;
-    // detalle según categoría
     if(g("accm_type")) acc.type=g("accm_type").value;
     if(g("accm_jobTitle")) acc.jobTitle=g("accm_jobTitle").value;
     if(g("accm_jobExpNum")){ acc.jobExpNum=g("accm_jobExpNum").value; acc.jobExpUnit=g("accm_jobExpUnit").value; acc.jobExp=joinNumUnit(acc.jobExpNum,acc.jobExpUnit); }
@@ -1230,7 +1193,6 @@ async function saveAccModal(){
   renderAccidents(); renderInvestigations(); renderActions(); renderHseCharts(); updateOverdueBadge(); updateActionsBadge();
   closeAccModal(); toast("💾 Cambios guardados");
 }
-
 /* ====== QUALITY ====== */
 document.getElementById("qualityForm").onsubmit=async e=>{
   e.preventDefault(); if(!requireEdit())return;
@@ -1251,16 +1213,14 @@ function renderQualityCharts(){
 function renderQuality(){
   const q=val("qSearch").toLowerCase(), ft=val("qFilterType"), fs=val("qFilterStatus");
   const list=Store.data.quality.filter(e=>{ const match=((e.title||"")+(e.area||"")+(e.owner||"")).toLowerCase().includes(q); return match&&(!ft||e.type===ft)&&(!fs||e.status===fs); });
-  const showDel=can("edit");
+  const showDel=can("delEvent");
   document.getElementById("qBody").innerHTML=list.map(e=>{ const sc=e.status==="Abierto"?"b-open":e.status==="Cerrado"?"b-closed":"b-progress"; const del=showDel?`<button class="del" onclick="delQuality('${e.id}')">Eliminar</button>`:""; return `<tr><td><strong>${e.id}</strong></td><td>${escapeHtml(e.title)}</td><td><span class="tag">${e.type}</span></td><td>${e.cls||"—"}</td><td>${fmtDate(e.date)}</td><td><span class="badge ${sc}">${e.status}</span></td><td>${del}</td></tr>`; }).join("");
   document.getElementById("qEmpty").style.display=list.length?"none":"block";
 }
-async function delQuality(id){ if(!requireEdit())return; if(!confirm("¿Eliminar evento "+id+"?"))return; Store.data.quality=Store.data.quality.filter(e=>e.id!==id); await persist(); renderQuality(); toast("🗑 Evento eliminado"); }
+async function delQuality(id){ if(!can("delEvent")){ toast("🔒 Solo el administrador puede eliminar eventos."); return; } if(!confirm("¿Eliminar evento "+id+"?"))return; Store.data.quality=Store.data.quality.filter(e=>e.id!==id); await persist(); renderQuality(); toast("🗑 Evento eliminado"); }
 ["qSearch","qFilterType","qFilterStatus"].forEach(id=>document.getElementById(id).addEventListener("input",renderQuality));
-
 /* ====== CHART ====== */
 function mk(id,type,data,colors){ const ctx=document.getElementById(id);const isBar=type==="bar"; return new Chart(ctx,{type,data:{labels:Object.keys(data),datasets:[{data:Object.values(data),backgroundColor:colors,borderRadius:isBar?6:0,borderWidth:isBar?0:2,borderColor:"#fff"}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:!isBar,position:"bottom",labels:{boxWidth:12,font:{size:11}}}},scales:isBar?{y:{beginAtZero:true,ticks:{stepSize:1}},x:{ticks:{font:{size:9}}}}:{}}}); }
-
 /* ====== EXPORT / BACKUP ====== */
 function exportAccidentsCSV(){
   const head=["ID","Clasificacion","Categoria","ReportadoPor","TipoEmpleado","Fecha","Hora","Titulo","Sede","DireccionSede","TipoAccidente","Cargo","ExperienciaCargo","TiempoTrabajando","Actividad","Jornada","Sitio","TipoLesion","ParteCuerpo","DetalleParte","Agente","Mecanismo","ENV_Sustancia","ENV_CAS","ENV_Cantidad","ENV_Medio","ENV_Costo","ASSET_Activo","ASSET_Dano","ASSET_Costo","ASSET_Paro","LEGAL_Requisito","LEGAL_Entidad","LEGAL_Descripcion","LEGAL_Sancion","NM_Potencial","NM_QuePudoPasar","NM_AccionInmediata","NM_Sugerencia","Descripcion","InvDueDate","InvCompletada","EstadoInvestigacion","CausaRaiz","NumAcciones","Soportes"];
@@ -1275,33 +1235,31 @@ function exportJSON(){ downloadBlob(new Blob([JSON.stringify(Store.data,null,2)]
 function importJSON(ev){
   if(!can("master")){ toast("🔒 Solo el master puede restaurar."); return; }
   const file=ev.target.files[0]; if(!file)return; const rd=new FileReader();
-  rd.onload=async()=>{ try{ const data=normalizeData(JSON.parse(rd.result)); const n=data.accidents.length+data.quality.length; if(!confirm("Esto reemplazará todos los datos actuales por "+n+" registros. ¿Continuar?"))return; Store.data=data; await persist(); populateSedeSelects(); renderSedeList(); renderHseCharts(); renderAccidents(); renderInvestigations(); renderActions(); renderQualityCharts(); renderQuality(); updateOverdueBadge(); updateActionsBadge(); toast("📤 Backup restaurado"); }catch(e){ toast("⚠ Archivo JSON inválido"); } };
+  rd.onload=async()=>{ try{ const data=normalizeData(JSON.parse(rd.result)); const n=data.accidents.length+data.quality.length; if(!confirm("Esto reemplazará todos los datos actuales por "+n+" registros. ¿Continuar?"))return; Store.data=data; await persist(); populateSedeSelects(); renderSedeList(); applyBranding(); renderCompanySettings(); renderHseCharts(); renderAccidents(); renderInvestigations(); renderActions(); renderQualityCharts(); renderQuality(); updateOverdueBadge(); updateActionsBadge(); toast("📤 Backup restaurado"); }catch(e){ toast("⚠ Archivo JSON inválido"); } };
   rd.readAsText(file); ev.target.value="";
 }
 async function wipeAll(){
   if(!can("master")){ toast("🔒 Solo el master puede borrar todo."); return; }
   if(!confirm("¿Borrar TODOS los datos (HSE + Calidad)? No se puede deshacer."))return;
-  Store.data={ accidents:[], quality:[], sedes:Store.data.sedes }; await persist();
+  Store.data={ accidents:[], quality:[], sedes:Store.data.sedes, company:Store.data.company }; await persist();
   renderHseCharts(); renderAccidents(); renderInvestigations(); renderActions(); renderQualityCharts(); renderQuality(); updateOverdueBadge(); updateActionsBadge(); toast("🗑 Todos los datos fueron borrados");
 }
 function downloadBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();}
-
 /* ====== UI ====== */
 function refreshStorageUI(){
   const pill=document.getElementById("storagePill"), label=document.getElementById("storageLabel"), setDesc=document.getElementById("setStorageDesc"), setBadge=document.getElementById("setStorageBadge");
   if(Store.mode==="gdrive"){ pill.className="storage-pill cloud"; label.textContent="Google Drive"; const loc=APP_CONFIG.google.sharedFolderId?("carpeta compartida "+APP_CONFIG.google.sharedFolderId):("carpeta HSEQHub"+(gFolderId?(" — ID: "+gFolderId):"")+(session.role==="master"?" (compártela con tu equipo y pega el ID en el código)":"")); setDesc.textContent="Google Drive del MAIN · "+loc; setBadge.innerHTML='<span class="pill" style="background:#e6f6ec;color:var(--green)">☁ Google Drive</span>'; }
   else if(Store.mode==="sharepoint"){ pill.className="storage-pill cloud"; label.textContent="SharePoint"; setDesc.textContent="SharePoint compartido · "+APP_CONFIG.microsoft.sharePointHost+APP_CONFIG.microsoft.sharePointSite; setBadge.innerHTML='<span class="pill" style="background:#e6f6ec;color:var(--green)">☁ SharePoint</span>'; }
-  else { pill.className="storage-pill local"; label.textContent="Modo local (demo)"; setDesc.textContent="Modo local — solo este navegador"; setBadge.innerHTML='<span class="pill" style="background:#fff5e0;color:#b57d00">💾 Local</span>'; }
+  else { pill.className="storage-pill local"; label.textContent="Modo local"; setDesc.textContent="Modo local — solo este navegador"; setBadge.innerHTML='<span class="pill" style="background:#fff5e0;color:#b57d00">💾 Local</span>'; }
 }
 function renderUsersList(){
   let html=Object.entries(ACCESS_CONTROL).map(([email,role])=>`<div class="u"><span>${email}</span><span class="role-tag role-${role}">${role}</span></div>`).join("");
   if(ALLOW_ANY_AUTHENTICATED){ html+=`<div class="u"><span style="color:var(--muted)">🧪 Cualquier otra cuenta (Google o Microsoft) — modo experimento</span><span class="role-tag role-${DEFAULT_ROLE}">${DEFAULT_ROLE}</span></div>`; }
   document.getElementById("usersList").innerHTML=html;
 }
-
 /* ====== BOOT ====== */
+applyLoginBrandingFromCache();
 (function boot(){
-  // Las librerías cargan async; reintentamos inicializar ambas cuando estén listas.
   let tries=0;
   const t=setInterval(()=>{
     tries++;
@@ -1311,7 +1269,6 @@ function renderUsersList(){
     if(tries>40) clearInterval(t);
   },250);
 })();
-
 </script>
 </body>
 </html>
