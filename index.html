@@ -22,6 +22,11 @@
   .ms-login-btn:hover{background:#000}.ms-login-btn img{width:18px;height:18px;background:#fff;padding:1px;border-radius:2px}
   .login-err{background:#fdeeed;color:var(--red);padding:9px 12px;border-radius:8px;font-size:12.5px;margin-bottom:12px;display:none}
   .login-foot{text-align:center;font-size:11px;color:var(--muted);margin-top:20px}
+  #blockScreen{position:fixed;inset:0;z-index:1100;background:linear-gradient(135deg,#8a5a3a,#5a3a24);display:none;align-items:center;justify-content:center;padding:20px}
+  #blockScreen.show{display:flex}
+  .block-card{background:#fff;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.3);width:100%;max-width:440px;padding:34px;text-align:center}
+  .block-card .ic{font-size:44px;margin-bottom:12px}
+  .block-card h2{font-size:20px;margin-bottom:8px}.block-card p{color:var(--muted);font-size:13.5px;line-height:1.6;margin-bottom:18px}
   #app{display:none;min-height:100vh}#app.visible{display:flex}
   .sidebar{width:255px;background:linear-gradient(180deg,var(--teal-dark),var(--teal-darker));color:#fff;display:flex;flex-direction:column;position:fixed;height:100vh;top:0;left:0}
   .brand{padding:18px 20px;border-bottom:1px solid rgba(255,255,255,.12);display:flex;align-items:center;gap:10px}
@@ -110,7 +115,7 @@
   .b-nearmiss{background:#fff5e0;color:#b57d00}.b-accidente{background:#fdeeed;color:var(--red)}
   .b-abierta{background:#e9f1fb;color:var(--blue)}.b-completada{background:#e6f6ec;color:var(--green)}.b-overdue{background:#fdeeed;color:var(--red)}
   .b-efectiva{background:#e6f6ec;color:var(--green)}.b-noefectiva{background:#fdeeed;color:var(--red)}.b-pendiente{background:#eef1f1;color:var(--muted)}
-  .b-yes{background:#e6f6ec;color:var(--green)}.b-no{background:#fff5e0;color:#b57d00}
+  .b-yes{background:#e6f6ec;color:var(--green)}.b-no{background:#fff5e0;color:#b57d00}.b-susp{background:#fdeeed;color:var(--red)}
   .c-correctiva{background:#fdeeed;color:var(--red)}.c-preventiva{background:#e9f1fb;color:var(--blue)}.c-mejora{background:#e6f6ec;color:var(--green)}
   .cat-injury{background:#fdeeed;color:var(--red)}.cat-env{background:#e6f6ec;color:var(--green)}.cat-asset{background:#e9f1fb;color:var(--blue)}.cat-legal{background:#f0ecfa;color:var(--purple)}
   .pill{padding:3px 9px;border-radius:6px;font-size:11px;font-weight:700}.tag{padding:3px 9px;border-radius:6px;font-size:11px;font-weight:600;background:#eef3f3;color:var(--teal-dark)}
@@ -148,6 +153,14 @@
       <button class="ms-login-btn" onclick="loginMicrosoft()"><img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="MS"> Iniciar sesión con Microsoft</button>
       <div class="login-foot">Micro-SaaS HSEQ · Tus datos viven en el Drive / Microsoft 365 de tu empresa</div>
     </div>
+  </div>
+</div>
+<div id="blockScreen">
+  <div class="block-card">
+    <div class="ic">⛔</div>
+    <h2 id="blockTitle">Suscripción suspendida</h2>
+    <p id="blockMsg">El acceso de tu empresa está temporalmente suspendido. Por favor contacta a soporte para reactivarlo.</p>
+    <button class="btn ghost sm" onclick="logout()">Cerrar sesión</button>
   </div>
 </div>
 <div id="app">
@@ -371,7 +384,7 @@
     <div id="qEmpty" class="empty" style="display:none">No hay eventos de calidad registrados.</div>
   </section>
   <section id="settings" class="page">
-    <div class="note warn">🔐 <strong>Panel del administrador (master).</strong> Marca, sedes, copias de seguridad y usuarios.</div>
+    <div class="note warn">🔐 <strong>Panel del administrador (master).</strong> Marca, sedes, usuarios y copias de seguridad.</div>
     <div class="card settings-card">
       <h3>🎨 Identidad de la empresa</h3>
       <p class="d" style="font-size:12px;color:var(--muted);margin-bottom:12px">Personaliza el nombre y el logo. Se mostrará a todos los usuarios de tu empresa (sigue apareciendo "HSEQ Hub" como sello).</p>
@@ -390,6 +403,16 @@
       <button class="btn sm" onclick="saveCompany()">💾 Guardar marca</button>
     </div>
     <div class="card settings-card" style="margin-top:16px">
+      <h3>👥 Usuarios de la empresa</h3>
+      <p class="d" style="font-size:12px;color:var(--muted);margin-bottom:10px">Agrega o quita <strong>editores</strong> (crean/editan) y <strong>visualizadores</strong> (solo ven). Tú eres el <strong>administrador (master)</strong>. Recuerda además <strong>compartir tu carpeta HSEQHub</strong> (permiso Editor) con esos correos para que puedan entrar.</p>
+      <div class="users-list" id="companyUsers"></div>
+      <div class="form-row" style="margin-top:12px">
+        <div class="form-group"><label>Correo del usuario</label><input type="email" id="newUserEmail" placeholder="persona@empresa.com"></div>
+        <div class="form-group"><label>Rol</label><select id="newUserRole"><option value="editor">Editor (crea y edita)</option><option value="viewer">Visualizador (solo ve)</option></select></div>
+      </div>
+      <button class="btn ghost sm" onclick="addMember()">➕ Agregar usuario</button>
+    </div>
+    <div class="card settings-card" style="margin-top:16px">
       <h3>🏢 Sedes de la empresa</h3>
       <p class="d" style="font-size:12px;color:var(--muted);margin-bottom:10px">Cada evento se carga a una sede.</p>
       <div class="sede-list" id="sedeList"></div>
@@ -403,36 +426,23 @@
     </div>
     <div class="card settings-card" style="margin-top:16px">
       <div class="row"><div><div class="t">Almacenamiento actual</div><div class="d" id="setStorageDesc">Modo local</div></div><div id="setStorageBadge"></div></div>
-      <div class="row"><div><div class="t">📥 Backup completo (JSON)</div><div class="d">Incluye HSE + Calidad + sedes + marca.</div></div><button class="btn ghost" onclick="exportJSON()">Descargar JSON</button></div>
+      <div class="row"><div><div class="t">📥 Backup completo (JSON)</div><div class="d">Incluye HSE + Calidad + sedes + marca + usuarios.</div></div><button class="btn ghost" onclick="exportJSON()">Descargar JSON</button></div>
       <div class="row"><div><div class="t">📤 Restaurar desde copia (JSON)</div><div class="d">Reemplaza todos los datos.</div></div><label class="btn ghost" style="cursor:pointer">Subir JSON<input type="file" accept=".json" style="display:none" onchange="importJSON(event)"></label></div>
       <div class="row"><div><div class="t">🗑 Borrar todos los datos</div><div class="d">Acción irreversible.</div></div><button class="btn ghost" style="color:var(--red);border-color:#f3c3bf" onclick="wipeAll()">Borrar todo</button></div>
     </div>
-    <div class="card settings-card" style="margin-top:16px">
-      <h3>👥 Usuarios autorizados (definidos en el código)</h3>
-      <p class="d" style="font-size:12px;color:var(--muted);margin-bottom:6px">Edita <code>ACCESS_CONTROL</code> en el código.</p>
-      <div class="users-list" id="usersList"></div>
-    </div>
   </section>
   <section id="platform" class="page">
-    <div class="note warn">🌐 <strong>Panel de plataforma (superadmin).</strong> Registro de empresas, demos y backups. Solo puedes descargar datos de las empresas que te hayan <strong>compartido su carpeta</strong>.</div>
+    <div class="note warn">🌐 <strong>Panel de plataforma (superadmin).</strong> Estas son las empresas definidas en el código (mapa <code>COMPANIES</code>). Para agregar o suspender una empresa, edita ese mapa y sube el archivo a GitHub.</div>
     <div class="kpis">
-      <div class="kpi purple"><div class="label">Empresas registradas</div><div class="value" id="pTotal">0</div><div class="sub">en la plataforma</div></div>
-      <div class="kpi green"><div class="label">Con acceso (backup)</div><div class="value" id="pAccess">0</div><div class="sub">te compartieron la carpeta</div></div>
-      <div class="kpi amber"><div class="label">Sin acceso</div><div class="value" id="pNoAccess">0</div><div class="sub">solo ver que existen</div></div>
-      <div class="kpi"><div class="label">Estado</div><div class="value" style="font-size:18px" id="pState">—</div><div class="sub">registro en tu Drive</div></div>
+      <div class="kpi purple"><div class="label">Empresas registradas</div><div class="value" id="pTotal">0</div><div class="sub">en el código</div></div>
+      <div class="kpi green"><div class="label">Activas</div><div class="value" id="pActive">0</div><div class="sub">pueden entrar</div></div>
+      <div class="kpi red"><div class="label">Suspendidas</div><div class="value" id="pSusp">0</div><div class="sub">bloqueadas ⛔</div></div>
+      <div class="kpi"><div class="label">Con carpeta compartida</div><div class="value" id="pShared">0</div><div class="sub">backup disponible</div></div>
     </div>
-    <div class="card settings-card" style="max-width:100%">
-      <h3>➕ Registrar empresa</h3>
-      <div class="form-row">
-        <div class="form-group"><label>Nombre de la empresa</label><input type="text" id="pNewName" placeholder="Ej: Constructora XYZ S.A.S."></div>
-        <div class="form-group"><label>ID de carpeta HSEQHub (que te comparta la empresa)</label><input type="text" id="pNewFolder" placeholder="Ej: 1AbC…xyz (opcional si aún no te comparten)"></div>
-      </div>
-      <button class="btn sm" onclick="platformAddCompany()">➕ Agregar al registro</button>
-      <button class="btn ghost sm" onclick="platformRefresh()">🔄 Verificar accesos</button>
-    </div>
-    <div style="margin-top:16px">
-      <table><thead><tr><th>Empresa</th><th>ID de carpeta</th><th>Acceso</th><th>Acciones</th></tr></thead><tbody id="pBody"></tbody></table>
-      <div id="pEmpty" class="empty" style="display:none">Aún no has registrado empresas. Agrega la primera arriba.</div>
+    <div style="margin-top:4px">
+      <div class="toolbar"><button class="btn ghost sm" onclick="platformRefresh()">🔄 Verificar accesos a carpetas</button></div>
+      <table><thead><tr><th>Empresa</th><th>Correo master</th><th>Estado</th><th>Carpeta (ID)</th><th>Backup</th></tr></thead><tbody id="pBody"></tbody></table>
+      <div id="pEmpty" class="empty" style="display:none">No hay empresas en el mapa COMPANIES. Agrégalas en el código.</div>
     </div>
   </section>
 </main>
@@ -465,28 +475,36 @@
 </div>
 <div class="toast" id="toast"></div>
 <script>
-/* ====== CONFIGURACIÓN DE LA EMPRESA ====== */
+/* ============================================================
+   CONFIGURACIÓN DE LA PLATAFORMA
+   ============================================================ */
 const APP_CONFIG = {
   fileName: "hseqhub-data.json",
   google: {
-    clientId: "915763445718-al4meu0pdbogourgff4pq4v9pjd2cq2d.apps.googleusercontent.com",
-    sharedFolderId: ""
+    clientId: "915763445718-al4meu0pdbogourgff4pq4v9pjd2cq2d.apps.googleusercontent.com"
   },
-  microsoft: {
-    clientId: "",
-    sharePointHost: "tuempresa.sharepoint.com",
-    sharePointSite: "/sites/HSEQ"
-  }
+  microsoft: { clientId:"", sharePointHost:"tuempresa.sharepoint.com", sharePointSite:"/sites/HSEQ" }
 };
-/* === CONTROL DE ACCESO ===  Tu correo = master (usuario MAIN). */
-const ACCESS_CONTROL = { "danizabas@gmail.com":"master", "danielzabalasolano@gmail.com":"master" };
-/* === SUPERADMIN de la plataforma (ve todas las empresas registradas) === */
+
+/* === SUPERADMIN (dueño de la plataforma). Ve todas las empresas. === */
 const PLATFORM_ADMINS = ["danielzabalasolano@gmail.com"];
-function isPlatformAdmin(){ return PLATFORM_ADMINS.indexOf((session.email||"").toLowerCase())>=0; }
-/* 🧪 EXPERIMENTO: cualquier cuenta autenticada que no esté en la lista entra como DEFAULT_ROLE. */
-const ALLOW_ANY_AUTHENTICATED = true;
-const DEFAULT_ROLE = "editor";
-function resolveRole(email){ return ACCESS_CONTROL[email] || (ALLOW_ANY_AUTHENTICATED ? DEFAULT_ROLE : null); }
+
+/* ============================================================
+   MAPA DE EMPRESAS  (una sola app, muchas empresas)
+   ------------------------------------------------------------
+   Clave = correo del MASTER de la empresa.
+   folderId = ID de la carpeta HSEQHub del master (te lo da la app
+              cuando el master entra la primera vez y guarda un dato).
+   suspended = true bloquea a TODA la empresa (para cuando no paguen).
+   Para agregar/suspender una empresa: edita este mapa y sube a GitHub.
+   ============================================================ */
+const COMPANIES = {
+  "danizabas@gmail.com": { name:"BYD (piloto)", folderId:"", suspended:false }
+  // Ejemplos:
+  // "master.polimes@gmail.com": { name:"Polimes S.A.S.", folderId:"1AbC...", suspended:false },
+  // "gerente.nopago@gmail.com": { name:"NoPagó Ltda",     folderId:"1XyZ...", suspended:true  },
+};
+
 const GOOGLE_SCOPES = "https://www.googleapis.com/auth/drive openid email profile";
 const MS_SCOPES = ["Files.ReadWrite.All","Sites.ReadWrite.All","User.Read"];
 const PERMS = {
@@ -494,6 +512,9 @@ const PERMS = {
   editor:{edit:true, master:false, delEvent:false},
   viewer:{edit:false,master:false, delEvent:false}
 };
+function low(e){ return (e||"").toLowerCase(); }
+function isPlatformAdmin(){ return PLATFORM_ADMINS.indexOf(low(session.email))>=0; }
+
 const CAT_INJURY="Lesión o enfermedad", CAT_ENV="Ambiental", CAT_ASSET="Activos o financiero", CAT_LEGAL="Legal y regulatorio";
 const EVENT_CATEGORIES = [CAT_INJURY, CAT_ENV, CAT_ASSET, CAT_LEGAL];
 const ENV_UNITS = ["Litros","Galones","Kg","Toneladas","m³"];
@@ -516,18 +537,20 @@ const INJURY_TYPES = ["(10) Fractura","(20) Luxación","(25) Torcedura, esguince
 const BODY_PARTS = ["(1) Cabeza","(1.12) Ojo","(2) Cuello","(3) Tronco (incluye espalda, columna vertebral, médula espinal, pélvis)","(3.32) Tórax","(3.33) Abdomen","(4) Miembros superiores","(4.46) Manos","(5) Miembros inferiores","(5.56) Pies","(6) Ubicaciones múltiples","(7) Lesiones generales u otras"];
 const AGENTS = ["(1) Máquinas y/o equipos","(2) Medios de transporte","(3) Aparatos","(3.36) Herramientas, implementos o utensilios","(4) Materiales o sustancias","(4.4) Radiaciones","(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)","(6) Otros agentes no clasificados","(6.61) Animales (vivos o productos animales)","(7) Agentes no clasificados por falta de datos"];
 const MECHANISMS = ["(1) Caída de personas","(2) Caída de objetos","(3) Pisadas, choques o golpes","(4) Atrapamientos","(5) Sobreesfuerzo, esfuerzo excesivo o falso movimiento","(6) Exposición o contacto con temperatura extrema","(7) Exposición o contacto con la electricidad","(8) Exposición o contacto con sustancias nocivas, radiaciones o salpicaduras","(9) Otro"];
+
 /* ====== ESTADO ====== */
 let provider=null, accessToken=null, tokenExpiry=0;
 let tokenClient=null, googleReady=false, gFolderId=null, gFileId=null;
 let msalInstance=null, msAccount=null, spDriveId=null;
-let session={ email:null, role:null, name:null, method:null };
+let session={ email:null, role:null, name:null, method:null, company:null };
 let currentModule="hse";
 let pendingFiles=[];
 let accCurrentId=null, modalActions=[], modalFurat=null;
 let actionEdit={ accId:null, actId:null };
 let pendingCompanyLogo;
-let platformCompanies=[], platformFileId=null, viewingCompany=null;
-const Store={ mode:"local", data:{ accidents:[], quality:[], sedes:[], company:{name:"",logo:""} } };
+let platformRows=[], viewingCompany=null;
+const Store={ mode:"local", data:{ accidents:[], quality:[], sedes:[], company:{name:"",logo:""}, users:[] } };
+
 /* ====== FECHAS ====== */
 function todayStr(){ return new Date().toISOString().slice(0,10); }
 function addDays(dateStr,n){ if(!dateStr)return""; const d=new Date(dateStr+"T00:00:00"); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
@@ -543,22 +566,94 @@ function clsBadgeClass(c){ return c==="Correctiva"?"c-correctiva":c==="Preventiv
 function effBadgeClass(r){ return r==="Efectiva"?"b-efectiva":r==="No efectiva"?"b-noefectiva":"b-pendiente"; }
 function catBadgeClass(c){ return c===CAT_INJURY?"cat-injury":c===CAT_ENV?"cat-env":c===CAT_ASSET?"cat-asset":c===CAT_LEGAL?"cat-legal":"tag"; }
 function catShort(c){ return c===CAT_INJURY?"Lesión":c===CAT_ENV?"Ambiental":c===CAT_ASSET?"Activos":c===CAT_LEGAL?"Legal":(c||"—"); }
-/* ====== CHECKBOX HELPERS ====== */
 function checkboxGroupHTML(items, selected){ const sel=selected||[]; return items.map(it=>`<label><input type="checkbox" value="${escapeHtml(it)}" ${sel.indexOf(it)>=0?"checked":""}>${escapeHtml(it)}</label>`).join(""); }
 function getChecked(containerId){ return Array.from(document.querySelectorAll("#"+containerId+" input[type=checkbox]:checked")).map(c=>c.value); }
 function updateAccCount(groupId,countId){ const n=getChecked(groupId).length; const el=document.getElementById(countId); if(el){ el.textContent=n; el.className="cnt"+(n===0?" zero":""); } }
+
+/* ============================================================
+   RESOLUCIÓN DE ACCESO (empresa + rol + carpeta)
+   ============================================================ */
+async function findMembership(email){
+  // Busca carpetas HSEQHub compartidas con el usuario y lee su data.users
+  // Devuelve {role, folderId, fileId, data, companyName} o null.
+  try{
+    const q=encodeURIComponent("mimeType='application/vnd.google-apps.folder' and name='HSEQHub' and trashed=false");
+    const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name,ownedByMe)`,{ headers:gHead() });
+    if(!r.ok) return null;
+    const d=await r.json();
+    for(const folder of (d.files||[])){
+      const res=await driveReadFolder(folder.id);
+      if(res && res.data){
+        const users=(res.data.users||[]);
+        const u=users.find(x=>low(x.email)===email);
+        if(u){ return { role:u.role||"viewer", folderId:folder.id, fileId:res.fileId, data:res.data, companyName:(res.data.company&&res.data.company.name)||"Empresa" }; }
+      }
+    }
+  }catch(e){ console.warn("findMembership",e); }
+  return null;
+}
+/* Devuelve: {ok, role, folderId, company, suspended, superadmin, newCompany, data?} */
+async function resolveAccess(email){
+  email=low(email);
+  if(isPlatformAdmin()){ return { ok:true, role:"master", superadmin:true, folderId:null, company:"(superadmin)" }; }
+  const c = COMPANIES[email];
+  if(c){
+    if(c.suspended) return { ok:false, suspended:true, company:c.name };
+    return { ok:true, role:"master", folderId:c.folderId||null, company:c.name };
+  }
+  // Miembro (editor/viewer) de una empresa que le compartió su carpeta
+  const m = await findMembership(email);
+  if(m){
+    // Si la empresa dueña está suspendida en el mapa, bloquear también
+    const owner=Object.values(COMPANIES).find(x=>x.folderId && x.folderId===m.folderId);
+    if(owner && owner.suspended) return { ok:false, suspended:true, company:m.companyName };
+    return { ok:true, role:m.role, folderId:m.folderId, company:m.companyName, membership:m };
+  }
+  // Correo nuevo sin empresa: se auto-crea como master de su propia carpeta (empresa nueva)
+  return { ok:true, role:"master", folderId:null, company:"(nueva — pendiente de registrar)", newCompany:true };
+}
+
 /* ====== FLUJO COMÚN TRAS AUTENTICARSE ====== */
 async function afterLogin(email, name, method){
-  email=(email||"").toLowerCase();
-  const role=resolveRole(email);
-  if(!role){ showLoginErr("El correo "+email+" no está autorizado. Contacta al administrador."); return false; }
-  session={ email, role, name:name||email, method };
-  if(method==="google"){ Store.mode="gdrive"; Store.data=normalizeData(await driveRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await driveWrite(Store.data); } }
-  else if(method==="microsoft"){ Store.mode="sharepoint"; await resolveSharePointDrive(); Store.data=normalizeData(await spRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await spWrite(Store.data); } }
+  email=low(email);
+  session={ email, role:null, name:name||email, method, company:null };
+  // Superadmin usa su propia carpeta como bodega del registro/plataforma
+  const access = await resolveAccess(email);
+  if(!access.ok){
+    // Empresa suspendida
+    showBlocked(access.company);
+    return false;
+  }
+  session.role = access.role;
+  session.company = access.company;
+  session.superadmin = !!access.superadmin;
+
+  if(method==="google"){
+    Store.mode="gdrive";
+    if(access.folderId){ gFolderId=access.folderId; }        // master registrado o miembro → carpeta de la empresa
+    else if(access.membership){ gFolderId=access.membership.folderId; gFileId=access.membership.fileId; }
+    else { gFolderId=null; }                                  // master nuevo → la app creará su carpeta
+    // Cargar datos de la carpeta correspondiente
+    if(access.membership && access.membership.data){ Store.data=normalizeData(access.membership.data); }
+    else { Store.data=normalizeData(await driveRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await driveWrite(Store.data); } }
+    // Asegurar que el master quede como dueño en los datos
+    if(session.role==="master" && !session.superadmin){ ensureOwner(email); }
+  }
+  else if(method==="microsoft"){
+    Store.mode="sharepoint"; await resolveSharePointDrive();
+    Store.data=normalizeData(await spRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await spWrite(Store.data); }
+  }
   enterApp(); saveSession();
-  toast("✅ Bienvenido, "+session.name+" ("+role+")");
+  toast("✅ Bienvenido, "+session.name+" ("+session.role+")");
   return true;
 }
+function ensureOwner(email){
+  Store.data.users = Store.data.users || [];
+  if(!Store.data.users.some(u=>low(u.email)===email)){
+    Store.data.users.push({ email, role:"master", owner:true });
+  }
+}
+
 /* ====== GOOGLE ====== */
 function initGoogle(){
   if(!APP_CONFIG.google.clientId) return false;
@@ -578,7 +673,7 @@ function initGoogle(){
 }
 function loginGoogle(){
   hideLoginErr();
-  if(!APP_CONFIG.google.clientId){ showLoginErr("Aún no configuras el Client ID de Google. Revisa el LEEME."); return; }
+  if(!APP_CONFIG.google.clientId){ showLoginErr("Aún no configuras el Client ID de Google."); return; }
   if(!googleReady && !initGoogle()){ showLoginErr("La librería de Google aún no cargó. Espera un segundo y reintenta."); return; }
   tokenClient.requestAccessToken({ prompt:"" });
 }
@@ -591,7 +686,7 @@ function initMsal(){
 }
 async function loginMicrosoft(){
   hideLoginErr();
-  if(!APP_CONFIG.microsoft.clientId){ showLoginErr("Aún no configuras el Client ID de Microsoft. Revisa el LEEME."); return; }
+  if(!APP_CONFIG.microsoft.clientId){ showLoginErr("Aún no configuras el Client ID de Microsoft."); return; }
   if(!initMsal()){ showLoginErr("La librería de Microsoft aún no cargó. Espera un segundo y reintenta."); return; }
   try{
     const res=await msalInstance.loginPopup({ scopes:MS_SCOPES }); msAccount=res.account; provider="microsoft";
@@ -605,8 +700,16 @@ async function logout(){
   if(session.method==="microsoft" && msalInstance && msAccount){ try{ await msalInstance.logoutPopup({ account:msAccount }); }catch(e){} }
   clearSession();
   provider=null; accessToken=null; gFolderId=null; gFileId=null; spDriveId=null; msAccount=null; viewingCompany=null;
-  session={ email:null, role:null, name:null, method:null };
-  document.getElementById("app").classList.remove("visible"); document.getElementById("loginScreen").style.display="flex";
+  session={ email:null, role:null, name:null, method:null, company:null };
+  document.getElementById("app").classList.remove("visible");
+  document.getElementById("blockScreen").classList.remove("show");
+  document.getElementById("loginScreen").style.display="flex";
+}
+function showBlocked(companyName){
+  document.getElementById("loginScreen").style.display="none";
+  document.getElementById("app").classList.remove("visible");
+  const bs=document.getElementById("blockScreen"); bs.classList.add("show");
+  document.getElementById("blockMsg").textContent="El acceso de "+(companyName||"tu empresa")+" está temporalmente suspendido. Por favor contacta a soporte para reactivarlo.";
 }
 /* ====== SESIÓN PERSISTENTE ====== */
 function saveSession(){ try{ localStorage.setItem("hseq_session", JSON.stringify({ email:session.email, name:session.name, method:session.method, token:accessToken, exp:tokenExpiry||(Date.now()+3300000) })); }catch(e){} }
@@ -630,9 +733,11 @@ async function tryRestore(){
   }
   return false;
 }
+
 /* ====== ENTRAR ====== */
 function enterApp(){
   document.getElementById("loginScreen").style.display="none";
+  document.getElementById("blockScreen").classList.remove("show");
   document.getElementById("app").classList.add("visible");
   document.getElementById("acctName").textContent=session.name;
   document.getElementById("acctAvatar").textContent=(session.name||"?").substring(0,2).toUpperCase();
@@ -659,19 +764,19 @@ function enterApp(){
   document.getElementById("grpAgent").onchange=()=>updateAccCount("grpAgent","cntAgent");
   document.getElementById("grpMechanism").onchange=()=>updateAccCount("grpMechanism","cntMechanism");
   populateSedeSelects();
-  applyBranding(); renderCompanySettings(); updateMyFolderId();
-  refreshStorageUI(); renderUsersList(); renderSedeList();
-  updateViewBanner();
-  if(isPlatformAdmin()){ platformLoad().then(()=>renderPlatform()).catch(e=>console.warn("platform",e)); }
+  applyBranding(); renderCompanySettings(); renderMembers(); updateMyFolderId();
+  refreshStorageUI(); renderSedeList(); updateViewBanner();
+  if(isPlatformAdmin()){ platformBuild(); }
   switchModule("hse");
 }
+
 /* ====== DATA HELPERS ====== */
 function normalizeAction(a){ return { id:a.id, desc:a.desc||"", owner:a.owner||"", due:a.due||"", status:a.status||"Abierta", cls:a.cls||"Correctiva", effDate:a.effDate||"", effResult:a.effResult||"Pendiente", effComments:a.effComments||"" }; }
 function normalizeData(d){
   let data;
-  if(!d) data={ accidents:[], quality:[], sedes:DEFAULT_SEDES.slice(), company:{name:"",logo:""} };
-  else if(Array.isArray(d)) data={ accidents:[], quality:d, sedes:DEFAULT_SEDES.slice(), company:{name:"",logo:""} };
-  else data={ accidents:d.accidents||[], quality:d.quality||[], sedes:(d.sedes&&d.sedes.length)?d.sedes:DEFAULT_SEDES.slice(), company:d.company||{name:"",logo:""} };
+  if(!d) data={ accidents:[], quality:[], sedes:DEFAULT_SEDES.slice(), company:{name:"",logo:""}, users:[] };
+  else if(Array.isArray(d)) data={ accidents:[], quality:d, sedes:DEFAULT_SEDES.slice(), company:{name:"",logo:""}, users:[] };
+  else data={ accidents:d.accidents||[], quality:d.quality||[], sedes:(d.sedes&&d.sedes.length)?d.sedes:DEFAULT_SEDES.slice(), company:d.company||{name:"",logo:""}, users:d.users||[] };
   data.accidents.forEach(a=>{ a.invActions=(a.invActions||[]).map(normalizeAction); if(!a.category) a.category=CAT_INJURY; });
   return data;
 }
@@ -681,16 +786,15 @@ async function persist(){
   try{ if(Store.mode==="gdrive") await driveWrite(Store.data); else if(Store.mode==="sharepoint") await spWrite(Store.data); }
   catch(e){ console.error(e); toast("⚠ No se pudo guardar en la nube"); }
 }
-/* ====== GOOGLE DRIVE — carpeta compartida del usuario MAIN ====== */
+
+/* ====== GOOGLE DRIVE ====== */
 const gHead=()=>({ Authorization:`Bearer ${accessToken}` });
 async function driveGetFolderId(){
-  if(APP_CONFIG.google.sharedFolderId) return APP_CONFIG.google.sharedFolderId;
   if(gFolderId) return gFolderId;
-  const q=encodeURIComponent("mimeType='application/vnd.google-apps.folder' and name='HSEQHub' and trashed=false");
+  // Crear/usar carpeta HSEQHub del usuario actual (para masters nuevos)
+  const q=encodeURIComponent("mimeType='application/vnd.google-apps.folder' and name='HSEQHub' and 'root' in parents and trashed=false");
   const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,{ headers:gHead() });
-  if(!r.ok) throw new Error("Drive carpeta "+r.status);
-  const d=await r.json();
-  if(d.files&&d.files[0]){ gFolderId=d.files[0].id; return gFolderId; }
+  if(r.ok){ const d=await r.json(); if(d.files&&d.files[0]){ gFolderId=d.files[0].id; return gFolderId; } }
   const meta={ name:"HSEQHub", mimeType:"application/vnd.google-apps.folder" };
   const cr=await fetch("https://www.googleapis.com/drive/v3/files?fields=id",{ method:"POST", headers:{ ...gHead(),"Content-Type":"application/json" }, body:JSON.stringify(meta) });
   if(!cr.ok) throw new Error("Drive crear carpeta "+cr.status);
@@ -727,6 +831,18 @@ async function driveWrite(data){
     gFileId=(await r.json()).id;
   }
 }
+async function driveReadFolder(folderId){
+  try{
+    const q=encodeURIComponent(`'${folderId}' in parents and name='${APP_CONFIG.fileName}' and trashed=false`);
+    const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,{ headers:gHead() });
+    if(!r.ok) return null;
+    const d=await r.json();
+    if(!d.files||!d.files[0]) return null;
+    const fr=await fetch(`https://www.googleapis.com/drive/v3/files/${d.files[0].id}?alt=media`,{ headers:gHead() });
+    if(!fr.ok) return null;
+    return { fileId:d.files[0].id, data:await fr.json() };
+  }catch(e){ return null; }
+}
 /* ====== MICROSOFT SHAREPOINT ====== */
 async function resolveSharePointDrive(){
   const host=APP_CONFIG.microsoft.sharePointHost, site=APP_CONFIG.microsoft.sharePointSite;
@@ -740,122 +856,90 @@ async function resolveSharePointDrive(){
 function spEndpoint(){ return `https://graph.microsoft.com/v1.0/drives/${spDriveId}/root:/HSEQHub/${APP_CONFIG.fileName}`; }
 async function spRead(){ const r=await fetch(spEndpoint()+":/content",{ headers:{ Authorization:`Bearer ${accessToken}` }}); if(r.status===404)return null; if(!r.ok)throw new Error("Lectura Graph "+r.status); return await r.json(); }
 async function spWrite(data){ const r=await fetch(spEndpoint()+":/content",{ method:"PUT", headers:{ Authorization:`Bearer ${accessToken}`,"Content-Type":"application/json" }, body:JSON.stringify(data,null,2) }); if(!r.ok)throw new Error("Escritura Graph "+r.status); }
-/* ====== PANEL DE PLATAFORMA (superadmin) ====== */
-async function driveReadFolder(folderId){
-  // Devuelve {fileId, data} de la carpeta indicada, o null si no hay acceso/datos.
-  try{
-    const q=encodeURIComponent(`'${folderId}' in parents and name='${APP_CONFIG.fileName}' and trashed=false`);
-    const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,{ headers:gHead() });
-    if(!r.ok) return null;
-    const d=await r.json();
-    if(!d.files||!d.files[0]) return null;
-    const fr=await fetch(`https://www.googleapis.com/drive/v3/files/${d.files[0].id}?alt=media`,{ headers:gHead() });
-    if(!fr.ok) return null;
-    return { fileId:d.files[0].id, data:await fr.json() };
-  }catch(e){ return null; }
-}
-async function platformFindFile(){
-  const q=encodeURIComponent("name='hseqhub-platform.json' and trashed=false");
-  const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,{ headers:gHead() });
-  if(!r.ok) return null;
-  const d=await r.json();
-  return (d.files&&d.files[0])?d.files[0].id:null;
-}
-async function platformLoad(){
-  platformFileId=await platformFindFile();
-  if(!platformFileId){ platformCompanies=[]; return; }
-  const r=await fetch(`https://www.googleapis.com/drive/v3/files/${platformFileId}?alt=media`,{ headers:gHead() });
-  if(!r.ok){ platformCompanies=[]; return; }
-  const d=await r.json();
-  platformCompanies=(d&&d.companies)||[];
-}
-async function platformSave(){
-  const body=JSON.stringify({ companies:platformCompanies },null,2);
-  if(platformFileId){
-    const r=await fetch(`https://www.googleapis.com/upload/drive/v3/files/${platformFileId}?uploadType=media`,{ method:"PATCH", headers:{ ...gHead(),"Content-Type":"application/json" }, body });
-    if(!r.ok) throw new Error("Plataforma escritura "+r.status);
-  } else {
-    const metadata={ name:"hseqhub-platform.json" };
-    const boundary="platboundary"+Date.now();
-    const multipart=`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n--${boundary}\r\nContent-Type: application/json\r\n\r\n${body}\r\n--${boundary}--`;
-    const r=await fetch("https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id",{ method:"POST", headers:{ ...gHead(),"Content-Type":`multipart/related; boundary=${boundary}` }, body:multipart });
-    if(!r.ok) throw new Error("Plataforma creación "+r.status);
-    platformFileId=(await r.json()).id;
-  }
+
+/* ============================================================
+   PANEL DE PLATAFORMA (superadmin) — muestra el mapa COMPANIES
+   ============================================================ */
+function platformBuild(){
+  platformRows = Object.entries(COMPANIES).map(([master,c])=>({ master, name:c.name, folderId:c.folderId||"", suspended:!!c.suspended, shared:null }));
+  renderPlatform();
 }
 function renderPlatform(){
-  const list=platformCompanies;
-  const withAccess=list.filter(c=>c.access===true).length;
-  const noAccess=list.filter(c=>c.access===false).length;
-  document.getElementById("pTotal").textContent=list.length;
-  document.getElementById("pAccess").textContent=withAccess;
-  document.getElementById("pNoAccess").textContent=list.length-withAccess; // desconocido cuenta como "sin acceso confirmado"
-  document.getElementById("pState").textContent=platformFileId?"Guardado":"Nuevo";
-  document.getElementById("pBody").innerHTML=list.map((c,i)=>{
-    const acc=c.access===true?'<span class="badge b-yes">Con acceso</span>':(c.access===false?'<span class="badge b-no">Sin acceso</span>':'<span class="badge b-pendiente">Sin verificar</span>');
-    const fid=c.folderId?`<span class="folder-id">${escapeHtml(c.folderId)}</span>`:'<span style="color:var(--muted)">— (sin ID aún)</span>';
-    const backup=c.folderId?`<button class="link-btn" onclick="platformBackup(${i})">📥 Backup</button>`:"";
-    const open=c.folderId?` · <button class="link-btn" onclick="platformOpen(${i})">👁 Abrir (demo)</button>`:"";
-    return `<tr><td><strong>${escapeHtml(c.name||"—")}</strong></td><td>${fid}</td><td>${acc}</td><td>${backup}${open} · <button class="del" onclick="platformRemove(${i})">Eliminar</button></td></tr>`;
+  const total=platformRows.length;
+  const active=platformRows.filter(r=>!r.suspended).length;
+  const susp=platformRows.filter(r=>r.suspended).length;
+  const shared=platformRows.filter(r=>r.shared===true).length;
+  document.getElementById("pTotal").textContent=total;
+  document.getElementById("pActive").textContent=active;
+  document.getElementById("pSusp").textContent=susp;
+  document.getElementById("pShared").textContent=shared;
+  document.getElementById("pBody").innerHTML=platformRows.map((r,i)=>{
+    const estado = r.suspended?'<span class="badge b-susp">Suspendida ⛔</span>':'<span class="badge b-yes">Activa</span>';
+    const fid = r.folderId?`<span class="folder-id">${escapeHtml(r.folderId)}</span>`:'<span style="color:var(--muted)">— (sin ID; el master aún no lo comparte)</span>';
+    let backup='';
+    if(r.folderId){
+      if(r.shared===true) backup=`<button class="link-btn" onclick="platformBackup(${i})">📥 Backup</button>`;
+      else if(r.shared===false) backup=`<span style="color:var(--muted)">🔒 Sin acceso</span>`;
+      else backup=`<button class="link-btn" onclick="platformBackup(${i})">📥 Backup</button>`;
+    } else backup='<span style="color:var(--muted)">—</span>';
+    return `<tr><td><strong>${escapeHtml(r.name)}</strong></td><td>${escapeHtml(r.master)}</td><td>${estado}</td><td>${fid}</td><td>${backup}</td></tr>`;
   }).join("");
-  document.getElementById("pEmpty").style.display=list.length?"none":"block";
-}
-async function platformAddCompany(){
-  if(!isPlatformAdmin()){ toast("🔒 Solo el superadmin."); return; }
-  const name=(document.getElementById("pNewName").value||"").trim();
-  const folderId=(document.getElementById("pNewFolder").value||"").trim();
-  if(!name){ toast("⚠ Escribe el nombre de la empresa"); return; }
-  platformCompanies.push({ name, folderId, access:null });
-  await platformSave();
-  document.getElementById("pNewName").value=""; document.getElementById("pNewFolder").value="";
-  if(folderId){ const res=await driveReadFolder(folderId); platformCompanies[platformCompanies.length-1].access=!!res; await platformSave(); }
-  renderPlatform(); toast("🏢 Empresa registrada");
-}
-async function platformRemove(i){
-  if(!isPlatformAdmin())return;
-  const c=platformCompanies[i]; if(!c)return;
-  if(!confirm("¿Quitar '"+c.name+"' del registro de plataforma? (No borra los datos de la empresa)")) return;
-  platformCompanies.splice(i,1); await platformSave(); renderPlatform(); toast("🗑 Empresa quitada del registro");
+  document.getElementById("pEmpty").style.display=total?"none":"block";
 }
 async function platformRefresh(){
   if(!isPlatformAdmin())return;
-  toast("🔄 Verificando accesos…");
-  for(const c of platformCompanies){ if(c.folderId){ const res=await driveReadFolder(c.folderId); c.access=!!res; } else { c.access=null; } }
-  await platformSave(); renderPlatform(); toast("✅ Accesos verificados");
+  toast("🔄 Verificando accesos a carpetas…");
+  for(const r of platformRows){ if(r.folderId){ const res=await driveReadFolder(r.folderId); r.shared=!!res; } else { r.shared=null; } }
+  renderPlatform(); toast("✅ Verificación completa");
 }
 async function platformBackup(i){
-  const c=platformCompanies[i]; if(!c||!c.folderId)return;
-  const res=await driveReadFolder(c.folderId);
-  if(!res){ c.access=false; await platformSave(); renderPlatform(); toast("🔒 No tienes acceso a la carpeta de '"+c.name+"'. Pídeles que te la compartan (Editor)."); return; }
-  c.access=true; await platformSave(); renderPlatform();
-  downloadBlob(new Blob([JSON.stringify(res.data,null,2)],{type:"application/json"}),"backup-"+(c.name||"empresa").replace(/[^a-z0-9]+/gi,"_")+".json");
-  toast("📥 Backup de '"+c.name+"' descargado");
+  const r=platformRows[i]; if(!r||!r.folderId)return;
+  const res=await driveReadFolder(r.folderId);
+  if(!res){ r.shared=false; renderPlatform(); toast("🔒 No tienes acceso a la carpeta de '"+r.name+"'. Pídeles que la compartan (Editor) con tu correo."); return; }
+  r.shared=true; renderPlatform();
+  downloadBlob(new Blob([JSON.stringify(res.data,null,2)],{type:"application/json"}),"backup-"+(r.name||"empresa").replace(/[^a-z0-9]+/gi,"_")+".json");
+  toast("📥 Backup de '"+r.name+"' descargado");
 }
-async function platformOpen(i){
-  const c=platformCompanies[i]; if(!c||!c.folderId)return;
-  const res=await driveReadFolder(c.folderId);
-  if(!res){ c.access=false; await platformSave(); renderPlatform(); toast("🔒 No tienes acceso a la carpeta de '"+c.name+"'."); return; }
-  c.access=true; await platformSave();
-  Store.data=normalizeData(res.data); gFolderId=c.folderId; gFileId=res.fileId; viewingCompany=c.name; Store.mode="gdrive";
-  populateSedeSelects(); applyBranding(); renderCompanySettings(); refreshStorageUI(); updateViewBanner();
-  switchModule("hse");
-  toast("👁 Viendo empresa: "+c.name);
+function updateMyFolderId(){ const el=document.getElementById("myFolderId"); if(el) el.textContent=(gFolderId||"— (se crea al guardar el primer dato)"); }
+function copyMyFolderId(){ const id=gFolderId||""; if(!id){ toast("Aún no hay ID (crea un primer dato)"); return; } if(navigator.clipboard){ navigator.clipboard.writeText(id).then(()=>toast("📋 ID copiado")); } else { toast(id); } }
+function updateViewBanner(){ const b=document.getElementById("viewBanner"); if(b) b.classList.remove("show"); }
+function exitCompanyView(){ /* reservado para versiones futuras */ }
+
+/* ============================================================
+   GESTIÓN DE USUARIOS DE LA EMPRESA (master)
+   ============================================================ */
+function renderMembers(){
+  const el=document.getElementById("companyUsers"); if(!el) return;
+  const users=Store.data.users||[];
+  if(!users.length){ el.innerHTML='<p style="font-size:12px;color:var(--muted)">Aún no hay usuarios adicionales. El administrador (tú) ya tiene acceso total.</p>'; return; }
+  el.innerHTML=users.map((u,i)=>{
+    const isOwner=!!u.owner;
+    const del=(isOwner||!can("master"))?'':`<button class="del" onclick="removeMember(${i})">Eliminar</button>`;
+    const tag=`<span class="role-tag role-${u.role}">${u.role}${isOwner?" (dueño)":""}</span>`;
+    return `<div class="u"><span>${escapeHtml(u.email)} ${tag}</span>${del}</div>`;
+  }).join("");
 }
-async function exitCompanyView(){
-  if(!viewingCompany)return;
-  viewingCompany=null; gFolderId=null; gFileId=null;
-  try{ Store.data=normalizeData(await driveRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await driveWrite(Store.data); } }catch(e){ console.error(e); }
-  populateSedeSelects(); applyBranding(); renderCompanySettings(); refreshStorageUI(); updateViewBanner();
-  switchModule("hse");
-  toast("↩ Volviste a tu cuenta");
+async function addMember(){
+  if(!can("master")){ toast("🔒 Solo el administrador gestiona usuarios."); return; }
+  const email=low((document.getElementById("newUserEmail").value||"").trim());
+  const role=document.getElementById("newUserRole").value;
+  if(!email.includes("@")){ toast("⚠ Escribe un correo válido"); return; }
+  if(!["editor","viewer"].includes(role)){ toast("⚠ Rol inválido"); return; }
+  Store.data.users=(Store.data.users||[]).filter(u=>low(u.email)!==email); // evita duplicado / cambia rol
+  Store.data.users.push({ email, role });
+  await persist();
+  document.getElementById("newUserEmail").value="";
+  renderMembers();
+  toast("👤 Usuario "+email+" agregado como "+role+". Recuerda compartirle la carpeta HSEQHub.");
 }
-function updateViewBanner(){
-  const b=document.getElementById("viewBanner"), t=document.getElementById("viewBannerText");
-  if(viewingCompany){ t.innerHTML="👁 <strong>Vista de plataforma:</strong> estás viendo los datos de <strong>"+escapeHtml(viewingCompany)+"</strong>. Los cambios que guardes afectan a esa empresa."; b.classList.add("show"); }
-  else b.classList.remove("show");
+async function removeMember(i){
+  if(!can("master")){ toast("🔒 Solo el administrador gestiona usuarios."); return; }
+  const u=Store.data.users[i]; if(!u||u.owner)return;
+  if(!confirm("¿Quitar el acceso de "+u.email+"?")) return;
+  Store.data.users.splice(i,1); await persist(); renderMembers();
+  toast("🗑 Usuario eliminado. (Quita también el acceso a la carpeta desde tu Drive.)");
 }
-function updateMyFolderId(){ const el=document.getElementById("myFolderId"); if(el) el.textContent=(gFolderId||APP_CONFIG.google.sharedFolderId||"— (se crea al guardar el primer dato)"); }
-function copyMyFolderId(){ const id=gFolderId||APP_CONFIG.google.sharedFolderId||""; if(!id){ toast("Aún no hay ID (crea un primer dato)"); return; } if(navigator.clipboard){ navigator.clipboard.writeText(id).then(()=>toast("📋 ID copiado")); } else { toast(id); } }
+
 /* ====== MARCA / BRANDING ====== */
 function applyBranding(){
   const c=(Store.data&&Store.data.company)||{name:"",logo:""};
@@ -865,7 +949,7 @@ function applyBranding(){
   else { bl.textContent="HSEQ"; ll.textContent="HSEQ"; }
   if(c.name){ bt.textContent=c.name; bs.textContent="HSEQ Hub"; lt.textContent=c.name; lp.textContent="HSEQ Hub"; }
   else { bt.textContent="HSEQ Hub"; bs.textContent="Health · Safety · Env · Quality"; lt.textContent="HSEQ Hub"; lp.textContent="Health · Safety · Environment · Quality"; }
-  try{ if(!viewingCompany) localStorage.setItem("hseq_brand", JSON.stringify(c)); }catch(e){}
+  try{ localStorage.setItem("hseq_brand", JSON.stringify(c)); }catch(e){}
 }
 function applyLoginBrandingFromCache(){
   try{ const c=JSON.parse(localStorage.getItem("hseq_brand")||"null"); if(!c)return;
@@ -883,20 +967,18 @@ function renderCompanySettings(){
 }
 function onCompanyLogo(ev){
   const f=ev.target.files[0]; if(!f)return;
-  if(f.size>400000){ toast("⚠ El logo es muy grande (máx ~400 KB). Usa una imagen pequeña."); ev.target.value=""; return; }
+  if(f.size>400000){ toast("⚠ El logo es muy grande (máx ~400 KB)."); ev.target.value=""; return; }
   const rd=new FileReader();
-  rd.onload=()=>{ pendingCompanyLogo=rd.result; const prev=document.getElementById("companyLogoPreview"); prev.innerHTML=`<img src="${pendingCompanyLogo}" alt="logo">`; };
+  rd.onload=()=>{ pendingCompanyLogo=rd.result; document.getElementById("companyLogoPreview").innerHTML=`<img src="${pendingCompanyLogo}" alt="logo">`; };
   rd.readAsDataURL(f); ev.target.value="";
 }
-function removeCompanyLogo(){ pendingCompanyLogo=""; const prev=document.getElementById("companyLogoPreview"); prev.textContent="Sin logo"; }
+function removeCompanyLogo(){ pendingCompanyLogo=""; document.getElementById("companyLogoPreview").textContent="Sin logo"; }
 async function saveCompany(){
   if(!can("master")){ toast("🔒 Solo el administrador puede cambiar la marca."); return; }
   Store.data.company=Store.data.company||{name:"",logo:""};
   Store.data.company.name=(document.getElementById("companyName").value||"").trim();
   if(pendingCompanyLogo!==undefined){ Store.data.company.logo=pendingCompanyLogo; }
-  await persist();
-  pendingCompanyLogo=undefined;
-  applyBranding(); renderCompanySettings();
+  await persist(); pendingCompanyLogo=undefined; applyBranding(); renderCompanySettings();
   toast("🎨 Marca de la empresa actualizada");
 }
 /* ====== SEDES ====== */
@@ -933,7 +1015,7 @@ function switchModule(mod){
   if(mod==="hse"){ badge.className="module-badge hse"; badge.textContent="🦺 Módulo HSE"; goToPage("hse-dashboard"); }
   else { badge.className="module-badge quality"; badge.textContent="✅ Módulo Calidad"; goToPage("q-dashboard"); }
 }
-const titles={"hse-dashboard":["Dashboard HSE","Resumen de eventos HSE"],"hse-report":["Reportar evento","Registro de evento HSE"],"hse-list":["Eventos HSE","Listado de eventos HSE"],"hse-investigations":["Investigaciones","Seguimiento de investigaciones y overdue"],"hse-actions":["Acciones","Seguimiento de acciones correctivas"],"q-dashboard":["Dashboard Calidad","Resumen de eventos de calidad"],"q-register":["Registrar evento","Alta de evento de calidad"],"q-list":["Eventos","Listado de eventos de calidad"],"settings":["Configuración","Marca, sedes, copias de seguridad y usuarios"],"platform":["Plataforma","Registro de empresas, demos y backups (superadmin)"]};
+const titles={"hse-dashboard":["Dashboard HSE","Resumen de eventos HSE"],"hse-report":["Reportar evento","Registro de evento HSE"],"hse-list":["Eventos HSE","Listado de eventos HSE"],"hse-investigations":["Investigaciones","Seguimiento de investigaciones y overdue"],"hse-actions":["Acciones","Seguimiento de acciones correctivas"],"q-dashboard":["Dashboard Calidad","Resumen de eventos de calidad"],"q-register":["Registrar evento","Alta de evento de calidad"],"q-list":["Eventos","Listado de eventos de calidad"],"settings":["Configuración","Marca, usuarios, sedes y copias de seguridad"],"platform":["Plataforma","Empresas registradas (superadmin)"]};
 function goToPage(p){
   document.querySelectorAll(".nav button").forEach(x=>x.classList.toggle("active",x.dataset.page===p));
   document.querySelectorAll(".page").forEach(x=>x.classList.toggle("active",x.id===p));
@@ -944,11 +1026,11 @@ function goToPage(p){
   if(p==="hse-actions")renderActions();
   if(p==="q-dashboard")renderQualityCharts();
   if(p==="q-list")renderQuality();
-  if(p==="settings"){ renderCompanySettings(); updateMyFolderId(); }
+  if(p==="settings"){ renderCompanySettings(); renderMembers(); updateMyFolderId(); }
   if(p==="platform")renderPlatform();
 }
 document.querySelectorAll(".nav button[data-page]").forEach(b=>b.onclick=()=>goToPage(b.dataset.page));
-function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3000)}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),3200)}
 function val(id){return document.getElementById(id).value}
 function showLoginErr(m){const e=document.getElementById("loginErr");e.textContent=m;e.style.display="block"}
 function hideLoginErr(){document.getElementById("loginErr").style.display="none"}
@@ -968,10 +1050,7 @@ function validateStep1(){
 }
 function updateStep2Visibility(){
   const isAcc=isAccidente(); const cat=val("aCategory");
-  const injury = isAcc && cat===CAT_INJURY;
-  const env = isAcc && cat===CAT_ENV;
-  const asset = isAcc && cat===CAT_ASSET;
-  const legal = isAcc && cat===CAT_LEGAL;
+  const injury=isAcc&&cat===CAT_INJURY, env=isAcc&&cat===CAT_ENV, asset=isAcc&&cat===CAT_ASSET, legal=isAcc&&cat===CAT_LEGAL;
   document.getElementById("nearMissFields").style.display=isAcc?"none":"block";
   document.getElementById("accidentOnlyFields").style.display=injury?"block":"none";
   document.getElementById("typeWrap").style.display=injury?"block":"none";
@@ -981,8 +1060,7 @@ function updateStep2Visibility(){
   document.getElementById("arlNoteWrap").style.display=injury?"block":"none";
 }
 function goStep2(){
-  if(!requireEdit())return;
-  if(!validateStep1())return;
+  if(!requireEdit())return; if(!validateStep1())return;
   const eventDate=val("aDate");
   document.getElementById("calcEventDate").textContent=fmtDate(eventDate);
   document.getElementById("calcStartDate").textContent=fmtDate(addDays(eventDate,1));
@@ -1021,8 +1099,7 @@ function validateEnv(){ return reqFields([["envSubstance","Sustancia o material"
 function validateAsset(){ return reqFields([["assetName","Activo afectado"],["assetDamage","Tipo de daño"],["assetCost","Costo estimado"],["assetStoppage","¿Paro operacional?"]]); }
 function validateLegal(){ return reqFields([["legalRequirement","Requisito/norma incumplida"],["legalDescription","Descripción del incumplimiento"]]); }
 document.getElementById("accidentForm").onsubmit=async e=>{
-  e.preventDefault();
-  if(!requireEdit())return;
+  e.preventDefault(); if(!requireEdit())return;
   if(!validateStep1()){ goStep1(); return; }
   const isAcc=isAccidente(); const cat=val("aCategory");
   if(!cat){ toast("⚠ Falta: Categoría del evento"); return; }
@@ -1031,9 +1108,7 @@ document.getElementById("accidentForm").onsubmit=async e=>{
     if(cat===CAT_ENV && !validateEnv())return;
     if(cat===CAT_ASSET && !validateAsset())return;
     if(cat===CAT_LEGAL && !validateLegal())return;
-  } else {
-    if(!validateNearMiss())return;
-  }
+  } else { if(!validateNearMiss())return; }
   const eventDate=val("aDate");
   const isInjury=isAcc&&cat===CAT_INJURY, isEnv=isAcc&&cat===CAT_ENV, isAsset=isAcc&&cat===CAT_ASSET, isLegal=isAcc&&cat===CAT_LEGAL;
   const acc={
@@ -1064,8 +1139,7 @@ function blankLegal(){ return { requirement:"",entity:"",description:"",penalty:
 function blankNm(){ return { severity:"",activity:"",potential:"",immediate:"",suggestion:"" }; }
 function seedData(){
   return {
-    company:{name:"",logo:""},
-    sedes: DEFAULT_SEDES.slice(),
+    company:{name:"",logo:""}, users:[], sedes: DEFAULT_SEDES.slice(),
     accidents:[
       Object.assign({id:"ACC-2000",classification:"Accidente",category:CAT_INJURY,reporter:"Pedro Nel",employeeType:"Contratista",date:"2026-07-10",time:"08:20",title:"Torcedura de tobillo al bajar de plataforma",desc:"Pisó mal al descender de una plataforma sin cinta antideslizante.",sede:"Planta Funza",type:"Tratamiento médico",jobTitle:"Ayudante de obra",jobExpNum:"1",jobExpUnit:"Años",jobExp:"1 Años",timeWorkingNum:"2",timeWorkingUnit:"Horas",timeWorking:"2 Horas",activity:"Descenso de plataforma",shift:"Normal",sitio:"(5) Escaleras",sitioOtro:"",injuryTypes:["(25) Torcedura, esguince, desgarro muscular, hernia o laceración de músculo o tendón sin herida"],injuryOtro:"",bodyParts:["(5) Miembros inferiores","(5.56) Pies"],bodyDetail:"Tobillo derecho",agents:["(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)"],mechanisms:["(1) Caída de personas"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-07-25",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2000-A1",desc:"Instalar cinta antideslizante",owner:"Mantenimiento",due:"2026-07-20",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"pedro@empresa.com"}),
       Object.assign({id:"ACC-2001",classification:"Accidente",category:CAT_INJURY,reporter:"Carlos Ruiz",employeeType:"Directo / Planta",date:"2026-07-30",time:"09:15",title:"Corte en mano con herramienta",desc:"Corte al manipular cúter sin guante anticorte.",sede:"Sede Principal",type:"Primeros auxilios",jobTitle:"Operario de montaje",jobExpNum:"3",jobExpUnit:"Años",jobExp:"3 Años",timeWorkingNum:"4",timeWorkingUnit:"Horas",timeWorking:"4 Horas",activity:"Corte de material con cúter",shift:"Normal",sitio:"(2) Áreas de producción",sitioOtro:"",injuryTypes:["(41) Herida"],injuryOtro:"",bodyParts:["(4) Miembros superiores","(4.46) Manos"],bodyDetail:"Dedo índice mano derecha",agents:["(3.36) Herramientas, implementos o utensilios"],mechanisms:["(3) Pisadas, choques o golpes"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-08-14",invCompletedDate:"2026-08-05",invRootCause:"Falta de EPP (guantes anticorte).",invActions:[{id:"ACC-2001-A1",desc:"Dotar guantes anticorte",owner:"HSE",due:"2026-08-10",status:"Cerrada",cls:"Preventiva",effDate:"2026-10-10",effResult:"Efectiva",effComments:"No se presentaron cortes en 2 meses."}],createdBy:"carlos@empresa.com"}),
@@ -1117,8 +1191,7 @@ async function delAccident(id){
   if(!can("delEvent")){ toast("🔒 Solo el administrador puede eliminar eventos."); return; }
   if(!confirm("¿Eliminar el evento "+id+" y su investigación? Esta acción no se puede deshacer.")) return;
   Store.data.accidents=Store.data.accidents.filter(a=>a.id!==id);
-  await persist();
-  renderAccidents(); renderInvestigations(); renderActions(); renderHseCharts(); updateOverdueBadge(); updateActionsBadge();
+  await persist(); renderAccidents(); renderInvestigations(); renderActions(); renderHseCharts(); updateOverdueBadge(); updateActionsBadge();
   toast("🗑 Evento "+id+" eliminado");
 }
 /* ====== INVESTIGACIONES ====== */
@@ -1304,9 +1377,7 @@ function renderAccModalBody(acc){
       <div class="form-row"><div class="form-group full"><label>¿Qué pudo pasar?</label><textarea id="accm_nmPotential">${escapeHtml(n.potential||"")}</textarea></div></div>
       <div class="form-row"><div class="form-group full"><label>Acción inmediata</label><textarea id="accm_nmImmediate">${escapeHtml(n.immediate||"")}</textarea></div></div>
       <div class="form-row"><div class="form-group full"><label>Sugerencia para evitar que se repita</label><textarea id="accm_nmSuggestion">${escapeHtml(n.suggestion||"")}</textarea></div></div></div>`;
-  } else {
-    detailBlock = isAcc ? catBlockView(acc) : nmBlockView(acc);
-  }
+  } else { detailBlock = isAcc ? catBlockView(acc) : nmBlockView(acc); }
   const files=(acc.files||[]);
   const filesHtml=files.length?`<div class="file-list">${files.map(f=>{const t=f.preview?`<img src="${f.preview}">`:`<div class="fico">${(f.type||"").startsWith("video")?"🎬":"📄"}</div>`;return `<div class="file-chip">${t}<span>${escapeHtml(f.name)}</span></div>`;}).join("")}</div>`:'<p style="font-size:12px;color:var(--muted)">Sin soportes cargados.</p>';
   let inv;
@@ -1375,8 +1446,7 @@ async function saveAccModal(){
   stashModalEdits();
   if(can("master")) acc.invDueDate=addDays(acc.date,15);
   if(can("edit")) acc.invActions=modalActions.slice();
-  await persist();
-  renderAccidents(); renderInvestigations(); renderActions(); renderHseCharts(); updateOverdueBadge(); updateActionsBadge();
+  await persist(); renderAccidents(); renderInvestigations(); renderActions(); renderHseCharts(); updateOverdueBadge(); updateActionsBadge();
   closeAccModal(); toast("💾 Cambios guardados");
 }
 /* ====== QUALITY ====== */
@@ -1421,28 +1491,23 @@ function exportJSON(){ downloadBlob(new Blob([JSON.stringify(Store.data,null,2)]
 function importJSON(ev){
   if(!can("master")){ toast("🔒 Solo el master puede restaurar."); return; }
   const file=ev.target.files[0]; if(!file)return; const rd=new FileReader();
-  rd.onload=async()=>{ try{ const data=normalizeData(JSON.parse(rd.result)); const n=data.accidents.length+data.quality.length; if(!confirm("Esto reemplazará todos los datos actuales por "+n+" registros. ¿Continuar?"))return; Store.data=data; await persist(); populateSedeSelects(); renderSedeList(); applyBranding(); renderCompanySettings(); renderHseCharts(); renderAccidents(); renderInvestigations(); renderActions(); renderQualityCharts(); renderQuality(); updateOverdueBadge(); updateActionsBadge(); toast("📤 Backup restaurado"); }catch(e){ toast("⚠ Archivo JSON inválido"); } };
+  rd.onload=async()=>{ try{ const data=normalizeData(JSON.parse(rd.result)); const n=data.accidents.length+data.quality.length; if(!confirm("Esto reemplazará todos los datos actuales por "+n+" registros. ¿Continuar?"))return; Store.data=data; await persist(); populateSedeSelects(); renderSedeList(); applyBranding(); renderCompanySettings(); renderMembers(); renderHseCharts(); renderAccidents(); renderInvestigations(); renderActions(); renderQualityCharts(); renderQuality(); updateOverdueBadge(); updateActionsBadge(); toast("📤 Backup restaurado"); }catch(e){ toast("⚠ Archivo JSON inválido"); } };
   rd.readAsText(file); ev.target.value="";
 }
 async function wipeAll(){
   if(!can("master")){ toast("🔒 Solo el master puede borrar todo."); return; }
   if(!confirm("¿Borrar TODOS los datos (HSE + Calidad)? No se puede deshacer."))return;
-  Store.data={ accidents:[], quality:[], sedes:Store.data.sedes, company:Store.data.company }; await persist();
+  Store.data={ accidents:[], quality:[], sedes:Store.data.sedes, company:Store.data.company, users:Store.data.users }; await persist();
   renderHseCharts(); renderAccidents(); renderInvestigations(); renderActions(); renderQualityCharts(); renderQuality(); updateOverdueBadge(); updateActionsBadge(); toast("🗑 Todos los datos fueron borrados");
 }
 function downloadBlob(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();}
 /* ====== UI ====== */
 function refreshStorageUI(){
   const pill=document.getElementById("storagePill"), label=document.getElementById("storageLabel"), setDesc=document.getElementById("setStorageDesc"), setBadge=document.getElementById("setStorageBadge");
-  if(Store.mode==="gdrive"){ pill.className="storage-pill cloud"; label.textContent="Google Drive"; const loc=viewingCompany?("empresa: "+viewingCompany):(APP_CONFIG.google.sharedFolderId?("carpeta compartida "+APP_CONFIG.google.sharedFolderId):("carpeta HSEQHub"+(gFolderId?(" — ID: "+gFolderId):""))); setDesc.textContent="Google Drive · "+loc; setBadge.innerHTML='<span class="pill" style="background:#e6f6ec;color:var(--green)">☁ Google Drive</span>'; }
+  if(Store.mode==="gdrive"){ pill.className="storage-pill cloud"; label.textContent="Google Drive"; const loc=(session.company||"")+(gFolderId?(" · ID: "+gFolderId):" · carpeta HSEQHub"); setDesc.textContent="Google Drive · "+loc; setBadge.innerHTML='<span class="pill" style="background:#e6f6ec;color:var(--green)">☁ Google Drive</span>'; }
   else if(Store.mode==="sharepoint"){ pill.className="storage-pill cloud"; label.textContent="SharePoint"; setDesc.textContent="SharePoint compartido · "+APP_CONFIG.microsoft.sharePointHost+APP_CONFIG.microsoft.sharePointSite; setBadge.innerHTML='<span class="pill" style="background:#e6f6ec;color:var(--green)">☁ SharePoint</span>'; }
   else { pill.className="storage-pill local"; label.textContent="Modo local"; setDesc.textContent="Modo local — solo este navegador"; setBadge.innerHTML='<span class="pill" style="background:#fff5e0;color:#b57d00">💾 Local</span>'; }
   updateMyFolderId();
-}
-function renderUsersList(){
-  let html=Object.entries(ACCESS_CONTROL).map(([email,role])=>`<div class="u"><span>${email}</span><span class="role-tag role-${role}">${role}</span></div>`).join("");
-  if(ALLOW_ANY_AUTHENTICATED){ html+=`<div class="u"><span style="color:var(--muted)">🧪 Cualquier otra cuenta (Google o Microsoft) — modo experimento</span><span class="role-tag role-${DEFAULT_ROLE}">${DEFAULT_ROLE}</span></div>`; }
-  document.getElementById("usersList").innerHTML=html;
 }
 /* ====== BOOT ====== */
 applyLoginBrandingFromCache();
