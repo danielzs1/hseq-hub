@@ -78,6 +78,8 @@
   .form-actions{display:flex;gap:12px;margin-top:8px;justify-content:space-between}
   .section-block{border:1px solid #f0d9c9;background:#fffaf6;border-radius:12px;padding:18px;margin-bottom:16px}
   .section-block > .sh{font-size:13px;font-weight:700;color:var(--orange);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  /* NUEVO: FURAT / lesión en verde-teal degradado (combina con la marca) */
+  .section-block.injury{border-color:#bfe4e0;background:linear-gradient(135deg,#f2fbf9,#e9f7f3)}.section-block.injury>.sh{color:var(--teal-dark)}
   .section-block.env{border-color:#bfe4d0;background:#f4fbf7}.section-block.env>.sh{color:var(--green)}
   .section-block.asset{border-color:#c9d9f3;background:#f5f8fe}.section-block.asset>.sh{color:var(--blue)}
   .section-block.legal{border-color:#d8cef0;background:#f8f6fd}.section-block.legal>.sh{color:var(--purple)}
@@ -252,7 +254,7 @@
           <div class="form-row"><div class="form-group full"><label>Acción inmediata tomada <span class="req">*</span></label><textarea id="nmImmediate" placeholder="Ej: Se señalizó la zona y se secó el piso."></textarea></div></div>
           <div class="form-row"><div class="form-group full"><label>Acción / sugerencia para evitar que se repita <span class="req">*</span></label><textarea id="nmSuggestion" placeholder="Ej: Instalar tapetes antideslizantes."></textarea></div></div>
         </div>
-        <div class="section-block" id="accidentOnlyFields" style="display:none">
+        <div class="section-block injury" id="accidentOnlyFields" style="display:none">
           <div class="sh">🧑‍🏭 Datos del accidentado y clasificación FURAT</div>
           <div class="form-row">
             <div class="form-group full"><label>Tipo de empleado <span class="req">*</span></label><select id="aEmployeeType"><option value="">Seleccionar…</option></select></div>
@@ -262,7 +264,7 @@
             <div class="form-group"><label>Experiencia en el cargo <span class="req">*</span></label><div style="display:flex;gap:8px"><input type="number" id="aJobExpNum" min="0" step="1" placeholder="Ej: 3" style="flex:1"><select id="aJobExpUnit" style="flex:1"><option value="">Unidad…</option></select></div></div>
           </div>
           <div class="form-row">
-            <div class="form-group"><label>Tiempo que llevaba trabajando <span class="req">*</span></label><div style="display:flex;gap:8px"><input type="number" id="aTimeWorkingNum" min="0" step="1" placeholder="Ej: 4" style="flex:1"><select id="aTimeWorkingUnit" style="flex:1"><option value="">Unidad…</option></select></div></div>
+            <div class="form-group"><label>Tiempo que llevaba trabajando <span class="req">*</span></label><div style="display:flex;gap:8px;align-items:center"><input type="number" id="aTimeWorkingH" min="0" step="1" placeholder="Horas" style="flex:1"><span style="font-size:12px;color:var(--muted)">h</span><input type="number" id="aTimeWorkingM" min="0" max="59" step="1" placeholder="Minutos" style="flex:1"><span style="font-size:12px;color:var(--muted)">min</span></div></div>
             <div class="form-group"><label>Actividad que realizaba <span class="req">*</span></label><input type="text" id="aActivity" placeholder="Ej: Corte de material"></div>
           </div>
           <div class="form-row">
@@ -271,12 +273,12 @@
           </div>
           <div class="form-row"><div class="form-group full" id="aSitioOtroWrap" style="display:none"><label>Sitio — especifique (otro)</label><input type="text" id="aSitioOtro" placeholder="Especifique el sitio"></div></div>
           <details class="acc"><summary>Tipo de lesión <span class="cnt zero" id="cntInjury">0</span></summary><div class="chk-group" id="grpInjury"></div></details>
-          <div class="form-row"><div class="form-group full"><label>Tipo de lesión — especifique (otro)</label><input type="text" id="aInjuryOtro" placeholder="Si marcó 'Otro'"></div></div>
+          <div class="form-row" id="aInjuryOtroWrap" style="display:none"><div class="form-group full"><label>Tipo de lesión — especifique (otro)</label><input type="text" id="aInjuryOtro" placeholder="Especifique la lesión"></div></div>
           <details class="acc"><summary>Parte del cuerpo afectada <span class="cnt zero" id="cntBody">0</span></summary><div class="chk-group" id="grpBody"></div></details>
           <div class="form-row"><div class="form-group full"><label>Detalle de la parte afectada (opcional)</label><input type="text" id="aBodyDetail" placeholder="Ej: antebrazo derecho"></div></div>
           <details class="acc"><summary>Agente del accidente <span class="cnt zero" id="cntAgent">0</span></summary><div class="chk-group" id="grpAgent"></div></details>
           <details class="acc"><summary>Mecanismo o forma <span class="cnt zero" id="cntMechanism">0</span></summary><div class="chk-group" id="grpMechanism"></div></details>
-          <div class="form-row"><div class="form-group full"><label>Mecanismo — especifique (otro)</label><input type="text" id="aMechOtro" placeholder="Si marcó 'Otro'"></div></div>
+          <div class="form-row" id="aMechOtroWrap" style="display:none"><div class="form-group full"><label>Mecanismo — especifique (otro)</label><input type="text" id="aMechOtro" placeholder="Especifique el mecanismo"></div></div>
         </div>
         <div class="section-block env" id="envFields" style="display:none">
           <div class="sh">🌱 Datos del evento ambiental</div>
@@ -476,59 +478,33 @@ const APP_CONFIG = {
   google: { clientId: "915763445718-al4meu0pdbogourgff4pq4v9pjd2cq2d.apps.googleusercontent.com" },
   microsoft: { clientId:"", sharePointHost:"tuempresa.sharepoint.com", sharePointSite:"/sites/HSEQ" }
 };
-
 /* === SUPERADMIN (dueño de la plataforma). Ve todas las empresas. === */
 const PLATFORM_ADMINS = ["danielzabalasolano@gmail.com"];
-
 /* ============================================================
    MAPA DE EMPRESAS  (una sola app, muchas empresas)
-   ------------------------------------------------------------
-   Clave (byd, polimes…) = identificador interno de la empresa.
-   name       = nombre visible.
-   folderId   = ID de la carpeta HSEQHub del MASTER. Puede ir vacío
-                al inicio; el master lo verá en Configuración cuando
-                guarde su primer dato y te lo pasa para pegarlo aquí.
-   suspended  = true bloquea a TODA la empresa (cuando no paguen).
-   users      = correo -> rol ("master" | "editor" | "viewer").
-                REGLA DE ORO: 1 correo = 1 empresa (no repitas correos).
-   Para agregar/quitar usuarios o suspender: edita este mapa y sube a GitHub.
+   Clave = id interno · name = nombre visible · folderId = carpeta HSEQHub del master
+   suspended = true bloquea toda la empresa · users = correo -> rol
+   REGLA DE ORO: 1 correo = 1 empresa.
    ============================================================ */
 const COMPANIES = {
   "byd": {
     name: "BYD (piloto)",
-    folderId: "14q_Sipfp1FVwrxxyb90jobb59vHYjeq5",           // pega aquí el ID de la carpeta del master de BYD
+    folderId: "14q_Sipfp1FVwrxxyb90jobb59vHYjeq5",
     suspended: false,
     users: {
       "danizabas@gmail.com": "master",
       "mistermishiz@gmail.com": "editor"
-      
-      // "empleado.byd@gmail.com": "editor",
-      // "auditor.byd@gmail.com":  "viewer"     
     }
   },
   "polimes": {
     name: "Polimes",
-    folderId: "",           // pega aquí el ID de la carpeta del master de BYD
+    folderId: "",
     suspended: false,
     users: {
       "brayan.zabalas@uniagustiniana.edu.co": "master"
-      // "empleado.byd@gmail.com": "editor",
-      // "auditor.byd@gmail.com":  "viewer"     
     }
-  } 
-  // Ejemplo de otra empresa:
-  // "polimes": {
-  //   name: "Polimes S.A.S.",
-  //   folderId: "1AbC...",
-  //   suspended: false,
-  //   users: {
-  //     "brayan.zabalas@uniagustiniana.edu.co": "master",
-  //     "editor.polimes@gmail.com": "editor",
-  //     "auditor.polimes@gmail.com": "viewer"
-  //   }
-  // }
+  }
 };
-
 const GOOGLE_SCOPES = "https://www.googleapis.com/auth/drive openid email profile";
 const MS_SCOPES = ["Files.ReadWrite.All","Sites.ReadWrite.All","User.Read"];
 const PERMS = {
@@ -538,8 +514,6 @@ const PERMS = {
 };
 function low(e){ return (e||"").toString().trim().toLowerCase(); }
 function isPlatformAdmin(){ return PLATFORM_ADMINS.map(low).indexOf(low(session.email))>=0; }
-
-/* Índice email -> acceso (robusto a mayúsculas/espacios). Primera empresa que lo contenga gana. */
 function accessFor(email){
   email=low(email);
   for(const key in COMPANIES){
@@ -548,7 +522,6 @@ function accessFor(email){
   }
   return null;
 }
-
 const CAT_INJURY="Lesión o enfermedad", CAT_ENV="Ambiental", CAT_ASSET="Activos o financiero", CAT_LEGAL="Legal y regulatorio";
 const EVENT_CATEGORIES = [CAT_INJURY, CAT_ENV, CAT_ASSET, CAT_LEGAL];
 const ENV_UNITS = ["Litros","Galones","Kg","Toneladas","m³"];
@@ -557,7 +530,6 @@ const ACC_TYPES = ["Sin tratamiento requerido","Primeros auxilios","Tratamiento 
 const SHIFTS = ["Normal","Extra"];
 const EMPLOYEE_TYPES = ["Directo / Planta","Contratista","Temporal (EST)","Cooperado (CTA)","Aprendiz / Estudiante SENA","Independiente / Prestación de servicios","Otro"];
 const EXP_UNITS = ["Días","Meses","Años"];
-const WORK_UNITS = ["Minutos","Horas"];
 const ACTION_CLASSES = ["Correctiva","Preventiva","Mejora"];
 const EFF_RESULTS = ["Pendiente","Efectiva","No efectiva"];
 const NEARMISS_SEVERITY = ["Alto","Medio","Bajo"];
@@ -571,7 +543,6 @@ const INJURY_TYPES = ["(10) Fractura","(20) Luxación","(25) Torcedura, esguince
 const BODY_PARTS = ["(1) Cabeza","(1.12) Ojo","(2) Cuello","(3) Tronco (incluye espalda, columna vertebral, médula espinal, pélvis)","(3.32) Tórax","(3.33) Abdomen","(4) Miembros superiores","(4.46) Manos","(5) Miembros inferiores","(5.56) Pies","(6) Ubicaciones múltiples","(7) Lesiones generales u otras"];
 const AGENTS = ["(1) Máquinas y/o equipos","(2) Medios de transporte","(3) Aparatos","(3.36) Herramientas, implementos o utensilios","(4) Materiales o sustancias","(4.4) Radiaciones","(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)","(6) Otros agentes no clasificados","(6.61) Animales (vivos o productos animales)","(7) Agentes no clasificados por falta de datos"];
 const MECHANISMS = ["(1) Caída de personas","(2) Caída de objetos","(3) Pisadas, choques o golpes","(4) Atrapamientos","(5) Sobreesfuerzo, esfuerzo excesivo o falso movimiento","(6) Exposición o contacto con temperatura extrema","(7) Exposición o contacto con la electricidad","(8) Exposición o contacto con sustancias nocivas, radiaciones o salpicaduras","(9) Otro"];
-
 /* ====== ESTADO ====== */
 let provider=null, accessToken=null, tokenExpiry=0;
 let tokenClient=null, googleReady=false, gFolderId=null, gFileId=null;
@@ -584,7 +555,6 @@ let actionEdit={ accId:null, actId:null };
 let pendingCompanyLogo;
 let platformRows=[];
 const Store={ mode:"local", data:{ accidents:[], quality:[], sedes:[], company:{name:"",logo:""} } };
-
 /* ====== FECHAS ====== */
 function todayStr(){ return new Date().toISOString().slice(0,10); }
 function addDays(dateStr,n){ if(!dateStr)return""; const d=new Date(dateStr+"T00:00:00"); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
@@ -596,6 +566,8 @@ function escapeHtml(s){ return (s==null?"":String(s)).replace(/&/g,"&amp;").repl
 function optionsHtml(arr,sel){ return arr.map(o=>`<option ${o===sel?"selected":""}>${escapeHtml(o)}</option>`).join(""); }
 function listOrDash(arr){ return (arr&&arr.length)?arr.map(escapeHtml).join("<br>"):"—"; }
 function joinNumUnit(num,unit){ num=(num==null?"":String(num)).trim(); unit=(unit||"").trim(); if(!num&&!unit)return""; return (num+" "+unit).trim(); }
+/* NUEVO: formatea "1 h 30 min" a partir de horas y minutos */
+function fmtHM(h,m){ h=(h==null?"":String(h)).trim(); m=(m==null?"":String(m)).trim(); const parts=[]; if(h&&Number(h)>0)parts.push(h+" h"); if(m&&Number(m)>0)parts.push(m+" min"); if(!parts.length&&(h==="0"||m==="0"))return "0 min"; return parts.join(" "); }
 function clsBadgeClass(c){ return c==="Correctiva"?"c-correctiva":c==="Preventiva"?"c-preventiva":c==="Mejora"?"c-mejora":"tag"; }
 function effBadgeClass(r){ return r==="Efectiva"?"b-efectiva":r==="No efectiva"?"b-noefectiva":"b-pendiente"; }
 function catBadgeClass(c){ return c===CAT_INJURY?"cat-injury":c===CAT_ENV?"cat-env":c===CAT_ASSET?"cat-asset":c===CAT_LEGAL?"cat-legal":"tag"; }
@@ -603,15 +575,14 @@ function catShort(c){ return c===CAT_INJURY?"Lesión":c===CAT_ENV?"Ambiental":c=
 function checkboxGroupHTML(items, selected){ const sel=selected||[]; return items.map(it=>`<label><input type="checkbox" value="${escapeHtml(it)}" ${sel.indexOf(it)>=0?"checked":""}>${escapeHtml(it)}</label>`).join(""); }
 function getChecked(containerId){ return Array.from(document.querySelectorAll("#"+containerId+" input[type=checkbox]:checked")).map(c=>c.value); }
 function updateAccCount(groupId,countId){ const n=getChecked(groupId).length; const el=document.getElementById(countId); if(el){ el.textContent=n; el.className="cnt"+(n===0?" zero":""); } }
-
-/* ============================================================
-   FLUJO COMÚN TRAS AUTENTICARSE (acceso por código)
-   ============================================================ */
+/* NUEVO: mostrar campo "otro" solo si hay una opción que contenga "Otro" marcada */
+function anyOtherChecked(groupId){ return getChecked(groupId).some(v=>v.indexOf("Otro")>=0); }
+function toggleInjuryOtro(){ const w=document.getElementById("aInjuryOtroWrap"); if(w) w.style.display=anyOtherChecked("grpInjury")?"block":"none"; }
+function toggleMechOtro(){ const w=document.getElementById("aMechOtroWrap"); if(w) w.style.display=anyOtherChecked("grpMechanism")?"block":"none"; }
+/* ============================================================ FLUJO LOGIN ============================================================ */
 async function afterLogin(email, name, method){
   email=low(email);
   session={ email, role:null, name:name||email, method, company:null, companyKey:null, superadmin:false };
-
-  // 1) Superadmin de la plataforma
   if(isPlatformAdmin()){
     session.role="master"; session.superadmin=true; session.company="(superadmin)";
     if(method==="google"){ Store.mode="gdrive"; gFolderId=null; Store.data=normalizeData(await driveRead()); if(isEmptyData(Store.data)){ Store.data=seedData(); await driveWrite(Store.data); } }
@@ -619,25 +590,12 @@ async function afterLogin(email, name, method){
     enterApp(); saveSession(); toast("✅ "+session.email+" — superadmin");
     return true;
   }
-
-  // 2) Usuario definido en el mapa COMPANIES
   const access = accessFor(email);
-  if(!access){
-    showBlocked(null, "El correo "+email+" no está autorizado. Contacta a soporte.");
-    return false;
-  }
-  if(access.company.suspended){
-    showBlocked(access.company.name, null);
-    return false;
-  }
-  session.role = access.role;
-  session.company = access.company.name;
-  session.companyKey = access.companyKey;
-
+  if(!access){ showBlocked(null, "El correo "+email+" no está autorizado. Contacta a soporte."); return false; }
+  if(access.company.suspended){ showBlocked(access.company.name, null); return false; }
+  session.role = access.role; session.company = access.company.name; session.companyKey = access.companyKey;
   if(method==="google"){
     Store.mode="gdrive";
-    // Si la empresa tiene folderId fijo (recomendado), lo usamos para TODOS (master, editor, viewer).
-    // Si está vacío (empresa nueva/master), la app crea/usa HSEQHub en el Drive del que entra.
     gFolderId = access.company.folderId || null;
     Store.data=normalizeData(await driveRead());
     if(isEmptyData(Store.data)){ Store.data=seedData(); await driveWrite(Store.data); }
@@ -649,7 +607,6 @@ async function afterLogin(email, name, method){
   toast("✅ "+session.email+" — "+session.company+" ("+session.role+")");
   return true;
 }
-
 /* ====== GOOGLE ====== */
 function initGoogle(){
   if(!APP_CONFIG.google.clientId) return false;
@@ -730,7 +687,6 @@ async function tryRestore(){
   }
   return false;
 }
-
 /* ====== ENTRAR ====== */
 function enterApp(){
   document.getElementById("loginScreen").style.display="none";
@@ -745,7 +701,6 @@ function enterApp(){
   document.getElementById("aEmployeeType").innerHTML='<option value="">Seleccionar…</option>'+EMPLOYEE_TYPES.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
   document.getElementById("aCategory").innerHTML='<option value="">Seleccionar…</option>'+EVENT_CATEGORIES.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
   document.getElementById("aJobExpUnit").innerHTML='<option value="">Unidad…</option>'+EXP_UNITS.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
-  document.getElementById("aTimeWorkingUnit").innerHTML='<option value="">Unidad…</option>'+WORK_UNITS.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
   document.getElementById("envQtyUnit").innerHTML='<option value="">Unidad…</option>'+ENV_UNITS.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
   document.getElementById("envMedia").innerHTML='<option value="">Seleccionar…</option>'+ENV_MEDIA.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
   document.getElementById("hFilterEmp").innerHTML='<option value="">Todo tipo de empleado</option>'+EMPLOYEE_TYPES.map(o=>`<option>${escapeHtml(o)}</option>`).join("");
@@ -756,17 +711,16 @@ function enterApp(){
   document.getElementById("grpBody").innerHTML=checkboxGroupHTML(BODY_PARTS,[]);
   document.getElementById("grpAgent").innerHTML=checkboxGroupHTML(AGENTS,[]);
   document.getElementById("grpMechanism").innerHTML=checkboxGroupHTML(MECHANISMS,[]);
-  document.getElementById("grpInjury").onchange=()=>updateAccCount("grpInjury","cntInjury");
+  document.getElementById("grpInjury").onchange=()=>{ updateAccCount("grpInjury","cntInjury"); toggleInjuryOtro(); };
   document.getElementById("grpBody").onchange=()=>updateAccCount("grpBody","cntBody");
   document.getElementById("grpAgent").onchange=()=>updateAccCount("grpAgent","cntAgent");
-  document.getElementById("grpMechanism").onchange=()=>updateAccCount("grpMechanism","cntMechanism");
+  document.getElementById("grpMechanism").onchange=()=>{ updateAccCount("grpMechanism","cntMechanism"); toggleMechOtro(); };
   populateSedeSelects();
   applyBranding(); renderCompanySettings(); renderMembers(); updateMyFolderId();
   refreshStorageUI(); renderSedeList();
   if(isPlatformAdmin()){ platformBuild(); }
   switchModule("hse");
 }
-
 /* ====== DATA HELPERS ====== */
 function normalizeAction(a){ return { id:a.id, desc:a.desc||"", owner:a.owner||"", due:a.due||"", status:a.status||"Abierta", cls:a.cls||"Correctiva", effDate:a.effDate||"", effResult:a.effResult||"Pendiente", effComments:a.effComments||"" }; }
 function normalizeData(d){
@@ -787,7 +741,6 @@ async function persist(){
 const gHead=()=>({ Authorization:`Bearer ${accessToken}` });
 async function driveGetFolderId(){
   if(gFolderId) return gFolderId;
-  // Crea/usa carpeta HSEQHub en el Drive del usuario actual (solo cuando la empresa no tiene folderId fijo)
   const q=encodeURIComponent("mimeType='application/vnd.google-apps.folder' and name='HSEQHub' and 'root' in parents and trashed=false");
   const r=await fetch(`https://www.googleapis.com/drive/v3/files?q=${q}&fields=files(id,name)`,{ headers:gHead() });
   if(r.ok){ const d=await r.json(); if(d.files&&d.files[0]){ gFolderId=d.files[0].id; return gFolderId; } }
@@ -852,10 +805,7 @@ async function resolveSharePointDrive(){
 function spEndpoint(){ return `https://graph.microsoft.com/v1.0/drives/${spDriveId}/root:/HSEQHub/${APP_CONFIG.fileName}`; }
 async function spRead(){ const r=await fetch(spEndpoint()+":/content",{ headers:{ Authorization:`Bearer ${accessToken}` }}); if(r.status===404)return null; if(!r.ok)throw new Error("Lectura Graph "+r.status); return await r.json(); }
 async function spWrite(data){ const r=await fetch(spEndpoint()+":/content",{ method:"PUT", headers:{ Authorization:`Bearer ${accessToken}`,"Content-Type":"application/json" }, body:JSON.stringify(data,null,2) }); if(!r.ok)throw new Error("Escritura Graph "+r.status); }
-
-/* ============================================================
-   PANEL DE PLATAFORMA (superadmin) — muestra el mapa COMPANIES
-   ============================================================ */
+/* ============================================================ PLATAFORMA ============================================================ */
 function platformBuild(){
   platformRows = Object.entries(COMPANIES).map(([key,c])=>{
     const users=c.users||{};
@@ -880,10 +830,8 @@ function renderPlatform(){
     const fid = r.folderId?`<span class="folder-id">${escapeHtml(r.folderId)}</span>`:'<span style="color:var(--muted)">— (sin ID; pega el del master)</span>';
     const usersTxt=`👑 ${r.counts.master} · ✏️ ${r.counts.editor} · 👁 ${r.counts.viewer}`;
     let backup='';
-    if(r.folderId){
-      if(r.shared===false) backup='<span style="color:var(--muted)">🔒 Sin acceso</span>';
-      else backup=`<button class="link-btn" onclick="platformBackup(${i})">📥 Backup</button>`;
-    } else backup='<span style="color:var(--muted)">—</span>';
+    if(r.folderId){ if(r.shared===false) backup='<span style="color:var(--muted)">🔒 Sin acceso</span>'; else backup=`<button class="link-btn" onclick="platformBackup(${i})">📥 Backup</button>`; }
+    else backup='<span style="color:var(--muted)">—</span>';
     return `<tr><td><strong>${escapeHtml(r.name)}</strong></td><td>${escapeHtml(r.master)}</td><td>${usersTxt}</td><td>${estado}</td><td>${fid}</td><td>${backup}</td></tr>`;
   }).join("");
   document.getElementById("pEmpty").style.display=total?"none":"block";
@@ -904,10 +852,7 @@ async function platformBackup(i){
 }
 function updateMyFolderId(){ const el=document.getElementById("myFolderId"); if(el) el.textContent=(gFolderId||(session.companyKey&&COMPANIES[session.companyKey]&&COMPANIES[session.companyKey].folderId)||"— (se crea al guardar el primer dato)"); }
 function copyMyFolderId(){ const id=gFolderId||""; if(!id){ toast("Aún no hay ID (crea un primer dato)"); return; } if(navigator.clipboard){ navigator.clipboard.writeText(id).then(()=>toast("📋 ID copiado")); } else { toast(id); } }
-
-/* ============================================================
-   USUARIOS DE LA EMPRESA (solo lectura — se definen en código)
-   ============================================================ */
+/* ============================================================ USUARIOS (lectura) ============================================================ */
 function renderMembers(){
   const el=document.getElementById("companyUsers"); if(!el) return;
   if(session.superadmin){ el.innerHTML='<p style="font-size:12px;color:var(--muted)">Eres superadmin. Los usuarios se definen por empresa en el mapa <code>COMPANIES</code>.</p>'; return; }
@@ -915,13 +860,9 @@ function renderMembers(){
   const users=(c&&c.users)||{};
   const keys=Object.keys(users);
   if(!keys.length){ el.innerHTML='<p style="font-size:12px;color:var(--muted)">No hay usuarios definidos.</p>'; return; }
-  el.innerHTML=keys.map(email=>{
-    const role=users[email];
-    return `<div class="u"><span>${escapeHtml(email)}</span><span class="role-tag role-${role}">${role}</span></div>`;
-  }).join("");
+  el.innerHTML=keys.map(email=>{ const role=users[email]; return `<div class="u"><span>${escapeHtml(email)}</span><span class="role-tag role-${role}">${role}</span></div>`; }).join("");
 }
-
-/* ====== MARCA / BRANDING ====== */
+/* ====== MARCA ====== */
 function applyBranding(){
   const c=(Store.data&&Store.data.company)||{name:"",logo:""};
   const bl=document.getElementById("brandLogo"), bt=document.getElementById("brandTitle"), bs=document.getElementById("brandSubtitle");
@@ -1061,6 +1002,8 @@ function resetAccidentForm(){
   ["cntInjury","cntBody","cntAgent","cntMechanism"].forEach(id=>{const el=document.getElementById(id);el.textContent="0";el.className="cnt zero";});
   document.querySelectorAll("#accidentOnlyFields details.acc").forEach(d=>d.open=false);
   document.getElementById("aSitioOtroWrap").style.display="none";
+  document.getElementById("aInjuryOtroWrap").style.display="none";
+  document.getElementById("aMechOtroWrap").style.display="none";
   document.getElementById("aSedeAddr").textContent="";
   ["nearMissFields","accidentOnlyFields","typeWrap","envFields","assetFields","legalFields","arlNoteWrap"].forEach(id=>document.getElementById(id).style.display="none");
   goStep1();
@@ -1069,7 +1012,9 @@ function reqFields(list){ for(const [id,label] of list){ if(!val(id).trim()){ to
 function validateNearMiss(){ return reqFields([["nmSeverity","Potencial de gravedad"],["nmActivity","Actividad que se realizaba"],["nmPotential","¿Qué pudo haber pasado?"],["nmImmediate","Acción inmediata tomada"],["nmSuggestion","Acción/sugerencia para evitar que se repita"]]); }
 function validateInjury(){
   if(!val("aType").trim()){ toast("⚠ Falta: Tipo de accidente"); return false; }
-  if(!reqFields([["aEmployeeType","Tipo de empleado"],["aJobTitle","Cargo"],["aJobExpNum","Experiencia (número)"],["aJobExpUnit","Experiencia (unidad)"],["aTimeWorkingNum","Tiempo trabajando (número)"],["aTimeWorkingUnit","Tiempo trabajando (unidad)"],["aActivity","Actividad"],["aShift","Jornada"],["aSitio","Sitio"]]))return false;
+  if(!reqFields([["aEmployeeType","Tipo de empleado"],["aJobTitle","Cargo"],["aJobExpNum","Experiencia (número)"],["aJobExpUnit","Experiencia (unidad)"],["aActivity","Actividad"],["aShift","Jornada"],["aSitio","Sitio"]]))return false;
+  const th=val("aTimeWorkingH").trim(), tm=val("aTimeWorkingM").trim();
+  if(!th && !tm){ toast("⚠ Falta: Tiempo que llevaba trabajando (horas o minutos)"); document.getElementById("aTimeWorkingH").focus(); return false; }
   if(getChecked("grpInjury").length===0){ toast("⚠ Marca al menos un Tipo de lesión"); document.querySelector("#accidentOnlyFields details.acc").open=true; return false; }
   if(getChecked("grpBody").length===0){ toast("⚠ Marca al menos una Parte del cuerpo"); return false; }
   if(getChecked("grpAgent").length===0){ toast("⚠ Marca al menos un Agente"); return false; }
@@ -1097,7 +1042,7 @@ document.getElementById("accidentForm").onsubmit=async e=>{
     date:eventDate, time:val("aTime"), title:val("aTitle"), desc:val("aDesc"), sede:val("aSede"),
     type:isInjury?val("aType"):"",
     jobTitle:isInjury?val("aJobTitle"):"", jobExpNum:isInjury?val("aJobExpNum"):"", jobExpUnit:isInjury?val("aJobExpUnit"):"", jobExp:isInjury?joinNumUnit(val("aJobExpNum"),val("aJobExpUnit")):"",
-    timeWorkingNum:isInjury?val("aTimeWorkingNum"):"", timeWorkingUnit:isInjury?val("aTimeWorkingUnit"):"", timeWorking:isInjury?joinNumUnit(val("aTimeWorkingNum"),val("aTimeWorkingUnit")):"",
+    timeWorkingH:isInjury?val("aTimeWorkingH"):"", timeWorkingM:isInjury?val("aTimeWorkingM"):"", timeWorking:isInjury?fmtHM(val("aTimeWorkingH"),val("aTimeWorkingM")):"",
     activity:isInjury?val("aActivity"):"", shift:isInjury?val("aShift"):"", sitio:isInjury?val("aSitio"):"", sitioOtro:isInjury?val("aSitioOtro"):"",
     injuryTypes:isInjury?getChecked("grpInjury"):[], injuryOtro:isInjury?val("aInjuryOtro"):"",
     bodyParts:isInjury?getChecked("grpBody"):[], bodyDetail:isInjury?val("aBodyDetail"):"",
@@ -1122,11 +1067,11 @@ function seedData(){
   return {
     company:{name:"",logo:""}, sedes: DEFAULT_SEDES.slice(),
     accidents:[
-      Object.assign({id:"ACC-2000",classification:"Accidente",category:CAT_INJURY,reporter:"Pedro Nel",employeeType:"Contratista",date:"2026-07-10",time:"08:20",title:"Torcedura de tobillo al bajar de plataforma",desc:"Pisó mal al descender de una plataforma sin cinta antideslizante.",sede:"Planta Funza",type:"Tratamiento médico",jobTitle:"Ayudante de obra",jobExpNum:"1",jobExpUnit:"Años",jobExp:"1 Años",timeWorkingNum:"2",timeWorkingUnit:"Horas",timeWorking:"2 Horas",activity:"Descenso de plataforma",shift:"Normal",sitio:"(5) Escaleras",sitioOtro:"",injuryTypes:["(25) Torcedura, esguince, desgarro muscular, hernia o laceración de músculo o tendón sin herida"],injuryOtro:"",bodyParts:["(5) Miembros inferiores","(5.56) Pies"],bodyDetail:"Tobillo derecho",agents:["(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)"],mechanisms:["(1) Caída de personas"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-07-25",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2000-A1",desc:"Instalar cinta antideslizante",owner:"Mantenimiento",due:"2026-07-20",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"pedro@empresa.com"}),
-      Object.assign({id:"ACC-2001",classification:"Accidente",category:CAT_INJURY,reporter:"Carlos Ruiz",employeeType:"Directo / Planta",date:"2026-07-30",time:"09:15",title:"Corte en mano con herramienta",desc:"Corte al manipular cúter sin guante anticorte.",sede:"Sede Principal",type:"Primeros auxilios",jobTitle:"Operario de montaje",jobExpNum:"3",jobExpUnit:"Años",jobExp:"3 Años",timeWorkingNum:"4",timeWorkingUnit:"Horas",timeWorking:"4 Horas",activity:"Corte de material con cúter",shift:"Normal",sitio:"(2) Áreas de producción",sitioOtro:"",injuryTypes:["(41) Herida"],injuryOtro:"",bodyParts:["(4) Miembros superiores","(4.46) Manos"],bodyDetail:"Dedo índice mano derecha",agents:["(3.36) Herramientas, implementos o utensilios"],mechanisms:["(3) Pisadas, choques o golpes"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-08-14",invCompletedDate:"2026-08-05",invRootCause:"Falta de EPP (guantes anticorte).",invActions:[{id:"ACC-2001-A1",desc:"Dotar guantes anticorte",owner:"HSE",due:"2026-08-10",status:"Cerrada",cls:"Preventiva",effDate:"2026-10-10",effResult:"Efectiva",effComments:"No se presentaron cortes en 2 meses."}],createdBy:"carlos@empresa.com"}),
-      Object.assign({id:"ACC-2002",classification:"Near miss",category:CAT_INJURY,reporter:"Ana Gómez",employeeType:"",date:"2026-08-04",time:"14:40",title:"Casi caída por piso mojado",desc:"Casi resbala en zona sin señalización.",sede:"Sede Norte",type:"",jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(), nm:{severity:"Medio",activity:"Tránsito por pasillo",potential:"Un trabajador pudo resbalar y fracturarse.",immediate:"Se secó el piso y se señalizó.",suggestion:"Instalar tapetes antideslizantes."}, files:[],invDueDate:"2026-08-19",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"ana@empresa.com"}),
-      Object.assign({id:"ACC-2003",classification:"Accidente",category:CAT_ENV,reporter:"Luis Peña",employeeType:"",date:"2026-08-06",time:"11:05",title:"Derrame de aceite hidráulico",desc:"Fuga en manguera de montacargas sobre piso de bodega.",sede:"Planta Funza",type:"", env:{substance:"Aceite hidráulico",cas:"64742-52-5",qtyNum:"20",qtyUnit:"Litros",media:"Suelo",cost:"800000"}, asset:blankAsset(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-21",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2003-A1",desc:"Cambiar manguera y programar mantenimiento",owner:"Mantenimiento",due:"2026-07-01",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"luis@empresa.com"}),
-      Object.assign({id:"ACC-2004",classification:"Accidente",category:CAT_ASSET,reporter:"Marta Ríos",employeeType:"",date:"2026-08-08",time:"10:00",title:"Montacargas impacta estantería",desc:"El montacargas golpeó una estantería en maniobra.",sede:"Sede Principal",type:"", asset:{name:"Estantería zona A",damage:"Deformación estructural",cost:"3000000",stoppage:"Sí",stoppageDur:"4 horas"}, env:blankEnv(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingNum:"",timeWorkingUnit:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-23",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"marta@empresa.com"})
+      Object.assign({id:"ACC-2000",classification:"Accidente",category:CAT_INJURY,reporter:"Pedro Nel",employeeType:"Contratista",date:"2026-07-10",time:"08:20",title:"Torcedura de tobillo al bajar de plataforma",desc:"Pisó mal al descender de una plataforma sin cinta antideslizante.",sede:"Planta Funza",type:"Tratamiento médico",jobTitle:"Ayudante de obra",jobExpNum:"1",jobExpUnit:"Años",jobExp:"1 Años",timeWorkingH:"2",timeWorkingM:"",timeWorking:"2 h",activity:"Descenso de plataforma",shift:"Normal",sitio:"(5) Escaleras",sitioOtro:"",injuryTypes:["(25) Torcedura, esguince, desgarro muscular, hernia o laceración de músculo o tendón sin herida"],injuryOtro:"",bodyParts:["(5) Miembros inferiores","(5.56) Pies"],bodyDetail:"Tobillo derecho",agents:["(5) Ambiente de trabajo (incluye superficies de tránsito y de trabajo, muebles, tejados, exterior, interior o subterráneos)"],mechanisms:["(1) Caída de personas"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-07-25",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2000-A1",desc:"Instalar cinta antideslizante",owner:"Mantenimiento",due:"2026-07-20",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"pedro@empresa.com"}),
+      Object.assign({id:"ACC-2001",classification:"Accidente",category:CAT_INJURY,reporter:"Carlos Ruiz",employeeType:"Directo / Planta",date:"2026-07-30",time:"09:15",title:"Corte en mano con herramienta",desc:"Corte al manipular cúter sin guante anticorte.",sede:"Sede Principal",type:"Primeros auxilios",jobTitle:"Operario de montaje",jobExpNum:"3",jobExpUnit:"Años",jobExp:"3 Años",timeWorkingH:"4",timeWorkingM:"30",timeWorking:"4 h 30 min",activity:"Corte de material con cúter",shift:"Normal",sitio:"(2) Áreas de producción",sitioOtro:"",injuryTypes:["(41) Herida"],injuryOtro:"",bodyParts:["(4) Miembros superiores","(4.46) Manos"],bodyDetail:"Dedo índice mano derecha",agents:["(3.36) Herramientas, implementos o utensilios"],mechanisms:["(3) Pisadas, choques o golpes"],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(),nm:blankNm(), files:[],invDueDate:"2026-08-14",invCompletedDate:"2026-08-05",invRootCause:"Falta de EPP (guantes anticorte).",invActions:[{id:"ACC-2001-A1",desc:"Dotar guantes anticorte",owner:"HSE",due:"2026-08-10",status:"Cerrada",cls:"Preventiva",effDate:"2026-10-10",effResult:"Efectiva",effComments:"No se presentaron cortes en 2 meses."}],createdBy:"carlos@empresa.com"}),
+      Object.assign({id:"ACC-2002",classification:"Near miss",category:CAT_INJURY,reporter:"Ana Gómez",employeeType:"",date:"2026-08-04",time:"14:40",title:"Casi caída por piso mojado",desc:"Casi resbala en zona sin señalización.",sede:"Sede Norte",type:"",jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingH:"",timeWorkingM:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", env:blankEnv(),asset:blankAsset(),legal:blankLegal(), nm:{severity:"Medio",activity:"Tránsito por pasillo",potential:"Un trabajador pudo resbalar y fracturarse.",immediate:"Se secó el piso y se señalizó.",suggestion:"Instalar tapetes antideslizantes."}, files:[],invDueDate:"2026-08-19",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"ana@empresa.com"}),
+      Object.assign({id:"ACC-2003",classification:"Accidente",category:CAT_ENV,reporter:"Luis Peña",employeeType:"",date:"2026-08-06",time:"11:05",title:"Derrame de aceite hidráulico",desc:"Fuga en manguera de montacargas sobre piso de bodega.",sede:"Planta Funza",type:"", env:{substance:"Aceite hidráulico",cas:"64742-52-5",qtyNum:"20",qtyUnit:"Litros",media:"Suelo",cost:"800000"}, asset:blankAsset(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingH:"",timeWorkingM:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-21",invCompletedDate:"",invRootCause:"",invActions:[{id:"ACC-2003-A1",desc:"Cambiar manguera y programar mantenimiento",owner:"Mantenimiento",due:"2026-07-01",status:"Abierta",cls:"Correctiva",effDate:"",effResult:"Pendiente",effComments:""}],createdBy:"luis@empresa.com"}),
+      Object.assign({id:"ACC-2004",classification:"Accidente",category:CAT_ASSET,reporter:"Marta Ríos",employeeType:"",date:"2026-08-08",time:"10:00",title:"Montacargas impacta estantería",desc:"El montacargas golpeó una estantería en maniobra.",sede:"Sede Principal",type:"", asset:{name:"Estantería zona A",damage:"Deformación estructural",cost:"3000000",stoppage:"Sí",stoppageDur:"4 horas"}, env:blankEnv(),legal:blankLegal(),nm:blankNm(), jobTitle:"",jobExpNum:"",jobExpUnit:"",jobExp:"",timeWorkingH:"",timeWorkingM:"",timeWorking:"",activity:"",shift:"",sitio:"",sitioOtro:"",injuryTypes:[],injuryOtro:"",bodyParts:[],bodyDetail:"",agents:[],mechanisms:[],mechanismOtro:"", files:[],invDueDate:"2026-08-23",invCompletedDate:"",invRootCause:"",invActions:[],createdBy:"marta@empresa.com"})
     ],
     quality:[
       {id:"EVT-1001",title:"No conformidad en control documental",type:"No conformidad",cls:"Corrección",status:"Cerrado",area:"Calidad",owner:"Analista",date:"2026-08-01",desc:"Registro sin firma.",createdBy:"seed@empresa.com"},
@@ -1325,11 +1270,11 @@ function renderAccModalBody(acc){
   let detailBlock;
   if(isMaster && isAcc && acc.category===CAT_INJURY){
     detailBlock=`
-      <div class="section-block" style="margin-top:14px">
+      <div class="section-block injury" style="margin-top:14px">
         <div class="sh">🧑‍🏭 Datos del accidentado y clasificación FURAT</div>
         <div class="form-row"><div class="form-group"><label>Tipo de empleado</label><select id="accm_employeeType">${optionsHtml(EMPLOYEE_TYPES,acc.employeeType)}</select></div><div class="form-group"><label>Tipo de accidente</label><select id="accm_type">${optionsHtml(ACC_TYPES,acc.type)}</select></div></div>
         <div class="form-row"><div class="form-group"><label>Cargo</label><input id="accm_jobTitle" value="${escapeHtml(acc.jobTitle||"")}"></div><div class="form-group"><label>Experiencia</label><div style="display:flex;gap:8px"><input type="number" id="accm_jobExpNum" min="0" value="${escapeHtml(acc.jobExpNum||"")}" style="flex:1"><select id="accm_jobExpUnit" style="flex:1"><option value="">Unidad…</option>${optionsHtml(EXP_UNITS,acc.jobExpUnit)}</select></div></div></div>
-        <div class="form-row"><div class="form-group"><label>Tiempo trabajando</label><div style="display:flex;gap:8px"><input type="number" id="accm_timeWorkingNum" min="0" value="${escapeHtml(acc.timeWorkingNum||"")}" style="flex:1"><select id="accm_timeWorkingUnit" style="flex:1"><option value="">Unidad…</option>${optionsHtml(WORK_UNITS,acc.timeWorkingUnit)}</select></div></div><div class="form-group"><label>Actividad</label><input id="accm_activity" value="${escapeHtml(acc.activity||"")}"></div></div>
+        <div class="form-row"><div class="form-group"><label>Tiempo trabajando</label><div style="display:flex;gap:8px;align-items:center"><input type="number" id="accm_timeWorkingH" min="0" value="${escapeHtml(acc.timeWorkingH||"")}" placeholder="Horas" style="flex:1"><span style="font-size:12px;color:var(--muted)">h</span><input type="number" id="accm_timeWorkingM" min="0" max="59" value="${escapeHtml(acc.timeWorkingM||"")}" placeholder="Minutos" style="flex:1"><span style="font-size:12px;color:var(--muted)">min</span></div></div><div class="form-group"><label>Actividad</label><input id="accm_activity" value="${escapeHtml(acc.activity||"")}"></div></div>
         <div class="form-row"><div class="form-group"><label>Jornada</label><select id="accm_shift" onchange="syncModalFurat()"><option value="">Seleccionar…</option>${optionsHtml(SHIFTS,modalFurat.shift)}</select></div><div class="form-group"><label>Sitio</label><select id="accm_sitio" onchange="syncModalFurat()"><option value="">Seleccionar…</option>${optionsHtml(SITIOS,modalFurat.sitio)}</select></div></div>
         <details class="acc"><summary>Tipo de lesión</summary><div class="chk-group" id="mGrpInjury" onchange="syncModalFurat()">${checkboxGroupHTML(INJURY_TYPES,modalFurat.injuryTypes)}</div></details>
         <details class="acc"><summary>Parte del cuerpo</summary><div class="chk-group" id="mGrpBody" onchange="syncModalFurat()">${checkboxGroupHTML(BODY_PARTS,modalFurat.bodyParts)}</div></details>
@@ -1408,7 +1353,7 @@ function stashModalEdits(){
     if(g("accm_type")) acc.type=g("accm_type").value;
     if(g("accm_jobTitle")) acc.jobTitle=g("accm_jobTitle").value;
     if(g("accm_jobExpNum")){ acc.jobExpNum=g("accm_jobExpNum").value; acc.jobExpUnit=g("accm_jobExpUnit").value; acc.jobExp=joinNumUnit(acc.jobExpNum,acc.jobExpUnit); }
-    if(g("accm_timeWorkingNum")){ acc.timeWorkingNum=g("accm_timeWorkingNum").value; acc.timeWorkingUnit=g("accm_timeWorkingUnit").value; acc.timeWorking=joinNumUnit(acc.timeWorkingNum,acc.timeWorkingUnit); }
+    if(g("accm_timeWorkingH")){ acc.timeWorkingH=g("accm_timeWorkingH").value; acc.timeWorkingM=g("accm_timeWorkingM").value; acc.timeWorking=fmtHM(acc.timeWorkingH,acc.timeWorkingM); }
     if(g("accm_activity")) acc.activity=g("accm_activity").value;
     if(document.getElementById("mGrpInjury")) syncModalFurat();
     if(modalFurat){ acc.shift=modalFurat.shift; acc.sitio=modalFurat.sitio; acc.sitioOtro=modalFurat.sitioOtro; acc.injuryTypes=modalFurat.injuryTypes.slice(); acc.injuryOtro=modalFurat.injuryOtro; acc.bodyParts=modalFurat.bodyParts.slice(); acc.bodyDetail=modalFurat.bodyDetail; acc.agents=modalFurat.agents.slice(); acc.mechanisms=modalFurat.mechanisms.slice(); acc.mechanismOtro=modalFurat.mechanismOtro; }
